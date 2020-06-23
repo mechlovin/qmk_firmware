@@ -22,10 +22,8 @@ void matrix_init_kb(void) {
 }
 
 void led_init_ports(void) {
-    setPinOutput(A3);
-    writePinLow(A3);
-    setPinOutput(A4);
-    writePinLow(A4);
+    setPinOutput(B9);
+    writePinLow(B9);
 }
 
 bool led_update_kb(led_t led_state) {
