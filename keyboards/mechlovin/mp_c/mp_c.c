@@ -13,16 +13,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+ #ifndef RGB_BACKLIGHT_MPC
+ #error RGB_BACKLIGHT_MPC not defined, recheck config.h
+ #endif
 
 #include "mp_c.h"
+/*
 
 const is31_led g_is31_leds[DRIVER_LED_TOTAL] = {
-/* Refer to IS31 manual for these locations
- *   driver
- *   |  R location
- *   |  |       G location
- *   |  |       |       B location
- *   |  |       |       | */ 
 
     {0, C2_1,   C3_1,   C4_1}, //D102-0-0
     {0, C5_1,   C6_1,   C7_1}, //D108-1-1
@@ -224,3 +223,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+ */
