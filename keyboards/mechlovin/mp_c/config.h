@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #ifdef RGBLIGHT_ENABLE
-#define RGB_DI_PIN A15
+#define RGB_DI_PIN A0
 #define RGBLED_NUM      18
 #define RGBLIGHT_ANIMATIONS
 #define RGBLIGHT_HUE_STEP 8
@@ -70,10 +70,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DRIVER_ADDR_2 0b1110110
 #define DRIVER_ADDR_3 0b1110101
 #define DRIVER_COUNT 3
-#define DRIVER_1_LED_TOTAL 35
-#define DRIVER_2_LED_TOTAL 32
-#define DRIVER_3_LED_TOTAL 29
-#define DRIVER_LED_TOTAL (DRIVER_1_LED_TOTAL + DRIVER_2_LED_TOTAL + DRIVER_3_LED_TOTAL)
+#define DRIVER_LED_TOTAL 96
 #define RGB_MATRIX_KEYPRESSES // reacts to keypresses
 #define RGB_MATRIX_KEYRELEASES // reacts to keyreleases (instead of keypresses)
 #define RGB_MATRIX_FRAMEBUFFER_EFFECTS
