@@ -21,32 +21,34 @@ uint32_t layer_state_set_user(uint32_t state)
   // if on layer 1, turn on D2 LED, otherwise off.
     if (biton32(state) == 0) {
         writePinLow(A0);
-        writePinLow(A1);
-        writePinLow(A2);
-    } else {
-        writePinHigh(A0);
         writePinHigh(A1);
-        writePinHigh(A2);
+        writePinLow(A2);
     }
   // if on layer 2, turn on D1 LED, otherwise off.
     if (biton32(state) == 1) {
-        writePinHigh(A0);
+        writePinLow(A0);
         writePinLow(A1);
         writePinLow(A2);
-    } else {
-        writePinHigh(A0);
-        writePinHigh(A1);
-        writePinHigh(A2);
     }
 
   // if on layer 3, turn on D0 LED, otherwise off.
     if (biton32(state) == 2) {
-        writePinLow(A0);
-        writePinHigh(A1);
+        writePinHigh(A0);
+        writePinLow(A1);
         writePinLow(A2);
-    } else {
+    }
+
+  // if on layer 4, turn on D0 LED, otherwise off.
+    if (biton32(state) == 2) {
         writePinHigh(A0);
         writePinHigh(A1);
+        writePinLow(A2);
+    }
+
+  // if on layer 5, turn on D0 LED, otherwise off.
+    if (biton32(state) == 2) {
+        writePinLow(A0);
+        writePinLow(A1);
         writePinHigh(A2);
     }
 
