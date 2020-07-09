@@ -21,11 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID   0x4D4C // ML
-#define PRODUCT_ID  0x8701
-#define DEVICE_VER  0x0001
-#define MANUFACTURER  Team.Mechlovin
-#define PRODUCT       Infinity 87
-#define DESCRIPTION   Team.Mechlovin Infinity 87
 
 /* key matrix size */
 #define MATRIX_ROWS 6
