@@ -26,12 +26,21 @@ void led_init_ports(void) {
     writePinLow(A3);
     setPinOutput(A4);
     writePinLow(A4);
+    setPinOutput(A8);
+    writePinHigh(A8);
+    setPinOutput(A0);
+    writePinHigh(A0);
+    setPinOutput(A1);
+    writePinHigh(A1);
+    setPinOutput(A2);
+    writePinHigh(A2);
 }
 
 bool led_update_kb(led_t led_state) {
     if(led_update_user(led_state)) {
         writePin(A4, led_state.caps_lock);
         writePin(A3, led_state.num_lock);
+        writePin(A8, led_state.scroll_lock);
     }
 
     return true;

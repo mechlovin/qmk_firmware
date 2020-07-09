@@ -16,30 +16,6 @@
 
 #include "rev2.h"
 
-void matrix_init_kb(void) {
-    matrix_init_user();
-    led_init_ports();
-}
-
-void led_init_ports(void) {
-    setPinOutput(A8);
-    writePinHigh(A8);
-    setPinOutput(A0);
-    writePinHigh(A0);
-    setPinOutput(A1);
-    writePinHigh(A1);
-    setPinOutput(A2);
-    writePinHigh(A2);
-}
-
-bool led_update_kb(led_t led_state) {
-    if(led_update_user(led_state)) {
-        writePin(A8, led_state.scroll_lock);
-    }
-
-    return true;
-}
-
 uint32_t layer_state_set_user(uint32_t state)
 {
   // if on layer 1, turn on D2 LED, otherwise off.
