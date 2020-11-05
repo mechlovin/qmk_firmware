@@ -1,0 +1,2 @@
+
+RGB_MATRIX_ENABLE = IS31FL3741 # Use RGB matrix
