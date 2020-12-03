@@ -222,3 +222,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+
+void matrix_init_kb(void) {
+    matrix_init_user();
+    led_init_ports();
+}
+
+void led_init_ports(void) {
+    setPinOutput(A3);
+    writePinLow(A3);
+    setPinOutput(A1);
+    writePinLow(A1);
+    setPinOutput(A2);
+    writePinLow(A2);
+}
+
+bool led_update_kb(led_t led_state) {
+    if(led_update_user(led_state)) {
+        writePin(A1, led_state.caps_lock);
+        writePin(A3, led_state.num_lock);
+        writePin(A2, led_state.scroll_lock);
+    }
+
+    return true;
+}
