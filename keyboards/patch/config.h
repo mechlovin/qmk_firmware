@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "config_common.h"
 
 /* USB Device descriptor parameter */
-#define VENDOR_ID    0x4C4D
+#define VENDOR_ID    0x4D4C
 #define PRODUCT_ID   0x0108
 #define DEVICE_VER   0x0001
 #define MANUFACTURER Mechlovin
@@ -59,3 +59,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BACKLIGHT_PWM_CHANNEL 3
 
 #define BACKLIGHT_LEVELS 5
+#define DYNAMIC_KEYMAP_EEPROM_MAX_ADDR 2047
