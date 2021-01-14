@@ -15,11 +15,11 @@
  */
 
 #ifndef RGB_BACKLIGHT_ML_AEC
-#error RGB_BACKLIGHT_DAWN60 not defined, you done goofed somehao, brah
+#error RGB_BACKLIGHT_ML_AEC not defined, recheck config.h
 #endif
-/*
-#include "adelais.h"
 
+#include "adelais.h"
+/*
 #ifdef RGB_MATRIX_ENABLE
 const is31_led g_is31_leds[DRIVER_LED_TOTAL] = {
 

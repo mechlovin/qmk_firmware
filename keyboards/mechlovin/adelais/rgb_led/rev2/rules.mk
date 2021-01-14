@@ -1,4 +1,7 @@
 
+OPT_DEFS += -DNO_SUSPEND_POWER_DOWN
+
+# Build Options
 ENCODER_ENABLE = yes
 CIE1931_CURVE = yes
 

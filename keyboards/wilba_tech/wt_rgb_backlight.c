@@ -1645,6 +1645,11 @@ void backlight_update_pwm_buffers(void)
 #elif defined(RGB_BACKLIGHT_NEBULA12)
     IS31FL3731_update_pwm_buffers( ISSI_ADDR_1, 0 );
     IS31FL3731_update_led_control_registers( ISSI_ADDR_1, 0 );
+#elif defined(RGB_BACKLIGHT_ML_AEC)
+    IS31FL3731_update_pwm_buffers( ISSI_ADDR_1, 0 );
+    IS31FL3731_update_pwm_buffers( ISSI_ADDR_2, 1 );
+    IS31FL3731_update_led_control_registers( ISSI_ADDR_1, 0 );
+    IS31FL3731_update_led_control_registers( ISSI_ADDR_2, 1 );
 #elif defined(RGB_BACKLIGHT_U80_A)
     static uint8_t driver = 0;
     switch ( driver )
@@ -1682,7 +1687,7 @@ void backlight_set_color( int index, uint8_t red, uint8_t green, uint8_t blue )
     if (( index != 63+64-1 ) && ( index != 48+64-1 )) {
         IS31FL3733_set_color( index, red, green, blue );
     }
-#elif defined(RGB_BACKLIGHT_DAWN60) || !defined(RGB_BACKLIGHT_ML_AEC)
+#elif defined(RGB_BACKLIGHT_DAWN60) || defined(RGB_BACKLIGHT_ML_AEC)
     if( index < DRIVER_LED_TOTAL ) {
         IS31FL3731_set_color( index, red, green, blue );
     } else {
@@ -1712,7 +1717,7 @@ void backlight_set_color_all( uint8_t red, uint8_t green, uint8_t blue )
             IS31FL3733_set_color(i, red, green, blue);
         }
     }
-#elif defined(RGB_BACKLIGHT_DAWN60) || !defined(RGB_BACKLIGHT_ML_AEC)
+#elif defined(RGB_BACKLIGHT_DAWN60) || defined(RGB_BACKLIGHT_ML_AEC)
     IS31FL3731_set_color_all( red, green, blue );
     for (uint8_t i = 0; i < WS2812_LED_TOTAL; i++) {
         g_ws2812_leds[i].r = red;
@@ -1734,7 +1739,7 @@ void backlight_set_key_hit(uint8_t row, uint8_t column)
     g_any_key_hit = 0;
 }
 
-#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_KW_MEGA)
+#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_KW_MEGA) && !defined(RGB_BACKLIGHT_ML_AEC)
 // This is (F_CPU/1024) / 20 Hz
 // = 15625 Hz / 20 Hz
 // = 781
@@ -1957,7 +1962,7 @@ void backlight_effect_alphas_mods(void)
             }
         }
     }
-#if defined(RGB_BACKLIGHT_DAWN60) || !defined(RGB_BACKLIGHT_ML_AEC)
+#if defined(RGB_BACKLIGHT_DAWN60) || defined(RGB_BACKLIGHT_ML_AEC)
     for (int i = 0; i < WS2812_LED_TOTAL; i++) {
         if ((RGB_UNDERGLOW_ALPHA_TOP_START <= i && i <= RGB_UNDERGLOW_ALPHA_TOP_END) ||
             (RGB_UNDERGLOW_ALPHA_BOT_START <= i && i <= RGB_UNDERGLOW_ALPHA_BOT_END)) {
@@ -2293,7 +2298,7 @@ void backlight_effect_indicators(void)
     }
 }
 
-#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_KW_MEGA)
+#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_KW_MEGA) && !defined(RGB_BACKLIGHT_ML_AEC)
 ISR(TIMER3_COMPA_vect)
 #else //STM32 interrupt
 static void gpt_backlight_timer_task(GPTDriver *gptp)
@@ -2946,10 +2951,12 @@ void backlight_init_drivers(void)
                           ( index == 54+13 ) ||  // LD13
                           ( index >= 72+0 && index <= 72+8 ) ||  // LE0-LE8
                           ( index == 90+13 ) ); // LF13
-#elif defined(RGB_BACKLIGHT_DAWN60) || !defined(RGB_BACKLIGHT_ML_AEC)
+#elif defined(RGB_BACKLIGHT_DAWN60)
         bool enabled = !( ( index == 15+7 && !g_config.use_split_backspace ) || //other backspace
                           ( index == 47+13 && g_config.use_7u_spacebar ) ||     //LD13
                           ( index == 47+15 && g_config.use_7u_spacebar ) );       //LD15
+#elif defined(RGB_BACKLIGHT_ML_AEC)
+        bool enabled = !( ( index == 15+7 && !g_config.caps_lock_indicator ) ); // A9-A12
 #elif defined(RGB_BACKLIGHT_NEBULA12)
         bool enabled = !( ( index >= 9-1 && index <= 12-1 ) ); // A9-A12
 #elif defined(RGB_BACKLIGHT_M50_A)

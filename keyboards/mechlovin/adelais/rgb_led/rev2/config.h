@@ -44,36 +44,37 @@
 
 #define TAP_CODE_DELAY 10
 
-/* Backlight options */
-
-#define RGB_BACKLIGHT_ENABLED 1
-
-// This conditionally compiles the backlight code for Dawn60 specifics
-#define RGB_BACKLIGHT_ML_AEC
-
-//RGB Underglow defines
+#ifdef RGBLIGHT_ENABLE
 #define RGB_DI_PIN A15
-#define WS2812_LED_TOTAL 20
+#define RGBLED_NUM       23
+#define RGBLIGHT_ANIMATIONS
+#define RGBLIGHT_HUE_STEP 8
+#define RGBLIGHT_SAT_STEP 8
+#define RGBLIGHT_VAL_STEP 8
+#endif
+
+
+#define RGB_DI_PIN A15
+#define WS2812_LED_TOTAL 23
 
 #define RGB_UNDERGLOW_ALPHA_TOP_START 0
 #define RGB_UNDERGLOW_ALPHA_TOP_END   6   
 #define RGB_UNDERGLOW_ALPHA_BOT_START 12
 #define RGB_UNDERGLOW_ALPHA_BOT_END   15
 
-// enable/disable LEDs based on layout
-// switch between split backspace (1) or normal backspace(0)
-#define RGB_BACKLIGHT_USE_SPLIT_BACKSPACE 1
-// switch between Tsangan (1) or Arrows Bottom Row (0)
-#define RGB_BACKLIGHT_USE_7U_SPACEBAR 0
-// switch between standard split rshift (0) or arrows r shift (1)
-// .------------------.           .-------------------.
-// | ? |  Shift  | Fn |    vs     |  Shift  | Up | Fn |
-// `------------------'           `-------------------'
-#define RGB_BACKLIGHT_USE_SPLIT_RIGHT_SHIFT 1
 
-//not used
-#define RGB_BACKLIGHT_USE_ISO_ENTER 0
+/* Backlight options */
+
+#define RGB_BACKLIGHT_ENABLED 1
+
+#define RGB_BACKLIGHT_ML_AEC
+
+// they aren't really used if RGB_BACKLIGHT_NEBULA65 defined
+#define RGB_BACKLIGHT_USE_SPLIT_BACKSPACE 1
 #define RGB_BACKLIGHT_USE_SPLIT_LEFT_SHIFT 0
+#define RGB_BACKLIGHT_USE_SPLIT_RIGHT_SHIFT 1
+#define RGB_BACKLIGHT_USE_7U_SPACEBAR 0
+#define RGB_BACKLIGHT_USE_ISO_ENTER 0
 #define RGB_BACKLIGHT_DISABLE_HHKB_BLOCKER_LEDS 0
 
 // disable backlight when USB suspended (PC sleep/hibernate/shutdown)
@@ -95,16 +96,19 @@
 #define RGB_BACKLIGHT_COLOR_1 { .h = 0, .s = 255 }
 #define RGB_BACKLIGHT_COLOR_2 { .h = 127, .s = 255 }
 
+#define DRIVER_COUNT 2
+#define DRIVER_LED_TOTAL 91
+
 // These define which keys in the matrix are alphas/mods
 // Used for backlight effects so colors are different for
 // alphas vs. mods
 // Each value is for a row, bit 0 is column 0
 // Alpha=0 Mod=1
-#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_0 0b0000000000000001
-#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_1 0b0010000000000001
-#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_2 0b0011000000000001
-#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_3 0b0011000000000001
-#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_4 0b0011111000011111
+#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_0 0b0110000000000001
+#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_1 0b0100000000000001
+#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_2 0b0110000000000001
+#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_3 0b0111000000000001
+#define RGB_BACKLIGHT_ALPHAS_MODS_ROW_4 0b0111111000000111
 
 #define RGB_BACKLIGHT_CAPS_LOCK_INDICATOR { .color = { .h = 0, .s = 0 }, .index = 255 }
 #define RGB_BACKLIGHT_LAYER_1_INDICATOR { .color = { .h = 0, .s = 0 }, .index = 255 }
@@ -113,7 +117,7 @@
 
 // Backlight config starts after VIA's EEPROM usage,
 // dynamic keymaps start after this.
-#define VIA_EEPROM_CUSTOM_CONFIG_SIZE 31
+#define VIA_EEPROM_CUSTOM_CONFIG_SIZE 32
 
 // VIA lighting is handled by the keyboard-level code
 #define VIA_CUSTOM_LIGHTING_ENABLE
