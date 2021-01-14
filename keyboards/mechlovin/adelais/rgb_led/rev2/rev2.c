@@ -14,6 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef RGB_BACKLIGHT_ML_AEC
+#error RGB_BACKLIGHT_DAWN60 not defined, you done goofed somehao, brah
+#endif
+/*
 #include "adelais.h"
 
 #ifdef RGB_MATRIX_ENABLE
@@ -169,3 +173,4 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+*/
