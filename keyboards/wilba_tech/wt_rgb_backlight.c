@@ -1322,13 +1322,13 @@ void map_led_to_point( uint8_t index, Point *point )
     point->y = pgm_read_byte(addr+1);
 
 #if defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_M10_C) || defined(RGB_BACKLIGHT_HS60) || defined(RGB_BACKLIGHT_NK65) || \
-    defined(RGB_BACKLIGHT_NK87) || defined(RGB_BACKLIGHT_NEBULA68) || defined(RGB_BACKLIGHT_NEBULA12) || defined(RGB_BACKLIGHT_KW_MEGA)
+    defined(RGB_BACKLIGHT_NK87) || defined(RGB_BACKLIGHT_NEBULA68) || defined(RGB_BACKLIGHT_NEBULA12) || defined(RGB_BACKLIGHT_KW_MEGA) || defined(RGB_BACKLIGHT_ML_AEC)
     return;
 #endif
 
     switch (index)
     {
-#if !defined(RGB_BACKLIGHT_DAWN60) || !defined(RGB_BACKLIGHT_ML_AEC)
+#if !defined(RGB_BACKLIGHT_DAWN60)
         case 18+4: // LB4A
             if ( g_config.use_split_backspace )
                 point->x -= 8;
@@ -1362,7 +1362,7 @@ void map_led_to_point( uint8_t index, Point *point )
                 point->x -= 8;
             break;
 #endif
-#if defined(RGB_BACKLIGHT_DAWN60) || !defined(RGB_BACKLIGHT_ML_AEC)
+#if defined(RGB_BACKLIGHT_DAWN60)
         case 15+6: // LB6A
             if ( !g_config.use_split_backspace )
                 point->x += 8;
