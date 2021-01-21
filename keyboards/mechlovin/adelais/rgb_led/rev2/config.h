@@ -110,14 +110,14 @@
 #define RGB_BACKLIGHT_ALPHAS_MODS_ROW_3 0b0111000000000001
 #define RGB_BACKLIGHT_ALPHAS_MODS_ROW_4 0b0111111000000111
 
-#define RGB_BACKLIGHT_CAPS_LOCK_INDICATOR { .color = { .h = 0, .s = 0 }, .index = 255 }
+#define RGB_BACKLIGHT_CAPS_LOCK_INDICATOR { .color = { .h = 0, .s = 0 }, .index = 35 }
 #define RGB_BACKLIGHT_LAYER_1_INDICATOR { .color = { .h = 0, .s = 0 }, .index = 255 }
 #define RGB_BACKLIGHT_LAYER_2_INDICATOR { .color = { .h = 0, .s = 0 }, .index = 255 }
 #define RGB_BACKLIGHT_LAYER_3_INDICATOR { .color = { .h = 0, .s = 0 }, .index = 255 }
 
 // Backlight config starts after VIA's EEPROM usage,
 // dynamic keymaps start after this.
-#define VIA_EEPROM_CUSTOM_CONFIG_SIZE 32
+#define VIA_EEPROM_CUSTOM_CONFIG_SIZE 30
 
 // VIA lighting is handled by the keyboard-level code
 #define VIA_CUSTOM_LIGHTING_ENABLE
