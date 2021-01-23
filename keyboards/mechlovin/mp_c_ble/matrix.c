@@ -182,24 +182,23 @@ static void select_col(uint8_t col) {
         case 1:
           //writePinHigh(C6);
           writePinHigh(B6);
-          writePinLow(F7);
-          writePinLow(C7);
+          writePinLow(C6);
           break;
         case 2:
           writePinLow(C7);
           writePinHigh(B6);
-          //writePinHigh(F7);
+          writePinLow(F7);
           //writePinHigh(C6);
           break;
         case 3:
           //writePinHigh(C7);
           //writePinHigh(C6);
-          writePinLow(F7);
+          writePinLow(C7);
           writePinHigh(B6);
           break;
         case 4:
-            writePinHigh(D6);
-          //writePinHigh(D2);
+          writePinHigh(B6);
+          writePinLow(F7);
           //writePinHigh(D3);
           //writePinHigh(D7);
           break;
@@ -210,13 +209,13 @@ static void select_col(uint8_t col) {
           writePinLow(D7);
           break;
         case 6:
-          writePinLow(D2);
+          writePinLow(D3);
           writePinHigh(D6);
           //writePinHigh(D3);
           writePinLow(D7);
           break;
         case 7:
-          writePinLow(D3);
+          writePinLow(D2);
           writePinHigh(D6);
           //writePinHigh(D2);
           writePinLow(D7);
@@ -228,7 +227,7 @@ static void select_col(uint8_t col) {
           writePinLow(D7);
           break;
         case 9:
-          writePinLow(D3);
+          writePinLow(D2);
           writePinHigh(D6);
           //writePinHigh(D2);
           //writePinHigh(D7);
@@ -237,7 +236,7 @@ static void select_col(uint8_t col) {
           //writePinHigh(D3);
           writePinHigh(D6);
           //writePinHigh(D7);
-          writePinLow(D2);
+          writePinLow(D3);
           break;
         case 11:
           writePinLow(D2);
@@ -246,19 +245,12 @@ static void select_col(uint8_t col) {
           //writePinHigh(D7);
           break;
         case 12:
-          //writePinHigh(F7);
-          writePinHigh(B6);
-          writePinLow(C6);
-          writePinLow(C7);
+          writePinLow(D5);
           break;
         case 13:
-          writePinLow(F7);
-          writePinHigh(B6);
-          //writePinHigh(C7);
-          writePinLow(C6);
+          writePinHigh(D6);
           break;
         case 14:
-          writePinHigh(F7);
           writePinHigh(B6);
           //writePinHigh(C7);
           //writePinHigh(C6);
@@ -267,12 +259,13 @@ static void select_col(uint8_t col) {
           writePinLow(C6);
           writePinHigh(B6);
           //writePinHigh(C7);
-          //writePinHigh(F7);
+          writePinLow(F7);
           break;
         case 16:
-          writePinLow(D5);
+          writePinLow(C6);
+          writePinHigh(B6);
           //writePinHigh(C7);
-          //writePinHigh(F7);
+          writePinLow(C7);
           break;
     }
 }
