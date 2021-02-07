@@ -1,4 +1,11 @@
+# MCU name
+MCU = atmega32a
+
+# Bootloader selection
+BOOTLOADER = USBasp
+
+F_CPU ?= 16000000
+
 RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = IS31FL3731
-RGBLIGHT_ENABLE = yes
 ENCODER_ENABLE = yes

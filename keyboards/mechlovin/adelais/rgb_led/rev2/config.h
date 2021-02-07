@@ -3,15 +3,8 @@
 #define PRODUCT_ID   0xAEC2
 #define PRODUCT      Adelais En Ciel Rev2  
 
-#define MATRIX_ROW_PINS { B1, A0, C13, A1, A2}
-#define MATRIX_COL_PINS { A10, A9, A8, B15, B14, B13, B12, B11, B10, B8, B4, B5, B3, C14, A7 }
-
-#define RGB_DI_PIN A15
-#define RGBLED_NUM      23
-#define RGBLIGHT_ANIMATIONS
-#define RGBLIGHT_HUE_STEP 8
-#define RGBLIGHT_SAT_STEP 8
-#define RGBLIGHT_VAL_STEP 8
+#define MATRIX_ROW_PINS { B5, B6, B7, D0, D1}
+#define MATRIX_COL_PINS { D4, D5, D6, D7, C2, C3, C4, C5, C6, C7, A7, A6, A5, A4, A3 }
 
 //rgb matrix setting
 // This is a 7-bit address, that gets left-shifted and bit 0
@@ -36,10 +29,9 @@
 #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255 // limits maximum brightness of LEDs to 200 out of 255. If not defined maximum brightness is set to 255
 #define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_PINWHEEL // Sets the default mode, if none has been set
 
-#define RGB_MATRIX_DISABLE_KEYCODES
 
-#define ENCODERS_PAD_A { A4 }
-#define ENCODERS_PAD_B { A3 }
+#define ENCODERS_PAD_A { A1 }
+#define ENCODERS_PAD_B { A2 }
 #define ENCODER_RESOLUTION 4
 
 #define TAP_CODE_DELAY 10
