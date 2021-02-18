@@ -50,8 +50,8 @@ const is31_led g_is31_leds[DRIVER_LED_TOTAL] = {
     {0, CS3_SW2,    CS2_SW2,    CS1_SW2},  //D117-K1C-29
     {0, CS3_SW8,    CS2_SW8,    CS1_SW8},  //D158-K1D-30
     {0, CS3_SW7,    CS2_SW7,    CS1_SW7},  //D119-K1E-31
-    {0, CS15_SW7,   CS14_SW7,   CS13_SW7}, //D121-K1F-32
-    {0, CS18_SW7,   CS17_SW7,   CS16_SW7}, //D123-K1G-33
+    {0, CS18_SW8,   CS17_SW8,   CS16_SW8}, //D121-K1F-32
+    {0, CS9_SW9,    CS8_SW9,    CS7_SW9}, //D123-K1G-33
     {0, CS34_SW3,   CS35_SW3,   CS36_SW3}, //D124-K20-34
     {0, CS37_SW3,   CS38_SW3,   CS39_SW3}, //D127-K21-35
     {0, CS31_SW3,   CS32_SW3,   CS33_SW3}, //D130-K22-36
@@ -68,7 +68,7 @@ const is31_led g_is31_leds[DRIVER_LED_TOTAL] = {
     {0, CS6_SW8,    CS5_SW8,    CS4_SW8},  //D159-K2D-47
     {0, CS6_SW7,    CS5_SW7,    CS4_SW7},  //D180-K2E-48
     {0, CS19_SW8,   CS20_SW8,   CS21_SW8}, //D181-K2F-49
-    {0, CS19_SW7,   CS20_SW7,   CS21_SW7}, //D182-K2G-50
+    {0, CS9_SW7,    CS8_SW7,    CS7_SW7},  //D182-K2G-50
     {0, CS34_SW4,   CS35_SW4,   CS36_SW4}, //D166-K30-51
     {0, CS37_SW4,   CS38_SW4,   CS39_SW4}, //D167-K31-52
     {0, CS31_SW4,   CS32_SW4,   CS33_SW4}, //D168-K32-53
