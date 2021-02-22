@@ -41,7 +41,7 @@
 #endif 
 
 #ifdef RGBLIGHT_ENABLE
-#define RGB_DI_PIN B3
+#define RGB_DI_PIN B0
 #define RGBLED_NUM 9
 #define RGBLIGHT_LIMIT_VAL 120
 #define RGBLIGHT_EFFECT_BREATHING
@@ -59,3 +59,6 @@
 #endif 
 
 #define USB_MAX_POWER_CONSUMPTION 500
+
+/* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
+#define DEBOUNCE 5
