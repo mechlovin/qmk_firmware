@@ -1,1 +1,2 @@
 VIA_ENABLE = yes
+JOYSTICK_ENABLE = analog

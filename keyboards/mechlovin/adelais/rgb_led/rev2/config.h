@@ -13,6 +13,10 @@
 #define RGBLIGHT_SAT_STEP 8
 #define RGBLIGHT_VAL_STEP 8
 
+#ifdef OLED_DRIVER_ENABLE
+#define OLED_FONT_H "keymaps/default/glcdfont.c"
+#endif
+
 //rgb matrix setting
 // This is a 7-bit address, that gets left-shifted and bit 0
 // set to 0 for write, 1 for read (as per I2C protocol)
@@ -42,4 +46,4 @@
 #define ENCODERS_PAD_B { A3 }
 #define ENCODER_RESOLUTION 4
 
-#define TAP_CODE_DELAY 10
+#define TAP_CODE_DELAY 5
