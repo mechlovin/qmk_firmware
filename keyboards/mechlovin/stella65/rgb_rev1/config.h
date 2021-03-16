@@ -45,29 +45,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* COL2ROW, ROW2COL */
 #define DIODE_DIRECTION COL2ROW
 
+#ifdef RGBLIGHT_ENABLE
 #define RGB_DI_PIN B3
-#ifdef RGB_DI_PIN
-    #define RGBLED_NUM 0
+    #define RGBLED_NUM 9
     #define RGBLIGHT_HUE_STEP 8
     #define RGBLIGHT_SAT_STEP 8
     #define RGBLIGHT_VAL_STEP 8
-    #define RGBLIGHT_LIMIT_VAL undefined /* The maximum brightness level */
+    #define RGBLIGHT_LIMIT_VAL 255 /* The maximum brightness level */
     #define RGBLIGHT_SLEEP  /* If defined, the RGB lighting will be switched off when the host goes to sleep */
-/*== all animations enable ==*/
-    #define RGBLIGHT_ANIMATIONS
 // /*== or choose animations ==*/
-//     #define RGBLIGHT_EFFECT_BREATHING
-//     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
-//     #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-//     #define RGBLIGHT_EFFECT_SNAKE
+     #define RGBLIGHT_EFFECT_BREATHING
+     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
+     #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+     #define RGBLIGHT_EFFECT_SNAKE
 //     #define RGBLIGHT_EFFECT_KNIGHT
-//     #define RGBLIGHT_EFFECT_CHRISTMAS
+     #define RGBLIGHT_EFFECT_CHRISTMAS
 //     #define RGBLIGHT_EFFECT_STATIC_GRADIENT
-//     #define RGBLIGHT_EFFECT_RGB_TEST
-//     #define RGBLIGHT_EFFECT_ALTERNATING
+     #define RGBLIGHT_EFFECT_RGB_TEST
+     #define RGBLIGHT_EFFECT_ALTERNATING
 #endif
 
-
+#ifdef RGB_MATRIX_ENABLE
 //rgb matrix setting
 // This is a 7-bit address, that gets left-shifted and bit 0
 // set to 0 for write, 1 for read (as per I2C protocol)
@@ -78,7 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 0b0110010 AD <-> SDA
 #define RGB_DISABLE_AFTER_TIMEOUT 0 // number of ticks to wait until disabling effects
 #define RGB_DISABLE_WHEN_USB_SUSPENDED true // turn off effects when suspended
-#define RGB_MATRIX_KEYPRESSES
+#define DISABLE_RGB_MATRIX_KEYPRESSES
 #define DISABLE_RGB_MATRIX_SPLASH
 #define DISABLE_RGB_MATRIX_MULTISPLASH
 #define DISABLE_RGB_MATRIX_SOLID_MULTISPLASH
@@ -86,8 +84,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_ALL
 //#define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
 #define DRIVER_ADDR_1 0b0110010
-#define DRIVER_ADDR_2 0b0110010 // this is here for compliancy reasons.
+#define DRIVER_ADDR_2 0b0110010
 #define DRIVER_COUNT 1
-#define DRIVER_1_LED_TOTAL 91
+#define DRIVER_1_LED_TOTAL 71
 #define DRIVER_LED_TOTAL DRIVER_1_LED_TOTAL
-#define DRIVER_INDICATOR_LED_TOTAL 0
+#endif
