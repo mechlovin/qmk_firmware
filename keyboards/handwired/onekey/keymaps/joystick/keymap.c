@@ -2,8 +2,11 @@
 
 #include "joystick.h"
 
-#ifndef ADC_PIN
-#    define ADC_PIN F6
+#ifndef ADC_PIN1
+#    define ADC_PIN1 F6
+#endif
+#ifndef ADC_PIN2
+#    define ADC_PIN2 F5
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -21,6 +24,6 @@ void matrix_scan_user() {
 
 // Joystick config
 joystick_config_t joystick_axes[JOYSTICK_AXES_COUNT] = {
-    [0] = JOYSTICK_AXIS_IN(ADC_PIN, 0, 512, 1023),
-    [1] = JOYSTICK_AXIS_VIRTUAL
+    [0] = JOYSTICK_AXIS_IN(ADC_PIN1, 0, 512, 1023),
+    [1] = JOYSTICK_AXIS_IN(ADC_PIN2, 0, 512, 1023),
 };

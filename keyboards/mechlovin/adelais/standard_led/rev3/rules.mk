@@ -1,4 +1,5 @@
 ENCODER_ENABLE = yes
 
+JOYSTICK_ENABLE = analog
 POINTING_DEVICE_ENABLE = yes
 SRC += analog.c

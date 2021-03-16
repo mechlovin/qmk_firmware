@@ -2,8 +2,8 @@
 
 #define PRODUCT_ID   0xAD02
 
-#define ENCODERS_PAD_A { A5, B7 }
-#define ENCODERS_PAD_B { A6, B6 }
+#define ENCODERS_PAD_A { B6 }
+#define ENCODERS_PAD_B { B7 }
 #define ENCODER_RESOLUTION 4
 
 #define TAP_CODE_DELAY 10
