@@ -1,8 +1,8 @@
 #pragma once
 
-#define PRODUCT_ID   0x6500
+#define PRODUCT_ID   0x6509
 #define DEVICE_VER   0x0001
-#define PRODUCTION   Hannah65
+#define PRODUCTION   Mechlovin9
 
 #define MATRIX_ROW_PINS { A4, A5, A3, A2, A1 }
 #define MATRIX_COL_PINS { B11, B10, B2, B1, B0, A7, A6, A0, C15, B4, B5, B3, C13, C14, A13 }

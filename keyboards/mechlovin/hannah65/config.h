@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID    0x4D4C
-#define MANUFACTURER Team Mechlovin
+#define MANUFACTURER Mechlovin Studio
 
 #define MATRIX_ROWS 5
 #define MATRIX_COLS 15
@@ -36,16 +36,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
  *
  */
-#define MATRIX_ROW_PINS { A4, A5, A3, A2, A1 }
-#define MATRIX_COL_PINS { B11, B10, B2, B1, B0, A7, A6, A0, C15, B4, B5, B3, C13, C14, A13 }
-
-#define DIODE_DIRECTION COL2ROW
-
-#define LED_CAPS_LOCK_PIN B9
-
-#define BACKLIGHT_PIN B8
-#define BACKLIGHT_BREATHING
-#define BACKLIGHT_PWM_DRIVER PWMD3
-#define BACKLIGHT_PWM_CHANNEL 3
-
-#define BACKLIGHT_LEVELS 3
