@@ -1,1 +1,1 @@
-# The default keymap for rgb_rev1
+# The default keymap for stellar rgb_rev1
