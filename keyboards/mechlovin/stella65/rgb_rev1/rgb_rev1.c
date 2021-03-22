@@ -96,20 +96,19 @@ led_config_t g_led_config = { {
         {0,           1,           2,           3,           4,           5,           6,           7,           8,           9,           10,           11,           12,           13,           14},
         {15,         16,          17,          18,          19,          20,          21,          22,          23,          24,           25,           26,           27,           28,           29},
         {30,         31,          32,          33,          34,          35,          36,          37,          38,          39,           40,           41,           42,           43,           44},
-        {43,         46,          47,          48,          49,          50,          51,          52,          53,          54,           55,           56,           57,           58,           59},
+        {45,         46,          47,          48,          49,          50,          51,          52,          53,          54,           55,           56,           57,           58,           59},
         {60,         61,          62,                       63,                       64,                       65,                        66,           67,           68,           69,           70}      
     }, {
   //LED Index to Physical Positon
-
-  {  0,  0},  { 16,  0},  { 32, 0 },  { 48, 0 },  { 64, 0},   { 80, 0},   { 96, 0},   { 112, 0},  { 128, 0},  { 144, 0},  { 160, 0},  { 176, 0},    {192,  0},   {208,  0},   {208, 16},   {224, 0},
-  {  0, 16},  { 16, 16},  { 32,16 },  { 48,16 },  { 64,16},   { 80,16},   { 96,16},   { 112,16},  { 128,16},  { 144,16},  { 160,16},  { 176,16},    {192, 16},   {192, 32},   {224,16},
-  {  0, 32},  { 16, 32},  { 32,32 },  { 48,32 },  { 64,32},   { 80,32},   { 96,32},   { 112,32},  { 128,32},  { 144,32},  { 160,32},  { 176,32},    {208, 32},   {224,32},
+  {  0,  0},  { 15,  0},  { 30, 0 },  { 44, 0 },  { 59, 0},   { 74, 0},   { 89, 0},   { 104, 0},  { 119, 0},  { 134, 0},  { 149, 0},  { 164, 0},    {179,  0},   {209,  0},   {213, 0}, 
+  {  0, 16},  { 15, 16},  { 30,16 },  { 44,16 },  { 59,16},   { 74,16},   { 89,16},   { 104,16},  { 119,16},  { 134,16},  { 149,16},  { 164,16},    {179, 16},   {224, 16},   {224,0},
+  {  0, 32},  { 16, 32},  { 32,32 },  { 48,32 },  { 64,32},   { 80,32},   { 96,32},   { 112,32},  { 128,32},  { 144,32},  { 160,32},  { 176,32},    {208, 32},   {209,16},   {224,64},
   {  0, 48},  { 16, 48},  { 32,48 },  { 48,48 },  { 64,48},   { 80,48},   { 96,48},   { 112,48},  { 128,48},  { 144,48},  { 160,48},  { 176,48},    {192, 48},   {208, 48},   {224,48},
   {  0, 64},  { 16, 64},  { 32,64 },              { 64,64},               { 96,64},               { 128,64},              { 160,64},  { 176,64},    {192, 64},   {208, 64},   {224,64},
 }, {
-  1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,            1,           1,           1,
+  1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,            1,           1,           1,           1,
   1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,            1,           1,           1,  
-  1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,            1,           1,           1,  
+  1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,            1,           1, 
   1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,          1,            1,           1,           1,  
   1,          1,          1,                      1,                      1,                      1,                      1,          1,            1,           1,           1,          
 } };
@@ -119,9 +118,6 @@ led_config_t g_led_config = { {
 __attribute__((weak))
 void rgb_matrix_indicators_user(void) {
         if (host_keyboard_led_state().caps_lock) {
-            rgb_matrix_set_color(51, 255, 255, 255);
-        }
-        if (host_keyboard_led_state().scroll_lock) {
             rgb_matrix_set_color(30, 255, 255, 255);
         }
 }
@@ -138,3 +134,48 @@ void suspend_wakeup_init_kb(void) {
 }
 #endif
 
+
+
+bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
+  if (record->event.pressed) {
+    switch(keycode) {
+    #ifdef RGBLIGHT_ENABLE
+        #ifdef RGB_MATRIX_ENABLE
+        case KC_F13: // toggle rgb matrix
+            rgb_matrix_toggle();
+            return false;
+        case KC_F14:
+            rgb_matrix_step();
+            return false;
+        case KC_F15:
+            rgb_matrix_increase_speed();
+            return false;
+        case KC_F16:
+            rgb_matrix_decrease_speed();
+            return false;
+        case KC_F17:
+            rgb_matrix_increase_hue();
+            return false;
+        case KC_F18:
+            rgb_matrix_decrease_hue();
+            return false;
+        case KC_F19:
+            rgb_matrix_increase_sat();
+            return false;
+        case KC_F20:
+            rgb_matrix_decrease_sat();
+            return false;
+        case KC_F21:
+            rgb_matrix_increase_val();
+            return false;
+        case KC_F22:
+            rgb_matrix_decrease_val();
+            return false;
+        #endif
+    #endif
+        default:
+        break;
+    }
+  }
+  return true;
+}
