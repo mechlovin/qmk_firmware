@@ -46,6 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DIODE_DIRECTION COL2ROW
 
 #ifdef RGBLIGHT_ENABLE
+#define RGB_MATRIX_DISABLE_KEYCODES
 #define RGB_DI_PIN B3
     #define RGBLED_NUM 9
 #define RGBLIGHT_SLEEP  /* If defined, the RGB lighting will be switched off when the host goes to sleep */
@@ -80,7 +81,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 0b0110010 AD <-> SDA
 #define RGB_DISABLE_AFTER_TIMEOUT 0 // number of ticks to wait until disabling effects
 #define RGB_DISABLE_WHEN_USB_SUSPENDED true // turn off effects when suspended
-#define RGB_MAXIMUM_BRIGHTNESS 150 // limits maximum brightness of LEDs to 200 out of 255. If not defined maximum brightness is set to 255
+#define RGB_MAXIMUM_BRIGHTNESS 160 // limits maximum brightness of LEDs to 200 out of 255. If not defined maximum brightness is set to 255
 #define RGB_MATRIX_KEYPRESSES // reacts to keypresses
 #define RGB_MATRIX_KEYRELEASES // reacts to keyreleases (instead of keypresses)
 //#define DISABLE_RGB_MATRIX_SOLID_COLOR
@@ -109,12 +110,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DISABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS	
 //#define DISABLE_RGB_MATRIX_TYPING_HEATMAP
 #define DISABLE_RGB_MATRIX_DIGITAL_RAIN		
-#define DISABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE	
+//#define DISABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE	
 #define DISABLE_RGB_MATRIX_SOLID_REACTIVE		
 #define DISABLE_RGB_MATRIX_SOLID_REACTIVE_WIDE	
-#define DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE	
+//#define DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE	
 #define DISABLE_RGB_MATRIX_SOLID_REACTIVE_CROSS	
-#define DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTICROSS	
+//#define DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTICROSS	
 #define DISABLE_RGB_MATRIX_SOLID_REACTIVE_NEXUS	
 #define DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS	
 //#define DISABLE_RGB_MATRIX_SPLASH	
@@ -128,7 +129,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_ALL
 
-#define RGB_MATRIX_DISABLE_KEYCODES
 
 //#define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
 #define DRIVER_ADDR_1 0b0110010
