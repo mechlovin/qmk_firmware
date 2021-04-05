@@ -110,3 +110,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255 // limits maximum brightness of LEDs to 200 out of 255. If not defined maximum brightness is set to 255
 #define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_PINWHEEL // Sets the default mode, if none has been set
 #endif
+
+#define LED_CAPS_LOCK_PIN A3
+#define LED_SCROLL_LOCK_PIN A2
+#define LED_NUM_LOCK_PIN A1
+#define LED_PIN_ON_STATE 0
