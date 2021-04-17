@@ -47,7 +47,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef RGBLIGHT_ENABLE
 #define RGB_MATRIX_DISABLE_KEYCODES
-#define RGB_DI_PIN B3
+//#define RGB_DI_PIN B3
     #define RGBLED_NUM 9
 #define RGBLIGHT_SLEEP  /* If defined, the RGB lighting will be switched off when the host goes to sleep */
 #define RGBLIGHT_EFFECT_BREATHE_MAX	150
@@ -67,7 +67,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //     #define RGBLIGHT_EFFECT_ALTERNATING
 //     #define RGBLIGHT_EFFECT_TWINKLE
      #define RGBLIGHT_EFFECT_STATIC_GRADIENT
-
+#define WS2812_ADDRESS 0xb0 // default: 0xb0
+#define WS2812_TIMEOUT 100 // default: 100
 #endif
 
 #ifdef RGB_MATRIX_ENABLE
