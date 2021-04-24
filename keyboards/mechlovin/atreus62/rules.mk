@@ -23,3 +23,6 @@ AUDIO_ENABLE = no           # Audio output
 
 # JOYSTICK_ENABLE = analog
 POINTING_DEVICE_ENABLE = yes
+CUSTOM_MATRIX = lite
+
+SRC += matrix.c

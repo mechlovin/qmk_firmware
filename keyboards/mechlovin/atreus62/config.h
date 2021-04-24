@@ -37,6 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #define MATRIX_ROW_PINS { E6, B6, B5, D6, D4 }
+#define MATRIX_COL_PINS {  }
 #define UNUSED_PINS
 
 /* COL2ROW, ROW2COL */
@@ -45,3 +46,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Joystick */
 #define JOYSTICK_BUTTON_COUNT 8
 #define JOYSTICK_AXES_COUNT 2
+
+/* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
+#define DEBOUNCE 5

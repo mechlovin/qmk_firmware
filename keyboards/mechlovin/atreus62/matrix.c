@@ -195,45 +195,45 @@ static void select_col(uint8_t col) {
           writePinHigh(F5);
           break;
         case 7:
-          writePinHigh(F4);
-          writePinHigh(F1);
-          writePinHigh(F0);
-          writePinHigh(F5);
+          writePinLow(D3);
+          writePinLow(D1);
+          writePinLow(D2);
+          writePinHigh(D0);
           break;
         case 8:
-          writePinLow(F4);
-          writePinLow(F1);
-          writePinLow(F0);
+          writePinLow(D1);
+          writePinLow(D2);
+          writePinHigh(D3);
           writePinHigh(D0);
           break;
         case 9:
-          writePinLow(F4);
-          writePinLow(F1);
-          writePinHigh(F0);
+          writePinLow(D1);
+          writePinHigh(D2);
+          writePinLow(D3);
           writePinHigh(D0);
           break;
         case 10:
-          writePinLow(F4);
-          writePinHigh(F1);
-          writePinLow(F0);
+          writePinLow(D1);
+          writePinHigh(D2);
+          writePinHigh(D3);
           writePinHigh(D0);
           break;
         case 11:
-          writePinLow(F4);
-          writePinHigh(F1);
-          writePinHigh(F0);
+          writePinHigh(D1);
+          writePinLow(D2);
+          writePinLow(D3);
           writePinHigh(D0);
           break;
         case 12:
-          writePinHigh(F4);
-          writePinLow(F1);
-          writePinLow(F0);
+          writePinHigh(D1);
+          writePinLow(D2);
+          writePinHigh(D3);
           writePinHigh(D0);
           break;
         case 13:
-          writePinHigh(F4);
-          writePinLow(F1);
-          writePinHigh(F0);
+          writePinHigh(D1);
+          writePinHigh(D2);
+          writePinHigh(D3);
           writePinHigh(D0);
           break;
     }
@@ -284,45 +284,45 @@ static void unselect_col(uint8_t col) {
           writePinLow(F5);
           break;
         case 7:
-          writePinLow(F4);
-          writePinLow(F1);
-          writePinLow(F0);
-          writePinLow(F5);
+          writePinHigh(D3);
+          writePinHigh(D1);
+          writePinHigh(D2);
+          writePinLow(D0);
           break;
         case 8:
-          writePinHigh(F4);
-          writePinHigh(F1);
-          writePinHigh(F0);
+          writePinHigh(D1);
+          writePinHigh(D2);
+          writePinLow(D3);
           writePinLow(D0);
           break;
         case 9:
-          writePinHigh(F4);
-          writePinHigh(F1);
-          writePinLow(F0);
+          writePinHigh(D1);
+          writePinLow(D2);
+          writePinHigh(D3);
           writePinLow(D0);
           break;
         case 10:
-          writePinHigh(F4);
-          writePinLow(F1);
-          writePinHigh(F0);
+          writePinHigh(D1);
+          writePinLow(D2);
+          writePinLow(D3);
           writePinLow(D0);
           break;
         case 11:
-          writePinHigh(F4);
-          writePinLow(F1);
-          writePinLow(F0);
+          writePinLow(D1);
+          writePinHigh(D2);
+          writePinHigh(D3);
           writePinLow(D0);
           break;
         case 12:
-          writePinLow(F4);
-          writePinHigh(F1);
-          writePinHigh(F0);
+          writePinLow(D1);
+          writePinHigh(D2);
+          writePinLow(D3);
           writePinLow(D0);
           break;
         case 13:
-          writePinLow(F4);
-          writePinHigh(F1);
-          writePinLow(F0);
+          writePinLow(D1);
+          writePinLow(D2);
+          writePinLow(D3);
           writePinLow(D0);
           break;
     }
@@ -336,7 +336,7 @@ static void unselect_cols(void) {
     writePinHigh(D1);
     writePinHigh(D2);
     writePinHigh(D3);
-    writePinHigh(D0);
+    writePinHigh(F0);
     writePinHigh(F1);
     writePinHigh(F4);
 }
