@@ -20,11 +20,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "config_common.h"
 
 /* USB Device descriptor parameter */
-#define VENDOR_ID    0xFEED
-#define PRODUCT_ID   0x0000
+#define VENDOR_ID    0x4D4C
+#define PRODUCT_ID   0x6200
 #define DEVICE_VER   0x0001
 #define MANUFACTURER mechlovin
-#define PRODUCT      atreus62
+#define PRODUCT      Atreus62
 
 /*
  * Keyboard Matrix Assignments
