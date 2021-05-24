@@ -17,17 +17,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include "config_common.h"
+/*
+ * Keyboard Matrix Assignments
+ *
+ * Change this to how you wired your keyboard
+ * COLS: AVR pins used for columns, left to right
+ * ROWS: AVR pins used for rows, top to bottom
+ * DIODE_DIRECTION: COL2ROW = COL = Anode (+), ROW = Cathode (-, marked on diode)
+ *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
+ *
+ */
+#define MATRIX_ROW_PINS { F0, F1, F4, F5, F6 }
+#define MATRIX_COL_PINS { E6, D5, D3, D2, D1, D0, C7, C6, B6, B5, B4, D7, D6, D4 }
 
-/* USB Device descriptor parameter */
-#define VENDOR_ID    0x4D4C
-#define PRODUCT_ID   0x0600
-#define DEVICE_VER   0x0001
-#define MANUFACTURER Mechlovin Studio
-#define PRODUCT      Common60 Rev. 1
-
-/* key matrix size */
-#define MATRIX_ROWS 5
-#define MATRIX_COLS 14
-
-#define DIODE_DIRECTION COL2ROW
+//#define LED_NUM_LOCK_PIN B0
+#define LED_CAPS_LOCK_PIN B2
+//#define LED_SCROLL_LOCK_PIN B2
+//#define LED_COMPOSE_PIN B3
+//#define LED_KANA_PIN B4
