@@ -39,6 +39,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MATRIX_ROW_PINS { E6, B6, B5, D6, D4 }
 #define UNUSED_PINS
 
+/* key matrix size */
+#define MATRIX_ROWS 5
+#define MATRIX_COLS 14
+ 
 /* COL2ROW, ROW2COL */
 #define DIODE_DIRECTION ROW2COL
 

@@ -15,7 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 
-#include "enjoy.h"
+#include "atreus62.h"
 #include "joystick.h"
 #include "analog.h"
 #include "pointing_device.h"
