@@ -114,40 +114,36 @@ static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row)
 /* Cols 0 - 16
  * These columns use two 74HC138 3 to 8 bit demultiplexer. F5, D0 is the enable pin, must be set high (1) to use it.
  *
- * col / pin:     PF4  PF1  PF0  PF5  PD0  PD0
- * 0:              0 ── 0 ── 0    1 ── 0    0 
+ * col / pin:     PF4  PF1  PF0  PF5  PD0
+ * 0:              0 ── 0 ── 1    1 ── 0    
  * ────────────────────────────────────────────
- * 1:              0 ── 0 ── 1    1 ── 0    0
+ * 1:              0 ── 1 ── 0    1 ── 0   
  * ────────────────────────────────────────────    
- * 2:              0 ── 1 ── 0    1 ── 0    0 
+ * 2:              0 ── 1 ── 1    1 ── 0    
  * ────────────────────────────────────────────    
- * 3:              0 ── 1 ── 1    1 ── 0    0 
+ * 3:              1 ── 0 ── 0    1 ── 0    
  * ────────────────────────────────────────────    
- * 4:              1 ── 0 ── 0    1 ── 0    0 
+ * 4:              1 ── 0 ── 1    1 ── 0    
  * ────────────────────────────────────────────    
- * 5:              1 ── 0 ── 1    1 ── 0    0 
+ * 5:              1 ── 1 ── 0    1 ── 0    
+ * ────────────────────────────────────────────     
+ *
+ * col / pin:     PD1  PD2  PD3  PF5  PD0 
+ * 6:               0 ── 0 ── 0    0 ── 1    
  * ────────────────────────────────────────────    
- * 6:              1 ── 1 ── 0    1 ── 0    0 
+ * 7:               0 ── 0 ── 1    0 ── 1    
  * ────────────────────────────────────────────    
- * 7:              1 ── 1 ── 1    1 ── 0    0 
+ * 8:               0 ── 1 ── 0    0 ── 1    
  * ────────────────────────────────────────────    
- * 8:              0 ── 0 ── 0    0 ── 1    0 
+ * 9:               0 ── 1 ── 1    0 ── 1    
  * ────────────────────────────────────────────    
- * 9:              0 ── 0 ── 1    0 ── 1    0 
+ * 10:              1 ── 0 ── 0    0 ── 1    
  * ────────────────────────────────────────────    
- *10:              0 ── 1 ── 0    0 ── 1    0 
+ * 11:              1 ── 0 ── 1    0 ── 1    
  * ────────────────────────────────────────────    
- *11:              0 ── 1 ── 1    0 ── 1    0 
+ * 12:              0 ── 0 ── 0    1 ── 0    
  * ────────────────────────────────────────────    
- *12:              1 ── 0 ── 0    0 ── 1    0 
- * ────────────────────────────────────────────    
- *13:              1 ── 0 ── 1    0 ── 1    0 
- * ────────────────────────────────────────────    
- *14:              1 ── 1 ── 1    0 ── 1    0 
- * ────────────────────────────────────────────    
- *15:              1 ── 1 ── 0    0 ── 1    0 
- * ────────────────────────────────────────────    
- *16:              0 ── 0 ── 0    0 ── 0    1  
+ * 13:              1 ── 1 ── 1    0 ── 1    
  *
  */
 static void select_col(uint8_t col) {
@@ -155,80 +151,80 @@ static void select_col(uint8_t col) {
         case 0:
           writePinLow(F4);
           writePinLow(F1);
-          writePinLow(F0);
+          writePinHigh(F0);
           writePinHigh(F5);
           break;
         case 1:
           writePinLow(F4);
-          writePinLow(F1);
-          writePinHigh(F0);
+          writePinHigh(F1);
+          writePinLow(F0);
           writePinHigh(F5);
           break;
         case 2:
           writePinLow(F4);
           writePinHigh(F1);
-          writePinLow(F0);
+          writePinHigh(F0);
           writePinHigh(F5);
           break;
         case 3:
-          writePinLow(F4);
-          writePinHigh(F1);
-          writePinHigh(F0);
+          writePinHigh(F4);
+          writePinLow(F1);
+          writePinLow(F0);
           writePinHigh(F5);
           break;
         case 4:
           writePinHigh(F4);
           writePinLow(F1);
-          writePinLow(F0);
-          writePinHigh(F5);
-          break;
-        case 5:
-          writePinHigh(F4);
-          writePinLow(F1);
           writePinHigh(F0);
           writePinHigh(F5);
           break;
-        case 6:
+        case 5:
           writePinHigh(F4);
           writePinHigh(F1);
           writePinLow(F0);
           writePinHigh(F5);
           break;
-        case 7:
+        case 6:
           writePinLow(D3);
+          writePinLow(D2);
+          writePinLow(D1);
+          writePinHigh(D0);
+          break;
+        case 7:
           writePinLow(D1);
           writePinLow(D2);
+          writePinHigh(D3);
           writePinHigh(D0);
           break;
         case 8:
           writePinLow(D1);
-          writePinLow(D2);
-          writePinHigh(D3);
+          writePinHigh(D2);
+          writePinLow(D3);
           writePinHigh(D0);
           break;
         case 9:
           writePinLow(D1);
           writePinHigh(D2);
-          writePinLow(D3);
+          writePinHigh(D3);
           writePinHigh(D0);
           break;
         case 10:
-          writePinLow(D1);
-          writePinHigh(D2);
-          writePinHigh(D3);
+          writePinHigh(D1);
+          writePinLow(D2);
+          writePinLow(D3);
           writePinHigh(D0);
           break;
         case 11:
           writePinHigh(D1);
           writePinLow(D2);
-          writePinLow(D3);
+          writePinHigh(D3);
           writePinHigh(D0);
           break;
         case 12:
-          writePinHigh(D1);
+          writePinLow(D1);
           writePinLow(D2);
-          writePinHigh(D3);
-          writePinHigh(D0);
+          writePinLow(D3);
+          writePinHigh(F5);
           break;
         case 13:
           writePinHigh(D1);
@@ -244,79 +240,79 @@ static void unselect_col(uint8_t col) {
         case 0:
           writePinHigh(F4);
           writePinHigh(F1);
-          writePinHigh(F0);
+          writePinLow(F0);
           writePinLow(F5);
           break;
         case 1:
           writePinHigh(F4);
-          writePinHigh(F1);
-          writePinLow(F0);
+          writePinLow(F1);
+          writePinHigh(F0);
           writePinLow(F5);
           break;
         case 2:
           writePinHigh(F4);
           writePinLow(F1);
-          writePinHigh(F0);
+          writePinLow(F0);
           writePinLow(F5);
           break;
         case 3:
-          writePinHigh(F4);
-          writePinLow(F1);
-          writePinLow(F0);
+          writePinLow(F4);
+          writePinHigh(F1);
+          writePinHigh(F0);
           writePinLow(F5);
           break;
         case 4:
           writePinLow(F4);
           writePinHigh(F1);
-          writePinHigh(F0);
-          writePinLow(F5);
-          break;
-        case 5:
-          writePinLow(F4);
-          writePinHigh(F1);
           writePinLow(F0);
           writePinLow(F5);
           break;
-        case 6:
+        case 5:
           writePinLow(F4);
           writePinLow(F1);
           writePinHigh(F0);
           writePinLow(F5);
           break;
-        case 7:
+        case 6:
           writePinHigh(D3);
+          writePinHigh(D2);
+          writePinHigh(D1);
+          writePinLow(D0);
+          break;
+        case 7:
           writePinHigh(D1);
           writePinHigh(D2);
+          writePinLow(D3);
           writePinLow(D0);
           break;
         case 8:
           writePinHigh(D1);
-          writePinHigh(D2);
-          writePinLow(D3);
+          writePinLow(D2);
+          writePinHigh(D3);
           writePinLow(D0);
           break;
         case 9:
           writePinHigh(D1);
           writePinLow(D2);
-          writePinHigh(D3);
+          writePinLow(D3);
           writePinLow(D0);
           break;
         case 10:
-          writePinHigh(D1);
-          writePinLow(D2);
-          writePinLow(D3);
+          writePinLow(D1);
+          writePinHigh(D2);
+          writePinHigh(D3);
           writePinLow(D0);
           break;
         case 11:
           writePinLow(D1);
           writePinHigh(D2);
-          writePinHigh(D3);
+          writePinLow(D3);
           writePinLow(D0);
           break;
         case 12:
-          writePinLow(D1);
+          writePinHigh(D1);
           writePinHigh(D2);
-          writePinLow(D3);
+          writePinHigh(D3);
           writePinLow(D0);
           break;
         case 13:
