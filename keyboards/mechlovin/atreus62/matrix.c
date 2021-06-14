@@ -221,9 +221,9 @@ static void select_col(uint8_t col) {
           writePinHigh(D0);
           break;
         case 12:
-          writePinLow(D1);
-          writePinLow(D2);
-          writePinLow(D3);
+          writePinLow(F4);
+          writePinLow(F1);
+          writePinLow(F0);
           writePinHigh(F5);
           break;
         case 13:
@@ -310,9 +310,9 @@ static void unselect_col(uint8_t col) {
           writePinLow(D0);
           break;
         case 12:
-          writePinHigh(D1);
-          writePinHigh(D2);
-          writePinHigh(D3);
+          writePinHigh(F4);
+          writePinHigh(F1);
+          writePinHigh(F0);
           writePinLow(D0);
           break;
         case 13:
