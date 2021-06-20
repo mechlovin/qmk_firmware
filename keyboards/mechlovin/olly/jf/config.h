@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PRODUCT_ID   0xD180
 #define DEVICE_VER   0x0001
 #define MANUFACTURER Mechlovin.Studio
-#define PRODUCT      Olly BB
+#define PRODUCT      Olly JF
 
 /* key matrix size */
 #define MATRIX_ROWS 6
@@ -72,3 +72,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
 #define DEBOUNCE 5
+#define DYNAMIC_KEYMAP_EEPROM_MAX_ADDR 2048
