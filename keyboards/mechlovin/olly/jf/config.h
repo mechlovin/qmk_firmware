@@ -52,10 +52,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LED_NUM_LOCK_PIN B1
 #define LED_CAPS_LOCK_PIN B0
 #define LED_SCROLL_LOCK_PIN B2
-#define LED_PIN_ON_STATE 0
+#define LED_PIN_ON_STATE 1
 
 #define RGB_DI_PIN B3
 #define RGBLED_NUM 26
+#define RGBLIGHT_LIMIT_VAL 255
 #define RGBLIGHT_SLEEP  /* If defined, the RGB lighting will be switched off when the host goes to sleep */
 /*== all animations enable ==*/
 #define RGBLIGHT_ANIMATIONS
@@ -72,4 +73,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
 #define DEBOUNCE 5
-#define DYNAMIC_KEYMAP_EEPROM_MAX_ADDR 2048
+#define DYNAMIC_KEYMAP_EEPROM_MAX_ADDR 1536
