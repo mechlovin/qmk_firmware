@@ -40,30 +40,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
  *
 */
-#define MATRIX_ROW_PINS { A3, D5, C3, C2, B3, B4 }
+#define MATRIX_ROW_PINS { D5, D2, D4, D3, D0, D1 }
 #define UNUSED_PINS
 
 /* COL2ROW, ROW2COL*/
 #define DIODE_DIRECTION ROW2COL
 
+#define USB_POLLING_INTERVAL_MS 1
 
 
-#define LED_NUM_LOCK_PIN B1
-#define LED_CAPS_LOCK_PIN B0
-#define LED_SCROLL_LOCK_PIN B2
+#define LED_NUM_LOCK_PIN D7
+#define LED_CAPS_LOCK_PIN D6
+#define LED_SCROLL_LOCK_PIN B4
 #define LED_PIN_ON_STATE 0
 
-#define BACKLIGHT_PIN D4
+#define BACKLIGHT_PIN B6
 #define BACKLIGHT_LEVELS 3
 #define BACKLIGHT_BREATHING
 
 #ifdef RGBLIGHT_ENABLE
-#define RGB_DI_PIN C7
-#define RGBLED_NUM 16
+#define RGB_DI_PIN E2
+#define RGBLED_NUM 28
 #define RGBLIGHT_HUE_STEP 8
 #define RGBLIGHT_SAT_STEP 8
 #define RGBLIGHT_VAL_STEP 8
-#define RGBLIGHT_LIMIT_VAL 150 /* The maximum brightness level */
+#define RGBLIGHT_LIMIT_VAL 255 /* The maximum brightness level */
 #define RGBLIGHT_SLEEP  /* If defined, the RGB lighting will be switched off when the host goes to sleep */
 /*== all animations enable ==*/
 #define RGBLIGHT_ANIMATIONS
