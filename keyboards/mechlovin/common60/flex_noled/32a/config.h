@@ -27,13 +27,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
  *
  */
-#define MATRIX_ROW_PINS { A2, A1, A3, A4, A5 }
-#define MATRIX_COL_PINS { B6, B5, B3, B2, B1, B0, A0, A6, A7, C7, C6, C5, C4, D1 }
+#define MATRIX_ROW_PINS { C2, C1, C0, D7, A1 }
+#define MATRIX_COL_PINS { B6, B5, B3, B2, B1, B0, A0, A6, A7, C7, C6, C5, C4, C3 }
 
 #define DIODE_DIRECTION COL2ROW
 
 //#define LED_NUM_LOCK_PIN B0
-#define LED_CAPS_LOCK_PIN  D7
+#define LED_CAPS_LOCK_PIN  D4
 //#define LED_SCROLL_LOCK_PIN B2
 //#define LED_COMPOSE_PIN B3
 //#define LED_KANA_PIN B4
