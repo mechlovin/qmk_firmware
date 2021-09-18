@@ -1,4 +1,4 @@
-/* Copyright 2020 QMK
+/* Copyright 2020 Brandon Schlack
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,17 +13,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 #pragma once
 
-#define HAL_USE_I2C TRUE
+#define USE_LEDS_FOR_LAYERS
+#define STOPLIGHT_LED
 
-#define HAL_USE_PWM TRUE
-
-#define HAL_USE_SPI TRUE
-
-#define PAL_USE_WAIT FALSE
-
-#include_next <halconf.h>
-
+// LEDs
+#define TOP_LED    B2
+#define MIDDLE_LED C15
+#define BOTTOM_LED B9
+// #define LED_PIN_FLIP
+#ifdef LED_PIN_FLIP
+    #define LED_ON(flag) !flag
+#else
+    #define LED_ON(flag) flag
+#endif

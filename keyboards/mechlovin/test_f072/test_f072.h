@@ -1,4 +1,4 @@
-/* Copyright 2020 QMK
+/* Copyright 2021 mechlovin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,16 +14,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 
-#define HAL_USE_I2C TRUE
+#include "quantum.h"
 
-#define HAL_USE_PWM TRUE
-
-#define HAL_USE_SPI TRUE
-
-#define PAL_USE_WAIT FALSE
-
-#include_next <halconf.h>
-
+/* This is a shortcut to help you visually see your layout.
+ *
+ * The first section contains all of the arguments representing the physical
+ * layout of the board and position of the keys.
+ *
+ * The second converts the arguments into a two-dimensional array which
+ * represents the switch matrix.
+ */
+#define LAYOUT( \
+    k00, k01, k02, \
+      k10,  k12    \
+) { \
+    { k00, k01,   k02 }, \
+    { k10, KC_NO, k12 }  \
+}
