@@ -20,19 +20,20 @@
 led_config_t g_led_config = { {
   //Key Matrix to LED Index
   {0,          1,         2,           3,          4,          6,          7,          8,          9,         10,         11,          12,          13,          14,          15,         16,         17},
-  {26,    NO_LED,        25,      NO_LED,         24,     NO_LED,         23,     NO_LED,         22,     NO_LED,      NO_LED,         21,      NO_LED,          20,          19,     NO_LED,         18},
-  {27,    NO_LED,    NO_LED,      NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,      NO_LED,     NO_LED,      NO_LED,      NO_LED,      NO_LED,     NO_LED,         41},
-  {28,    NO_LED,    NO_LED,      NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,      NO_LED,     NO_LED,      NO_LED,      NO_LED,      NO_LED,     NO_LED,         40},
-  {29,    NO_LED,    NO_LED,      NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,      NO_LED,     NO_LED,      NO_LED,      NO_LED,      NO_LED,     NO_LED,         39},
-  {30,    NO_LED,        31,      NO_LED,         32,     NO_LED,     NO_LED,         33,     NO_LED,         34,      NO_LED,         35,          36,      NO_LED,          37,     NO_LED,         38}
+  {NO_LED, NO_LED,   NO_LED,      NO_LED,      NO_LED,    NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,      NO_LED,     NO_LED,      NO_LED,      NO_LED,      NO_LED,     NO_LED,     NO_LED},
+  {NO_LED, NO_LED,    NO_LED,      NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,      NO_LED,     NO_LED,      NO_LED,      NO_LED,      NO_LED,     NO_LED,     NO_LED},
+  {NO_LED, NO_LED,    NO_LED,      NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,      NO_LED,     NO_LED,      NO_LED,      NO_LED,      NO_LED,     NO_LED,     NO_LED},
+  {NO_LED, NO_LED,    NO_LED,      NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,      NO_LED,     NO_LED,      NO_LED,      NO_LED,      NO_LED,     NO_LED,     NO_LED},
+  {NO_LED, NO_LED,    NO_LED,      NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,     NO_LED,      NO_LED,     NO_LED,      NO_LED,      NO_LED,      NO_LED,     NO_LED,     NO_LED}
 }, {
   //LED Index to Physical Positon
-  {0,0},  {14,0},    {28,0},      {42,0},     {56,0},     {65,0},     {70,0},     {84,0},     {98,0},    {112,0},    {126,0},     {140,0},     {154,0},     {168,0},     {182,0},     {196,0},    {210,0},     {224,0},
-  {0,1},             {28,1},                  {56,1},                 {84,1},                {112,1},                             {154,1},                  {182,1},     {196,1},                 {224,1},
-  {0,2},                                                                                                                                                                                          {224,2},
-  {0,3},                                                                                                                                                                                          {224,3},
-  {0,4},                                                                                                                                                                                          {224,4},
-  {0,5},             {28,5},                  {56,5},                             {84,5},                {112,5},                 {154,5},     {182,5},                  {196,5},                 {224,5},
+  {0,0},  {14,0},    {28,0},      {42,0},     {56,0},     {67,0},     {70,0},     {84,0},     {98,0},    {112,0},    {126,0},     {140,0},     {154,0},     {168,0},     {182,0},     {196,0},    {210,0},     {224,0},
+  {224,13},          {196,13},                {182,13},               {154,13},               {112,13},                           {84,13},                  {56,13},     {28,13},                 {0,13},
+  {0,25},                                                                                                                                                                                         {0,38},
+  {0,51},                                                                                                                                                                                         {0,64},
+  {28,64},                                                                                                                                                                                        {56,64},
+  {84,64},           {112,64},                {154,64},                           {182,64},              {196,64},                {224,64},    {224,51},                 {224,38},                {224,25},
+//{244,64},          {196,64},                {182,64},                           {154,64},              {112,64},                {84,64},     {56,64},                  {28,64},                 {0,64},
 }, {
       1,       1,         1,           1,          1,          1,          1,          1,          1,          1,           1,          1,           1,           1,           1,           1,          1,           1,
       1,                  1,                       1,                      1,                      1,                                   1,                        1,           1,                       1,
