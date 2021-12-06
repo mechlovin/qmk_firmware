@@ -90,6 +90,9 @@
 #    define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_ALL
 #    define DRIVER_ADDR_1 0b1010000
 #    define DRIVER_ADDR_2 0b1010011
-#    define DRIVER_COUNT 1
-#    define DRIVER_LED_TOTAL 63
+#    define DRIVER_COUNT 2
+#    define DRIVER_LED_TOTAL 108
+#    define I2C_DRIVER I2CD2
+#define I2C1_SCL_PIN B10
+#define I2C1_SDA_PIN B11
 #endif
