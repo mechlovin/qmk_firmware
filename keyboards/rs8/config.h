@@ -30,7 +30,7 @@
 #define MATRIX_COL_PINS { B0, B1, B2, B3, B4, B5, B6, B7, B8, B9 }
 
 #define DIODE_DIRECTION ROW2COL
-#define DYNAMIC_KEYMAP_LAYER_COUNT 2
+#define DYNAMIC_KEYMAP_LAYER_COUNT 3
 
 #ifdef RGB_MATRIX_ENABLE
 #    define RGB_DISABLE_AFTER_TIMEOUT 0 // number of ticks to wait until disabling effects
@@ -88,11 +88,15 @@
 // #    define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
 
 #    define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_ALL
-#    define DRIVER_ADDR_1 0b1010000
-#    define DRIVER_ADDR_2 0b1010011
+#    define DRIVER_ADDR_1 0b1010001
+#    define DRIVER_ADDR_2 0b1010000
 #    define DRIVER_COUNT 2
 #    define DRIVER_LED_TOTAL 108
 #    define I2C_DRIVER I2CD2
-#define I2C1_SCL_PIN B10
-#define I2C1_SDA_PIN B11
+#    define I2C1_SCL_PIN B10
+#    define I2C1_SDA_PIN B11
+#    define ISSI_PWM_FREQUENCY 100
+#    define ISSI_SWPULLUP PUR_3KR
+#    define DRIVER_SYNC_1 1
+#    define DRIVER_SYNC_2 2
 #endif
