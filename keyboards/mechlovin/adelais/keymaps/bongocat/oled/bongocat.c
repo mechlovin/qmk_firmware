@@ -1,3 +1,4 @@
+
 // WPM-responsive animation stuff here
 # define IDLE_FRAMES 5
 # define IDLE_SPEED 10  // below this wpm value your animation will idle

@@ -49,7 +49,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-#ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
         if (clockwise) {
@@ -65,17 +64,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             tap_code(KC_RGHT);
         }
     }
-    else if (index == 2) {
-        if (clockwise) {
-            tap_code(KC_UP);
-        } else {
-            tap_code(KC_DOWN);
-        }
-    }
     return true;
 }
 
-  #endif
 
 #ifdef OLED_ENABLE
     uint16_t startup_timer; 
@@ -90,7 +81,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         led_t led_usb_state = host_keyboard_led_state();
 
         render_bongocat();
-        oled_set_cursor(14, 0);                           // sets cursor to (column, row) using charactar spacing (4 rows on 128x32 screen, anything more will overflow back to the top)
+        oled_set_cursor(14, 1);                           // sets cursor to (column, row) using charactar spacing (4 rows on 128x32 screen, anything more will overflow back to the top)
         sprintf(wpm_str, "WPM:%03d", get_current_wpm());  // edit the string to change wwhat shows up, edit %03d to change how many digits show up
         oled_write(wpm_str, false);                       // writes wpm on top right corner of string
         oled_set_cursor(17, 2);

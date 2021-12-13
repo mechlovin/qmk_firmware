@@ -18,9 +18,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PRODUCT_ID   0xAD03
 
-#define ENCODERS_PAD_A { A6, A4 }
-#define ENCODERS_PAD_B { A5, A3 }
-#define ENCODER_RESOLUTION 4
-
-
-#define TAP_CODE_DELAY 10
+#define OLED_BRIGHTNESS 20
