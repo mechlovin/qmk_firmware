@@ -244,7 +244,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     bool oled_task_user(void) {
         static bool finished_logo = false;
 
-        if ((timer_elapsed(startup_timer) < 2000) && !finished_logo) {
+        if ((timer_elapsed(startup_timer) < 5000) && !finished_logo) {
             render_logo();
         } else {
             finished_logo = true;
@@ -275,11 +275,11 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         #endif
 
             oled_set_cursor(0, 3);
-            oled_write_P(led_usb_state.caps_lock ? PSTR("C ") : PSTR(""), false);
-            oled_write_P(led_usb_state.scroll_lock ? PSTR("S ") : PSTR(""), false);
-            oled_write_P(led_usb_state.num_lock ? PSTR("N ") : PSTR(""), false);
+            oled_write_P(led_usb_state.caps_lock ? PSTR("C ") : PSTR("  "), false);
+            oled_write_P(led_usb_state.scroll_lock ? PSTR("S ") : PSTR("  "), false);
+            oled_write_P(led_usb_state.num_lock ? PSTR("N ") : PSTR("  "), false);
         
-//            oled_set_cursor(0, 3);
+//            oled_set_cursor(5, 3);
             oled_write_P(PSTR("RGB:"), false);
             render_rgb_effect();
 

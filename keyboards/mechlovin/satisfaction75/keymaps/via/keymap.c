@@ -1,25 +1,22 @@
-/* Copyright 2020 Team Mechlovin
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+/*
+Copyright 2012,2013 Jun Wako <wakojun@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include QMK_KEYBOARD_H
-#include <stdio.h>
 
-// OLED animation
-#include "oled/bongocat.c"
-
-char wpm_str[10];
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_all(
@@ -48,47 +45,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
               KC_TRNS,          KC_TRNS,          KC_TRNS,          KC_TRNS,                  KC_TRNS,          KC_TRNS,                            KC_TRNS ),
 
 };
-
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) {
-        if (clockwise) {
-            tap_code(KC_VOLD);
-        } else {
-            tap_code(KC_VOLU);
-        }
-    }
-    else if (index == 1) {
-        if (clockwise) {
-            tap_code(KC_LEFT);
-        } else {
-            tap_code(KC_RGHT);
-        }
-    }
-    return true;
-}
-
-
-#ifdef OLED_ENABLE
-    uint16_t startup_timer; 
-
-    oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-        startup_timer = timer_read();
-
-        return rotation;
-    }
-
-    bool oled_task_user(void) {
-        led_t led_usb_state = host_keyboard_led_state();
-
-        render_bongocat();
-        oled_set_cursor(0, 1);                           // sets cursor to (column, row) using charactar spacing (4 rows on 128x32 screen, anything more will overflow back to the top)
-        sprintf(wpm_str, "WPM:%03d", get_current_wpm());  // edit the string to change wwhat shows up, edit %03d to change how many digits show up
-        oled_write(wpm_str, false);                       // writes wpm on top right corner of string
-        oled_set_cursor(0, 2);
-        oled_write_P(led_usb_state.caps_lock ? PSTR("CAPS") : PSTR(""), false);
-        oled_set_cursor(0, 3);
-        oled_write_P(led_usb_state.scroll_lock ? PSTR("SCRL") : PSTR(""), false);
-	
-        return true;
-    }
-#endif
