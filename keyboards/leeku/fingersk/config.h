@@ -44,5 +44,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* number of backlight levels */
 #define BACKLIGHT_LEVELS 1
 
-#define WS2812_ADDRESS 0xb0 // default: 0xb0
+#define WS2812_ADDRESS 0xb2 // default: 0xb0
 #define WS2812_TIMEOUT 100 // default: 100
