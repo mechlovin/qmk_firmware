@@ -1,11 +1,9 @@
 # MCU name
-MCU = atmega32a
+MCU = atmega32u4
 
 # Bootloader selection
-BOOTLOADER = usbasploader
+BOOTLOADER = atmel-dfu
 
-# Processor frequency
-F_CPU = 16000000
 
 # Build Options
 #   change yes to no to disable
