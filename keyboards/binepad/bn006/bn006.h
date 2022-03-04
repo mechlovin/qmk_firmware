@@ -20,7 +20,7 @@
 
 #define LAYOUT_ortho_2x3( \
     K00, K01, K02,\
-    K2E, K10, K11 \
+    K10, K11, K12 \
 ) { \
     { K00,   K01,   K02  }, \
     { K10,   K11,   K12  }, \
