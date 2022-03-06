@@ -118,3 +118,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LED_NUM_LOCK_PIN A0
 #define LED_CAPS_LOCK_PIN C14
 #define LED_SCROLL_LOCK_PIN C15
+
+#define I2C1_CLOCK_SPEED 400000
+#define I2C1_DUTY_CYCLE FAST_DUTY_CYCLE_2
