@@ -164,3 +164,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+void bootloader_jump(void) {
+    NVIC_SystemReset();
+}

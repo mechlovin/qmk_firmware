@@ -1,5 +1,5 @@
 /*
-    ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
+    ChibiOS - Copyright (C) 2006..2015 Giovanni Di Sirio
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
 */
 
 #include <hal.h>
+
+// Value to place in RTC backup register 10 for persistent bootloader mode
+#define RTC_BOOTLOADER_FLAG 0x424C
 
 /**
  * @brief   PAL setup.
@@ -32,19 +35,25 @@ const PALConfig pal_default_config =
 };
 #endif
 
+__attribute__((weak)) void enter_bootloader_mode_if_requested(void) {}
+
 /*
  * Early initialization code.
  * This initialization must be performed just after stack setup and before
  * any other initialization.
  */
 void __early_init(void) {
+  enter_bootloader_mode_if_requested();
+
   stm32_clock_init();
-  
 }
 
 /*
  * Board-specific initialization code.
  */
 void boardInit(void) {
-
+   //JTAG-DP Disabled and SW-DP Enabled
+   AFIO->MAPR |= AFIO_MAPR_SWJ_CFG_JTAGDISABLE;
+   //Set backup register DR10 to enter bootloader on reset
+   BKP->DR10 = RTC_BOOTLOADER_FLAG;
 }
