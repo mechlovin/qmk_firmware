@@ -20,9 +20,5 @@
 
 #define HAL_USE_SPI TRUE
 
-#define PAL_USE_CALLBACKS FALSE
-
-#define PAL_USE_WAIT FALSE
-
 #include_next <halconf.h>
 
