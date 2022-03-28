@@ -44,10 +44,6 @@
 
 /* on-board */
 
-#define GPIOA_LED               8
-#define GPIOF_OSC_IN            0
-#define GPIOF_OSC_OUT           1
-
 /* In case your board has a "USB enable" hardware
    controlled by a pin, define it here. (It could be just
    a 1.5k resistor connected to D+ line.)
