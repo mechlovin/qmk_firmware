@@ -19,8 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PRODUCT      Adelais
 
-#define MATRIX_ROW_PINS { B1, A0, C13, A1, A2}
-#define MATRIX_COL_PINS { A10, A9, A8, B15, B14, B13, B12, B11, B10, B8, B4, B5, B3, C14, A15 }
+#define MATRIX_ROW_PINS { A4, A3, C13, A1, A2}
+#define MATRIX_COL_PINS { B10, B11, B2, B1, B0, A6, A5, A14, A13, A15, B3, B4, B5, B8, B9 }
 #define UNUSED_PINS
 
 /* COL2ROW, ROW2COL*/
