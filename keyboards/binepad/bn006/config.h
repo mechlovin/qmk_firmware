@@ -3,6 +3,36 @@
 
 #pragma once
 
+#include "config_common.h"
+
+/* USB Device descriptor parameter */
+#define VENDOR_ID    0x4D4C // ML-Mechlovin
+#define PRODUCT_ID   0x0006
+#define DEVICE_VER   0x0006
+#define MANUFACTURER BinePad
+#define PRODUCT      BN006
+
+/* key matrix size */
+#define MATRIX_ROWS 2
+#define MATRIX_COLS 3
+
+/*
+ * Keyboard Matrix Assignments
+ *
+ * Change this to how you wired your keyboard
+ * COLS: AVR pins used for columns, left to right
+ * ROWS: AVR pins used for rows, top to bottom
+ * DIODE_DIRECTION: COL2ROW = COL = Anode (+), ROW = Cathode (-, marked on diode)
+ *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
+ *
+ */
+#define MATRIX_ROW_PINS { A8, C14 }
+#define MATRIX_COL_PINS { A15, B3, B4 }
+#define UNUSED_PINS
+
+/* COL2ROW, ROW2COL */
+#define DIODE_DIRECTION COL2ROW
+
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.

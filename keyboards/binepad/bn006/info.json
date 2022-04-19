@@ -1,28 +1,7 @@
 {
-    "manufacturer": "BINEPAD",
-    "keyboard_name": "binepad/bn006",
-    "maintainer": "binepad",
-    "bootloader": "stm32duino",
-    "diode_direction": "COL2ROW",
-    "features": {
-        "bootmagic_lite": true,
-        "command": false,
-        "console": false,
-        "extrakey": true,
-        "mousekey": true,
-        "nkro": true
-    },
-    "matrix_pins": {
-        "cols": ["A15", "B3", "B4"],
-        "rows": ["A8", "C14"]
-    },
-    "processor": "STM32F103",
+    "keyboard_name": "bn006",
     "url": "",
-    "usb": {
-        "device_version": "1.0.0",
-        "pid": "0x0000",
-        "vid": "0xFEED"
-    },
+    "maintainer": "Mechlovin' Studio",
     "layouts": {
         "LAYOUT_ortho_2x3": {
             "layout": [
