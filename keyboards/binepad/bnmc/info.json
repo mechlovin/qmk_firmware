@@ -1,0 +1,12 @@
+{
+    "keyboard_name": "BNMC",
+    "url": "",
+    "maintainer": "Binepad",
+    "layouts": {
+        "LAYOUT_all": {
+            "layout": [
+                {"x": 0, "y": 0}
+            ]
+        }
+    }
+}
