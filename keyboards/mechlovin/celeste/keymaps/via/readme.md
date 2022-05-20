@@ -1,1 +1,1 @@
-# The VIA keymap for infinity87.5
+# The via keymap for infinity87
