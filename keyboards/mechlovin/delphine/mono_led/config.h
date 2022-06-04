@@ -5,6 +5,9 @@
 #define DEVICE_VER      0x0001
 
 
+#define MATRIX_ROW_PINS { F0, F1, F4, F5, F6, D3 }
+#define MATRIX_COL_PINS { F7, D7, D6, D2 }
+
 #ifdef BACKLIGHT_ENABLE
 #define BACKLIGHT_PIN B6
 // #define BACKLIGHT_BREATHING

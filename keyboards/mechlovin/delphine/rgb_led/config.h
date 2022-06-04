@@ -3,6 +3,9 @@
 #define PRODUCT_ID      0xDEF2
 #define DEVICE_VER      0x0001
 
+#define MATRIX_ROW_PINS { B3, F1, F4, F6, F5, F0 }
+#define MATRIX_COL_PINS { B0, B1, B2, B7 }
+
 #ifdef RGBLIGHT_ENABLE
 #define RGB_DI_PIN E2
 #define RGBLED_NUM 13
@@ -42,6 +45,7 @@
 #define RGB_MATRIX_LED_FLUSH_LIMIT 16 // limits in milliseconds how frequently an animation will update the LEDs. 16 (16ms) is equivalent to limiting to 60fps (increases keyboard responsiveness)
 #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255 // limits maximum brightness of LEDs to 200 out of 255. If not defined maximum brightness is set to 255
 #define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_PINWHEEL // Sets the default mode, if none has been set
+#define ISSI_3731_DEGHOST
 // RGB Matrix Animation modes. Explicitly enabled
 // For full list of effects, see:
 // https://docs.qmk.fm/#/feature_rgb_matrix?id=rgb-matrix-effects
