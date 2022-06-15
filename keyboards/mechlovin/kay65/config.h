@@ -21,10 +21,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID    0x4D4C
-#define PRODUCT_ID   0x6502
+#define PRODUCT_ID   0x6505
 #define DEVICE_VER   0x0001
 #define MANUFACTURER Team Mechlovin
-#define PRODUCTION   Kay65 Rev. 1
+#define PRODUCT      DB65
 
 #define MATRIX_ROWS 5
 #define MATRIX_COLS 15
@@ -39,11 +39,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
  *
  */
-#define MATRIX_ROW_PINS { B7, D3, D5, D4, C6 }
-#define MATRIX_COL_PINS { F7, F6, F5, F4, F1, F0, C7, E6, B0, D2, D1, D0, B3, B2, B1 }
+#define MATRIX_ROW_PINS { F7,F6,F1,F4,F5 }
+#define MATRIX_COL_PINS { E6,B3,B7,D0,D1,D2,D3,D5,D4,D6,D7,B4,B5,C7,B1 }
 
 /* COL2ROW, ROW2COL */
-#define DIODE_DIRECTION COL2ROW
+#define DIODE_DIRECTION ROW2COL
 
 /*
  * Split Keyboard specific options, make sure you have 'SPLIT_KEYBOARD = yes' in your rules.mk, and define SOFT_SERIAL_PIN.
@@ -51,7 +51,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define SOFT_SERIAL_PIN D0  // or D1, D2, D3, E6
 
 //#define LED_NUM_LOCK_PIN B0
-#define LED_CAPS_LOCK_PIN D6
+#define LED_CAPS_LOCK_PIN F0
 //#define LED_SCROLL_LOCK_PIN B2
 //#define LED_COMPOSE_PIN B3
 //#define LED_KANA_PIN B4
@@ -62,7 +62,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define RGB_DI_PIN E2
 #ifdef RGB_DI_PIN
-#    define RGBLED_NUM 24
+#    define RGBLED_NUM 20
 #    define RGBLIGHT_HUE_STEP 8
 #    define RGBLIGHT_SAT_STEP 8
 #    define RGBLIGHT_VAL_STEP 8

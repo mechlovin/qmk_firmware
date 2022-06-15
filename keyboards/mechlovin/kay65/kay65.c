@@ -16,10 +16,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "kay65.h"
-
-void keyboard_pre_init_user(void) {
-  // Call the keyboard pre init code.
-
-  // Set our LED pins as output
-  setPinOutput(D7);
-}
