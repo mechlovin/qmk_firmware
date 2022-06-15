@@ -15,12 +15,3 @@
  */
 
 #include "celeste.h"
-
-void led_init_ports(void) {
-  setPinOutput(F5);
-
-}
-void led_set_kb(uint8_t usb_led) {
-    writePinHigh(F5);
-      led_set_user(usb_led);
-}

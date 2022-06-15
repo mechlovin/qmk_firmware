@@ -49,6 +49,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LED_SCROLL_LOCK_PIN B4
 #define LED_PIN_ON_STATE 1
 
+#define BACKLIGHT_PINS { F5 }
 
 /* Bootmagic Lite key configuration */
 //#define BOOTMAGIC_LITE_ROW 0
