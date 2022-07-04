@@ -1,0 +1,38 @@
+{
+    "keyboard_name": "Hex4B",
+    "url": "",
+    "maintainer": "Hex-Keyboard&Mechlovin",
+    "width": 16,
+    "height": 6,
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+                {"label":"K00 (B0,B6)", "x":0, "y":0},
+                {"label":"K01 (B0,B7)", "x":1, "y":0},
+                {"label":"K02 (B0,C0)", "x":2, "y":0},
+                {"label":"K03 (B0,C1)", "x":3, "y":0},
+                {"label":"K04 (B0,C2)", "x":4, "y":0},
+                {"label":"K05 (B0,C4)", "x":5, "y":0},
+                {"label":"K10 (B1,B6)", "x":0, "y":1},
+                {"label":"K11 (B1,B7)", "x":1, "y":1},
+                {"label":"K12 (B1,C0)", "x":2, "y":1},
+                {"label":"K13 (B1,C1)", "x":3, "y":1},
+                {"label":"K14 (B1,C2)", "x":4, "y":1},
+                {"label":"K15 (B1,C3)", "x":5, "y":1},
+                {"label":"K20 (B2,B6)", "x":0, "y":2},
+                {"label":"K21 (B2,B7)", "x":1, "y":2},
+                {"label":"K22 (B2,C0)", "x":2, "y":2},
+                {"label":"K23 (B2,C1)", "x":3, "y":2},
+                {"label":"K24 (B2,C2)", "x":4, "y":2},
+                {"label":"K25 (B2,C3)", "x":5, "y":2},
+                {"label":"K30 (B3,B6)", "x":0, "y":3},
+                {"label":"K31 (B3,B7)", "x":1, "y":3},
+                {"label":"K32 (B3,C0)", "x":2, "y":3},
+                {"label":"K33 (B3,C1)", "x":3, "y":3},
+                {"label":"K34 (B3,C2)", "x":4, "y":3},
+                {"label":"K35 (B3,C3)", "x":5, "y":3}
+            ]
+        }
+    }
+    ,"meta": "https://noroadsleft.github.io/kbf_qmk_converter/"
+}
