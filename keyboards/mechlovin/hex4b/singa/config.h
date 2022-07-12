@@ -40,9 +40,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MATRIX_COL_PINS { B11, B10, B2, B1, B0, A6, A5, A4, A2, C13, B7, B6, B5, B4, B3 }
 #define UNUSED_PINS
 
-/* Bootmagic Lite key configuration, Backspace */
-#define BOOTMAGIC_LITE_ROW 1
-#define BOOTMAGIC_LITE_COLUMN 14
 
 #define RGB_DI_PIN A7
 #define WS2812_SPI SPID1 // default: SPID1

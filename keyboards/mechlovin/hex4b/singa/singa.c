@@ -18,14 +18,14 @@
 
 // RGB LED Indicators
 const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {2, 1, HSV_PURPLE}     // Light 1 LED, starting with LED 0
+    {2, 1, HSV_WHITE}     // Light 1 LED, starting with LED 0
 );
 const rgblight_segment_t PROGMEM my_numlock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 1, HSV_ORANGE}
+    {1, 1, HSV_WHITE}
 );
 
 const rgblight_segment_t PROGMEM my_scroll_lock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 1, HSV_BLUE}
+    {0, 1, HSV_WHITE}
 );
 
 // Now define the array of layers. Later layers take precedence
