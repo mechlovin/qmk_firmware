@@ -10,6 +10,7 @@ BOOTLOADER = stm32duino
 RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = IS31FL3741
 RGBLIGHT_ENABLE = yes
+WS2812_DRIVER = spi
 ENCODER_ENABLE = yes
 CONSOLE_ENABLE = no        # Console for debug
 COMMAND_ENABLE = no        # Commands for debug and configuration
