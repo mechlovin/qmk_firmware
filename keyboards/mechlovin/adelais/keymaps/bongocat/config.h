@@ -20,3 +20,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define OLED_TIMEOUT 600000
 #define OLED_FADEOUT
 #define OLED_FADE_OUT_INTERVAL	15
+
