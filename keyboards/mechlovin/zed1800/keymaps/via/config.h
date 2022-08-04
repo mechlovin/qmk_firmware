@@ -1,0 +1,2 @@
+
+#define FEE_PAGE_COUNT 6
