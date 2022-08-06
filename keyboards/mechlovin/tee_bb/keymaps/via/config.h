@@ -1,4 +1,6 @@
-/* Copyright 2020 Alexander Tulloh
+/* Copyright 2020 Christopher Courtney, aka Drashna Jael're  (@drashna) <drashna@live.com>
+ * Copyright 2019 Sunjun Kim
+ * Copyright 2020 Ploopy Corporation
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,16 +18,4 @@
 
 #pragma once
 
-/*
- * Keyboard Matrix Assignments
- *
- * Change this to how you wired your keyboard
- * COLS: AVR pins used for columns, left to right
- * ROWS: AVR pins used for rows, top to bottom
- * DIODE_DIRECTION: COL2ROW = COL = Anode (+), ROW = Cathode (-, marked on diode)
- *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
- *
- */
-#define MATRIX_ROW_PINS { A0, A1, A2, A3 }
-#define MATRIX_COL_PINS { A4, A5, A6, A7, A8, A9 }
-#define UNUSED_PINS { B7, D4, D5, E6, F0, F1, F4, F5 }
+#define DYNAMIC_KEYMAP_LAYER_COUNT 8

@@ -1,4 +1,7 @@
-/* Copyright 2020 Alexander Tulloh
+/* Copyright 2021 Colin Lam (Ploopy Corporation)
+ * Copyright 2020 Christopher Courtney, aka Drashna Jael're  (@drashna) <drashna@live.com>
+ * Copyright 2019 Sunjun Kim
+ * Copyright 2019 Hiroyuki Okada
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,19 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include QMK_KEYBOARD_H
 
-#pragma once
+// safe range starts at `PLOOPY_SAFE_RANGE` instead.
 
-/*
- * Keyboard Matrix Assignments
- *
- * Change this to how you wired your keyboard
- * COLS: AVR pins used for columns, left to right
- * ROWS: AVR pins used for rows, top to bottom
- * DIODE_DIRECTION: COL2ROW = COL = Anode (+), ROW = Cathode (-, marked on diode)
- *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
- *
- */
-#define MATRIX_ROW_PINS { A0, A1, A2, A3 }
-#define MATRIX_COL_PINS { A4, A5, A6, A7, A8, A9 }
-#define UNUSED_PINS { B7, D4, D5, E6, F0, F1, F4, F5 }
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    [0] = LAYOUT( /* Base */
+        KC_BTN1, KC_BTN3, KC_BTN2,
+          KC_BTN4, KC_BTN5
+    ),
+};

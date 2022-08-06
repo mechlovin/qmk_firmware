@@ -1,21 +1,21 @@
 # MCU name
 MCU = STM32F103
+BOARD = STM32_F103_STM32DUINO
+# Bootloader selection
+BOOTLOADER = stm32duino
+
 
 # Build Options
 #   change yes to no to disable
 #
-BOOTMAGIC_ENABLE = no       # Enable Bootmagic Lite
-MOUSEKEY_ENABLE = no        # Mouse keys
+BOOTMAGIC_ENABLE = yes      # Enable Bootmagic Lite
 EXTRAKEY_ENABLE = yes       # Audio control and System control
-CONSOLE_ENABLE = no         # Console for debug
-COMMAND_ENABLE = no         # Commands for debug and configuration
+CONSOLE_ENABLE = yes         # Console for debug
+COMMAND_ENABLE = no        # Commands for debug and configuration
 NKRO_ENABLE = no            # Enable N-Key Rollover
 BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
 RGBLIGHT_ENABLE = no        # Enable keyboard RGB underglow
 AUDIO_ENABLE = no           # Audio output
-
-SPLIT_KEYBOARD = no
 POINTING_DEVICE_ENABLE = yes
-POINTING_DEVICE_DRIVER = adns9800
-
-DEFAULT_FOLDER = oddball/v1
+POINTING_DEVICE_DRIVER = adns5050
+MOUSEKEY_ENABLE = yes        # Mouse keys

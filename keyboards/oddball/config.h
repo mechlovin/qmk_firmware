@@ -25,10 +25,6 @@
 /* COL2ROW, ROW2COL*/
 #define DIODE_DIRECTION COL2ROW
 
-/* Split Keyboard specific options */
-#define USE_I2C
-#define SPLIT_USB_DETECT
-#define MASTER_RIGHT
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
 #define DEBOUNCE 5

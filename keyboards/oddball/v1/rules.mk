@@ -1,2 +1,2 @@
 # Bootloader selection
-BOOTLOADER = halfkay
+BOOTLOADER = stm32duino
