@@ -26,8 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 /* matrix size */
-#define MATRIX_ROWS 17  // keycode bit: 3-0
-#define MATRIX_COLS 8   // keycode bit: 6-4
+#define MATRIX_ROWS 32  // keycode bit: 7-3
+#define MATRIX_COLS 8   // keycode bit: 2-0
 
 
 /* legacy keymap support */
@@ -36,9 +36,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* key combination for command */
 #define IS_COMMAND() ( \
-    get_mods() == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT) | MOD_BIT(KC_RALT) | MOD_BIT(KC_RCTL)) \
+    keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT)) || \
+    keyboard_report->mods == (MOD_BIT(KC_LALT) | MOD_BIT(KC_RALT)) \
 )
-
 
 /*
  * PS/2 USART configuration for ATMega32U4
@@ -86,9 +86,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifdef PS2_USE_INT
 /* uses INT1 for clock line(ATMega32U4) */
-#define PS2_CLOCK_PIN   D1
-#define PS2_DATA_PIN    D0
-
+#define PS2_CLOCK_PORT  PORTD
+#define PS2_CLOCK_PIN   PIND
+#define PS2_CLOCK_DDR   DDRD
+#define PS2_CLOCK_BIT   1
+#define PS2_DATA_PORT   PORTD
+#define PS2_DATA_PIN    PIND
+#define PS2_DATA_DDR    DDRD
+#define PS2_DATA_BIT    0
 #define PS2_INT_INIT()  do {    \
     EICRA |= ((1<<ISC11) |      \
               (0<<ISC10));      \
@@ -100,6 +105,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     EIMSK &= ~(1<<INT1);        \
 } while (0)
 #define PS2_INT_VECT    INT1_vect
+
 #endif
 
 

@@ -2,80 +2,93 @@
 
 #include "quantum.h"
 
-#define XXX KC_NO
+#include <stdint.h>
+#include <stdbool.h>
+#include "keycode.h"
+#include "action.h"
+#include "report.h"
+#include "print.h"
+#include "debug.h"
+#include "keymap.h"
 
-void matrix_init_user(void);
 
-/*
- * IBM Terminal keyboard 6110345(122keys)/1392595(102keys)
- * http://geekhack.org/showthread.php?10737-What-Can-I-Do-With-a-Terminal-Model-M
- * http://www.seasip.info/VintagePC/ibm_1391406.html
+/*         ,-----------------------------------------------.
+ *         |F13|F14|F15|F16|F17|F18|F19|F20|F21|F22|F23|F24|
+ * ,---.   |-----------------------------------------------|     ,-----------.     ,-----------.
+ * |Esc|   |F1 |F2 |F3 |F4 |F5 |F6 |F7 |F8 |F9 |F10|F11|F12|     |PrS|ScL|Pau|     |VDn|VUp|Mut|
+ * `---'   `-----------------------------------------------'     `-----------'     `-----------'
+ * ,-----------------------------------------------------------. ,-----------. ,---------------.
+ * |  `|  1|  2|  3|  4|  5|  6|  7|  8|  9|  0|  -|  =|JPY|Bsp| |Ins|Hom|PgU| |NmL|  /|  *|  -|
+ * |-----------------------------------------------------------| |-----------| |---------------|
+ * |Tab  |  Q|  W|  E|  R|  T|  Y|  U|  I|  O|  P|  [|  ]|  \  | |Del|End|PgD| |  7|  8|  9|  +|
+ * |-----------------------------------------------------------| `-----------' |---------------|
+ * |CapsL |  A|  S|  D|  F|  G|  H|  J|  K|  L|  ;|  '| ^a|Entr|               |  4|  5|  6|KP,|
+ * |-----------------------------------------------------------|     ,---.     |---------------|
+ * |Shft|  <|  Z|  X|  C|  V|  B|  N|  M|  ,|  .|  /| RO|Shift |     |Up |     |  1|  2|  3|Ent|
+ * |-----------------------------------------------------------| ,-----------. |---------------|
+ * |Ctl|Gui|Alt|MHEN|     Space      |HENK|KANA|Alt|Gui|App|Ctl| |Lef|Dow|Rig| |  #|  0|  .|KP=|
+ * `-----------------------------------------------------------' `-----------' `---------------'
  *
- * Keymap array:
- *     8 bytes
- *   +---------+
- *  0|         |
- *  :|         | 0x00-0x87
- *  ;|         |
- * 17|         |
- *   +---------+
+ * PS/2 scan codes
+ * http://download.microsoft.com/download/1/6/1/161ba512-40e2-4cc9-843a-923143f3456c/translate.pdf
+ *         ,-----------------------------------------------.
+ *         | 08| 10| 18| 20| 28| 30| 38| 40| 48| 50| 57| 5F|
+ * ,---.   |-----------------------------------------------|     ,-----------.     ,-----------.
+ * | 76|   | 05| 06| 04| 0C| 03| 0B| 83| 0A| 01| 09| 78| 07|     | FC| 7E| FE|     | A1| B2| A3|
+ * `---'   `-----------------------------------------------'     `-----------'     `-----------'
+ * ,-----------------------------------------------------------. ,-----------. ,---------------.
+ * | 0E| 16| 1E| 26| 25| 2E| 36| 3D| 3E| 46| 45| 4E| 55| 6A| 66| | F0| EC| FD| | 77| CA| 7C| 7B|
+ * |-----------------------------------------------------------| |-----------| |---------------|
+ * | 0D  | 15| 1D| 24| 2D| 2C| 35| 3C| 43| 44| 4D| 54| 5B|  5D | | F1| E9| FA| | 6C| 75| 7D| 79|
+ * |-----------------------------------------------------------| `-----------' |---------------|
+ * | 58   | 1C| 1B| 23| 2B| 34| 33| 3B| 42| 4B| 4C| 52| ^a| 5A |               | 6B| 73| 74| 6D|
+ * |-----------------------------------------------------------|     ,---.     |---------------|
+ * | 12 | 61| 1A| 22| 21| 2A| 32| 31| 3A| 41| 49| 4A| 51|  59  |     | F5|     | 69| 72| 7A| DA|
+ * |-----------------------------------------------------------| ,-----------. |---------------|
+ * | 14| 9F| 11| 67 |     29         | 64 | 13 | 91| A7| AF| 94| | EB| F2| F4| | 68|70 | 71| 63|
+ * `-----------------------------------------------------------' `-----------' `---------------'
+ * ^a ISO hash key uses identical scancode 5D to US backslash.
+ * 51, 63, 68, 6D: hidden keys in IBM model M
  */
-#define LAYOUT( \
-                    k08, k10, k18, k20, k28, k30, k38, k40, k48, k50, k57, k5F, \
-                    k07, k0F, k17, k1F, k27, k2F, k37, k3F, k47, k4F, k56, k5E, \
-\
-    k05, k06,  k0E, k16, k1E, k26, k25, k2E, k36, k3D, k3E, k46, k45, k4E, k55, k5D, k66,  k67, k6E, k6F,  k76, k77, k7E, k84, \
-    k04, k0C,  k0D, k15, k1D, k24, k2D, k2C, k35, k3C, k43, k44, k4D, k54, k5B,      k5C,  k64, k65, k6D,  k6C, k75, k7D, k7C, \
-    k03, k0B,  k14, k1C, k1B, k23, k2B, k34, k33, k3B, k42, k4B, k4C, k52,      k53, k5A,       k63,       k6B, k73, k74, k7B, \
-    k83, k0A,  k12, k13, k1A, k22, k21, k2A, k32, k31, k3A, k41, k49, k4A,      k51, k59,  k61, k62, k6A,  k69, k72, k7A, k79, \
-    k01, k09,  k11,      k19,                k29,                          k39,      k58,       k60,       k68, k70, k71, k78 \
+/* All keys */
+#define KEYMAP_ALL( \
+    K76,K05,K06,K04,K0C,K03,K0B,K83,K0A,K01,K09,K78,K07,     KFC,K7E,KFE,                   \
+    K0E,K16,K1E,K26,K25,K2E,K36,K3D,K3E,K46,K45,K4E,K55,K66, KF0,KEC,KFD,  K77,KCA,K7C,K7B, \
+    K0D,K15,K1D,K24,K2D,K2C,K35,K3C,K43,K44,K4D,K54,K5B,K5D, KF1,KE9,KFA,  K6C,K75,K7D,     \
+    K58,K1C,K1B,K23,K2B,K34,K33,K3B,K42,K4B,K4C,K52,    K5A,               K6B,K73,K74,K79, \
+    K12,K1A,K22,K21,K2A,K32,K31,K3A,K41,K49,K4A,        K59,     KF5,      K69,K72,K7A,     \
+    K14,K9F,K11,        K29,                K91,KA7,KAF,K94, KEB,KF2,KF4,  K70,    K71,KDA  \
 ) { \
-    { XXX, k01, XXX, k03, k04, k05, k06, k07 }, \
-    { k08, k09, k0A, k0B, k0C, k0D, k0E, k0F }, \
-    { k10, k11, k12, k13, k14, k15, k16, k17 }, \
-    { k18, k19, k1A, k1B, k1C, k1D, k1E, k1F }, \
-    { k20, k21, k22, k23, k24, k25, k26, k27 }, \
-    { k28, k29, k2A, k2B, k2C, k2D, k2E, k2F }, \
-    { k30, k31, k32, k33, k34, k35, k36, k37 }, \
-    { k38, k39, k3A, k3B, k3C, k3D, k3E, k3F }, \
-    { k40, k41, k42, k43, k44, k45, k46, k47 }, \
-    { k48, k49, k4A, k4B, k4C, k4D, k4E, k4F }, \
-    { k50, k51, k52, k53, k54, k55, k56, k57 }, \
-    { k58, k59, k5A, k5B, k5C, k5D, k5E, k5F }, \
-    { k60, k61, k62, k63, k64, k65, k66, k67 }, \
-    { k68, k69, k6A, k6B, k6C, k6D, k6E, k6F }, \
-    { k70, k71, k72, k73, k74, k75, k76, k77 }, \
-    { k78, k79, k7A, k7B, k7C, k7D, k7E, XXX }, \
-    { XXX, XXX, XXX, k83, k84, XXX, XXX, XXX } \
-}
-
-/*
- * IBM Terminal keyboard 1399625, 101-key
- */
-#define LAYOUT_101( \
-    k08,      k07, k0F, k17, k1F, k27, k2F, k37, k3F, k47, k4F, k56, k5E,  k57, k5F, k62, \
-\
-    k0E, k16, k1E, k26, k25, k2E, k36, k3D, k3E, k46, k45, k4E, k55, k66,  k67, k6E, k6F,  k76, k77, k7E, k84, \
-    k0D, k15, k1D, k24, k2D, k2C, k35, k3C, k43, k44, k4D, k54, k5B, k5C,  k64, k65, k6D,  k6C, k75, k7D, \
-    k14, k1C, k1B, k23, k2B, k34, k33, k3B, k42, k4B, k4C, k52,      k5A,                  k6B, k73, k74, k7C, \
-    k12,      k1A, k22, k21, k2A, k32, k31, k3A, k41, k49, k4A,      k59,       k63,       k69, k72, k7A, \
-    k11,      k19,                k29,                     k39,      k58,  k61, k60, k6A,  k70,      k71, k79 \
-) { \
-    { XXX, XXX, XXX, XXX, XXX, XXX, XXX, k07 }, \
-    { k08, XXX, XXX, XXX, XXX, k0D, k0E, k0F }, \
-    { XXX, k11, k12, XXX, k14, k15, k16, k17 }, \
-    { XXX, k19, k1A, k1B, k1C, k1D, k1E, k1F }, \
-    { XXX, k21, k22, k23, k24, k25, k26, k27 }, \
-    { XXX, k29, k2A, k2B, k2C, k2D, k2E, k2F }, \
-    { XXX, k31, k32, k33, k34, k35, k36, k37 }, \
-    { XXX, k39, k3A, k3B, k3C, k3D, k3E, k3F }, \
-    { XXX, k41, k42, k43, k44, k45, k46, k47 }, \
-    { XXX, k49, k4A, k4B, k4C, k4D, k4E, k4F }, \
-    { XXX, XXX, k52, XXX, k54, k55, k56, k57 }, \
-    { k58, k59, k5A, k5B, k5C, XXX, k5E, k5F }, \
-    { k60, k61, k62, k63, k64, k65, k66, k67 }, \
-    { XXX, k69, k6A, k6B, k6C, k6D, k6E, k6F }, \
-    { k70, k71, k72, k73, k74, k75, k76, k77 }, \
-    { XXX, k79, k7A, XXX, k7C, k7D, k7E, XXX }, \
-    { XXX, XXX, XXX, XXX, k84, XXX, XXX, XXX } \
+    { KC_NO,  K01, KC_NO,  K03, K04, K05, K06, K07 }, \
+    { KC_NO,  K09, K0A, K0B, K0C, K0D, K0E, KC_NO    }, \
+    { KC_NO,  K11, K12, KC_NO,  K14, K15, K16, KC_NO    }, \
+    { KC_NO,  KC_NO,  K1A, K1B, K1C, K1D, K1E, KC_NO    }, \
+    { KC_NO,  K21, K22, K23, K24, K25, K26, KC_NO    }, \
+    { KC_NO,  K29, K2A, K2B, K2C, K2D, K2E, KC_NO    }, \
+    { KC_NO,  K31, K32, K33, K34, K35, K36, KC_NO    }, \
+    { KC_NO,  KC_NO,  K3A, K3B, K3C, K3D, K3E, KC_NO    }, \
+    { KC_NO,  K41, K42, K43, K44, K45, K46, KC_NO    }, \
+    { KC_NO,  K49, K4A, K4B, K4C, K4D, K4E, KC_NO    }, \
+    { KC_NO,  KC_NO,  K52, KC_NO,  K54, K55, KC_NO,  KC_NO  }, \
+    { K58, K59, K5A, K5B, KC_NO,  K5D, KC_NO,  KC_NO  }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  K66, KC_NO  }, \
+    { KC_NO,  K69, KC_NO,  K6B, K6C, KC_NO,  KC_NO,  KC_NO    }, \
+    { K70, K71, K72, K73, K74, K75, K76, K77 }, \
+    { K78, K79, K7A, K7B, K7C, K7D, K7E, KC_NO    }, \
+    { KC_NO,  KC_NO,  KC_NO,  K83, KC_NO,  KC_NO,  KC_NO,  KC_NO    }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO    }, \
+    { KC_NO,  K91, KC_NO,  KC_NO,  K94, KC_NO,  KC_NO,  KC_NO    }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  K9F }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KA7 }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KAF }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO  }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO    }, \
+    { KC_NO,  KC_NO,  KCA, KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO    }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO    }, \
+    { KC_NO,  KC_NO,  KDA, KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO    }, \
+    { KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO    }, \
+    { KC_NO,  KE9, KC_NO,  KEB, KEC, KC_NO,  KC_NO,  KC_NO    }, \
+    { KF0, KF1, KF2, KC_NO,  KF4, KF5, KC_NO,  KC_NO    }, \
+    { KC_NO,  KC_NO,  KFA, KC_NO,  KFC, KFD, KFE, KC_NO    }, \
 }

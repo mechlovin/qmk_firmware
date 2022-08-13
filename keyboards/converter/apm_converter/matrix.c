@@ -15,8 +15,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <avr/io.h>
-#include <util/delay.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include "action.h"
@@ -27,7 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "host.h"
 #include "led.h"
 #include "matrix.h"
-#include "report.h"
 
 
 static void matrix_make(uint8_t code);
@@ -79,11 +76,6 @@ void matrix_init(void)
     for (uint8_t i=0; i < MATRIX_ROWS; i++) matrix[i] = 0x00;
 
     return;
-}
-
-void matrix_clear(void)
-{
-    for (uint8_t i=0; i < MATRIX_ROWS; i++) matrix[i] = 0x00;
 }
 
 /*
@@ -428,4 +420,9 @@ static void matrix_break(uint8_t code)
         matrix[ROW(code)] &= ~(1<<COL(code));
         is_modified = true;
     }
+}
+
+void matrix_clear(void)
+{
+    for (uint8_t i=0; i < MATRIX_ROWS; i++) matrix[i] = 0x00;
 }
