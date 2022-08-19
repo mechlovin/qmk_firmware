@@ -145,5 +145,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LED_NUM_LOCK_PIN B4
 #define LED_CAPS_LOCK_PIN B5
 #define LED_SCROLL_LOCK_PIN B8
-
-#define FEE_PAGE_COUNT 3
