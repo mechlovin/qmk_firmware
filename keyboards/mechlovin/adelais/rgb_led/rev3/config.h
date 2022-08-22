@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef  RGBLIGHT_ENABLE
 #define RGB_DI_PIN A7
 #define WS2812_SPI SPID1 // default: SPID1
-#define WS2812_SPI_MOSI_PAL_MODE 5 // Pin "alternate function", see the respective datasheet for the appropriate values for your MCU. default: 5
+#define WS2812_SPI_MOSI_PAL_MODE 2 // Pin "alternate function", see the respective datasheet for the appropriate values for your MCU. default: 5
 #define RGBLED_NUM      23
 #define RGBLIGHT_EFFECT_BREATHING
 #define RGBLIGHT_EFFECT_RAINBOW_MOOD
@@ -108,6 +108,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
 
 #define RGB_MATRIX_DISABLE_KEYCODES
+#define VIA_QMK_RGB_MATRIX_ENABLE
 
 #define I2C1_CLOCK_SPEED 400000
 #define I2C1_DUTY_CYCLE FAST_DUTY_CYCLE_2
