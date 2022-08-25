@@ -60,13 +60,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 #if defined(ENCODER_MAP_ENABLE)
-const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
-    [0] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [1] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [2] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [3] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)}
-};
+    #ifdef KEYBOARD_mechlovin_adelais_rgb_led
+        const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
+            [0] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+            [1] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+            [2] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+            [3] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)}
+        };
+    #elif KEYBOARD_mechlovin_adelais_standard_led
+        const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
+            [0] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU),ENCODER_CCW_CW(KC_VOLD, KC_VOLU),ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+            [1] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU),ENCODER_CCW_CW(KC_VOLD, KC_VOLU),ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+            [2] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU),ENCODER_CCW_CW(KC_VOLD, KC_VOLU),ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+            [3] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU),ENCODER_CCW_CW(KC_VOLD, KC_VOLU),ENCODER_CCW_CW(KC_VOLD, KC_VOLU)}
+        };
+    #endif
 #endif
+
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
