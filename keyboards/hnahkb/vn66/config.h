@@ -46,8 +46,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BACKLIGHT_LEVELS 4
 #define BACKLIGHT_BREATHING
 
-#define ENCODERS_PAD_A { B0 }
-#define ENCODERS_PAD_B { B7 }
+#define ENCODERS_PAD_A { B7 }
+#define ENCODERS_PAD_B { B0 }
 #define ENCODER_RESOLUTION 2
 
 #define RGB_DI_PIN E2

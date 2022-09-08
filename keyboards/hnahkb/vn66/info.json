@@ -4,7 +4,7 @@
     "url": "fb.com/groups/VietNamMechKey/",
     "maintainer": "qmk",
     "usb": {
-        "vid": "0xFEED",
+        "vid": "0x3332",
         "pid": "0xCA2C",
         "device_version": "0.0.1"
     },
