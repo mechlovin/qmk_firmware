@@ -20,12 +20,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "config_common.h"
 
 /* USB Device descriptor parameter */
-#define PRODUCT_ID   0x1801
-#define PRODUCT      Zepsody
+#define PRODUCT_ID   0x1803
+#define PRODUCT      Saber
 
 /* key matrix size */
 #define MATRIX_ROWS 6
-#define MATRIX_COLS 20
+#define MATRIX_COLS 19
 
 /*
  * Keyboard Matrix Assignments
@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #define MATRIX_ROW_PINS { B8, B7, B6, B5, B4, B3}
-#define MATRIX_COL_PINS { A10, A9, A8, A15, B14, B13, B12, B11, B10, B2, B1, B0, A7, A6, A5, A4, A3, A2, A1, A0}
+#define MATRIX_COL_PINS { A8, A15, B14, B13, B12, B11, B10, B2, B1, B0, A7, A6, A5, A4, A3, A2, A1, A0, C13}
 #define UNUSED_PINS
 
 #ifdef RGBLIGHT_ENABLE

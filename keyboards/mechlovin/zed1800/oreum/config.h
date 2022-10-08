@@ -20,6 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "config_common.h"
 
 /* USB Device descriptor parameter */
-#define PRODUCT_ID   0x1801
+#define PRODUCT_ID   0x1802
 #define PRODUCT      Oreum
 #define RGBLIGHT_LAYERS
