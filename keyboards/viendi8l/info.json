@@ -1,8 +1,8 @@
 {
-    "keyboard_name": "8L", 
+    "keyboard_name": "8L",
     "manufacturer": "Viendi",
-    "url": "https://viendi.co/", 
-    "maintainer": "gondolindrim", 
+    "url": "https://viendi.co/",
+    "maintainer": "gondolindrim",
     "usb": {
         "vid": "0x8673",
         "pid": "0x0877",
