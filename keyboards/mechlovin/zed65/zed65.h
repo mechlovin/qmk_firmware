@@ -25,6 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #include "wearhaus66.h"
 #elif KEYBOARD_mechlovin_zed65_no_backlight_cor65
     #include "cor65.h"
+#elif KEYBOARD_mechlovin_zed65_no_backlight_cassini
+    #include "cassini.h"
 #elif KEYBOARD_mechlovin_zed65_mono_led
     #include "mono_led.h"
 #endif
