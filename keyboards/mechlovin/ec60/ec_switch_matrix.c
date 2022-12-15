@@ -174,9 +174,9 @@ bool ecsm_matrix_scan(matrix_row_t current_matrix[]) {
 // Debug print key values
 void ecsm_print_matrix(void) {
     for (int row = 0; row < 5; row++) {
-        for (int col = 0; col < 15; col++) {
+        for (int col = 0; col < 14; col++) {
             uprintf("%4d", ecsm_sw_value[row][col]);
-            if (col < 15) {
+            if (col < 14) {
                 print(",");
             }
         }

@@ -4,8 +4,6 @@ MCU = STM32F103
 # Bootloader selection
 BOOTLOADER = stm32duino
 
-KEYBOARD_SHARED_EP = yes
-
 CUSTOM_MATRIX = lite
 SRC += analog.c matrix.c ec_switch_matrix.c
 
