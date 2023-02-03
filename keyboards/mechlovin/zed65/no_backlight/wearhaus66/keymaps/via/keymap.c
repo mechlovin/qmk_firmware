@@ -60,22 +60,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case LOGO_LED_ON:
         if (record->event.pressed) {
-             writePinHigh(B7);	
+             writePin(B7, 1);	
         } 
         break;
     case LOGO_LED_OFF:
         if (record->event.pressed) {
-             writePinLow(B7);	
+             writePin(B7, 0);	
         } 
         break;
     case UG_LED_ON:
         if (record->event.pressed) {
-             writePinHigh(B4);	
+             writePin(B4, 1);	
         } 
         break;
     case UG_LED_OFF:
         if (record->event.pressed) {
-             writePinLow(B4);	
+             writePin(B4, 0);	
         } 
         break;
   }
