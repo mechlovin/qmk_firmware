@@ -20,4 +20,5 @@ BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
 AUDIO_ENABLE = no           # Audio output
 RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = IS31FL3733
-RGBLIGHT_ENABLE = no
+RGBLIGHT_ENABLE = yes
+WS2812_DRIVER = spi
