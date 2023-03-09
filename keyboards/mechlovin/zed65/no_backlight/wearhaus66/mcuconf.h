@@ -1,4 +1,4 @@
-/* Copyright 2022 QMK
+/* Copyright 2020 QMK
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,11 +16,13 @@
 
 #pragma once
 
-#define HAL_USE_I2C TRUE
+#include_next <mcuconf.h>
 
-#define HAL_USE_SPI TRUE
+#undef STM32_GPT_USE_TIM4
+#define STM32_GPT_USE_TIM4 TRUE
 
-#define HAL_USE_GPT TRUE
+#undef STM32_SPI_USE_SPI1
+#define STM32_SPI_USE_SPI1 TRUE
 
-#include_next <halconf.h>
-
+#undef STM32_I2C_USE_I2C1
+#define STM32_I2C_USE_I2C1 TRUE

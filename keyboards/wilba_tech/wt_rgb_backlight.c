@@ -17,6 +17,7 @@
 #if defined(RGB_BACKLIGHT_ZEAL60) || \
     defined(RGB_BACKLIGHT_ZEAL65) || \
     defined(RGB_BACKLIGHT_M60_A) || \
+    defined(RGB_BACKLIGHT_WEARHAUS_66) || \
     defined(RGB_BACKLIGHT_M6_B) || \
     defined(RGB_BACKLIGHT_M10_C) || \
     defined(RGB_BACKLIGHT_KOYU) || \
@@ -53,7 +54,7 @@
 #include "wt_rgb_backlight_api.h"
 #include "wt_rgb_backlight_keycodes.h"
 
-#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined (RGB_BACKLIGHT_KW_MEGA)
+#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined (RGB_BACKLIGHT_KW_MEGA) && !defined(RGB_BACKLIGHT_WEARHAUS_66)
 #include <avr/interrupt.h>
 #include "i2c_master.h"
 #else
@@ -78,7 +79,7 @@ LED_TYPE g_ws2812_leds[WS2812_LED_TOTAL];
 #error VIA_EEPROM_CUSTOM_CONFIG_SIZE was not defined to store backlight_config struct
 #endif
 
-#if defined(RGB_BACKLIGHT_M6_B)
+#if defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_WEARHAUS_66)
 #include "drivers/led/issi/is31fl3218.h"
 #define BACKLIGHT_LED_COUNT 6
 #elif defined(RGB_BACKLIGHT_HS60)
@@ -833,7 +834,7 @@ const is31_led PROGMEM g_is31_leds[RGB_MATRIX_LED_COUNT] = {
     {0, CS33_SW7, CS32_SW7, CS31_SW7}
 };
 
-#elif defined(RGB_BACKLIGHT_M6_B)
+#elif defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_WEARHAUS_66)
     // Driver has fixed mapping of index to the red, green and blue LEDs
 #elif defined(RGB_BACKLIGHT_M10_C)
 // This is a 7-bit address, that gets left-shifted and bit 0
@@ -1306,7 +1307,7 @@ const Point g_map_led_to_point_polar[BACKLIGHT_LED_COUNT] PROGMEM = {
     //LA62..LB5
     {207,255}, {213,255}, {218,255}, {35,255}, {21,255}, {19,255}, {224,255}, {32,255}
 };
-#elif defined(RGB_BACKLIGHT_M6_B)
+#elif defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_WEARHAUS_66)
 // M6-B is really simple:
 // 0 3 5
 // 1 2 4
@@ -1453,7 +1454,7 @@ void map_led_to_point( uint8_t index, Point *point )
     point->x = pgm_read_byte(addr);
     point->y = pgm_read_byte(addr+1);
 
-#if defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_M10_C) || defined(RGB_BACKLIGHT_HS60) || defined(RGB_BACKLIGHT_NK65) || defined(RGB_BACKLIGHT_PORTICO) || \
+#if defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_WEARHAUS_66) || defined(RGB_BACKLIGHT_M10_C) || defined(RGB_BACKLIGHT_HS60) || defined(RGB_BACKLIGHT_NK65) || defined(RGB_BACKLIGHT_PORTICO) || \
     defined(RGB_BACKLIGHT_PORTICO75) || defined(RGB_BACKLIGHT_NK87) || defined(RGB_BACKLIGHT_NEBULA68) || defined(RGB_BACKLIGHT_NEBULA12) || defined(RGB_BACKLIGHT_KW_MEGA)
     return;
 #endif
@@ -1699,7 +1700,7 @@ const uint8_t g_map_row_column_to_led[MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
     {  7-1,  8-1, 16-1 },
     { 15-1, 14-1, 13-1 }
 };
-#elif defined(RGB_BACKLIGHT_M6_B)
+#elif defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_WEARHAUS_66)
 // M6-B is really simple:
 // 0 3 5
 // 1 2 4
@@ -1770,7 +1771,7 @@ void map_row_column_to_led( uint8_t row, uint8_t column, uint8_t *led )
 
 void backlight_update_pwm_buffers(void)
 {
-#if defined(RGB_BACKLIGHT_M6_B)
+#if defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_WEARHAUS_66)
     IS31FL3218_update_pwm_buffers();
 #elif defined(RGB_BACKLIGHT_PORTICO75)
 	IS31FL3741_update_pwm_buffers( ISSI_ADDR_1, 0 );
@@ -1817,7 +1818,7 @@ void backlight_update_pwm_buffers(void)
 
 void backlight_set_color( int index, uint8_t red, uint8_t green, uint8_t blue )
 {
-#if defined(RGB_BACKLIGHT_M6_B)
+#if defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_WEARHAUS_66)
     IS31FL3218_set_color( index, red, green, blue );
 #elif defined(RGB_BACKLIGHT_HS60) || defined(RGB_BACKLIGHT_NK65) || defined(RGB_BACKLIGHT_NEBULA68) || defined(RGB_BACKLIGHT_KW_MEGA)
     IS31FL3733_set_color( index, red, green, blue );
@@ -1846,7 +1847,7 @@ void backlight_set_color( int index, uint8_t red, uint8_t green, uint8_t blue )
 
 void backlight_set_color_all( uint8_t red, uint8_t green, uint8_t blue )
 {
-#if defined(RGB_BACKLIGHT_M6_B)
+#if defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_WEARHAUS_66)
     IS31FL3218_set_color_all( red, green, blue );
 #elif defined(RGB_BACKLIGHT_HS60) || defined(RGB_BACKLIGHT_NK65) || defined(RGB_BACKLIGHT_NEBULA68) || defined(RGB_BACKLIGHT_KW_MEGA)
     // This is done to avoid indicator LEDs being set
@@ -1892,7 +1893,7 @@ void backlight_set_key_hit(uint8_t row, uint8_t column)
     g_any_key_hit = 0;
 }
 
-#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_KW_MEGA)
+#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_KW_MEGA) && !defined(RGB_BACKLIGHT_WEARHAUS_66)
 // This is (F_CPU/1024) / 20 Hz
 // = 15625 Hz / 20 Hz
 // = 781
@@ -2456,7 +2457,7 @@ __attribute__ ((weak)) void backlight_effect_indicators(void)
     }
 }
 
-#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_KW_MEGA)
+#if !defined(RGB_BACKLIGHT_HS60) && !defined(RGB_BACKLIGHT_NK65) && !defined(RGB_BACKLIGHT_NEBULA68) && !defined(RGB_BACKLIGHT_NEBULA12) && !defined(RGB_BACKLIGHT_NK87) && !defined(RGB_BACKLIGHT_KW_MEGA) && !defined(RGB_BACKLIGHT_WEARHAUS_66)
 ISR(TIMER3_COMPA_vect)
 #else //STM32 interrupt
 static void gpt_backlight_timer_task(GPTDriver *gptp)
@@ -2554,7 +2555,7 @@ static void gpt_backlight_timer_task(GPTDriver *gptp)
 
     if ( ! suspend_backlight )
     {
-#if !defined(RGB_BACKLIGHT_M6_B) && !defined(RGB_BACKLIGHT_M10_C)
+#if !defined(RGB_BACKLIGHT_M6_B) && !defined(RGB_BACKLIGHT_M10_C) && !defined(RGB_BACKLIGHT_WEARHAUS_66)
         backlight_effect_indicators();
 #endif
     }
@@ -2915,7 +2916,7 @@ void backlight_init_drivers(void)
     // Initialize I2C
     i2c_init();
 
-#if defined(RGB_BACKLIGHT_M6_B)
+#if defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_WEARHAUS_66)
     IS31FL3218_init();
 #elif defined(RGB_BACKLIGHT_HS60)
     IS31FL3733_init( ISSI_ADDR_1, 0 );
