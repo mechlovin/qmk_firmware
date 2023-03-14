@@ -74,8 +74,8 @@ void IS31FL3218_init(void) {
 }
 
 void IS31FL3218_set_color(int index, uint8_t red, uint8_t green, uint8_t blue) {
-    g_pwm_buffer[index * 3 + 0]  = red;
-    g_pwm_buffer[index * 3 + 1]  = green;
+    g_pwm_buffer[index * 3 + 1]  = red;
+    g_pwm_buffer[index * 3 + 0]  = green;
     g_pwm_buffer[index * 3 + 2]  = blue;
     g_pwm_buffer_update_required = true;
 }
