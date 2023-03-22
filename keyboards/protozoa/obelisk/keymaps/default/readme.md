@@ -1,1 +1,1 @@
-# The default keymap for octagon
+# The default keymap for obelisk
