@@ -8,6 +8,10 @@
         "pid": "0x9751",
         "device_version": "0.0.1"
     },
+    "matrix_pins": {
+        "rows": ["B0", "B12", "A6", "A5", "A4", "A3"],
+        "cols": ["A10", "A9", "A8", "B15", "B14", "B13", "B2", "B1", "A15", "B3", "B9", "B8", "B7", "B6", "B5", "B4"]
+    },
     "features": {
         "bootmagic": true,
         "command": true,
@@ -20,9 +24,73 @@
         "encoder": true,
         "encoder_map": true
     },
+    "rgblight": {
+        "led_count": 26,
+        "pin": "A7",
+        "hue_steps": 10,
+        "saturation_steps": 17,
+        "brightness_steps": 17,
+        "animations": {
+            "breathing": true,
+            "rainbow_mood": true,
+            "rainbow_swirl": true,
+            "snake": true,
+            "knight": true,
+            "christmas": true,
+            "static_gradient": true,
+            "rgb_test": true,
+            "alterating": true,
+            "twinkle": true
+        }
+    },
+    "rgb_matrix": {
+        "driver": "IS31FL3733",
+        "animations": {
+                "solid_color": true,
+                "alphas_mods": true,
+                "gradient_up_down": true,
+                "gradient_left_right": true,
+                "breathing": true,
+                "band_sat": true,
+                "band_val": true,
+                "band_pinwheel_sat": true,
+                "band_pinwheel_val": true,
+                "band_spiral_sat": true,
+                "band_spiral_val": true,
+                "cycle_all": true,
+                "cycle_left_right": true,
+                "cycle_up_down": true,
+                "cycle_out_in": true,
+                "cycle_out_in_dual": true,
+                "rainbow_moving_chevron": true,
+                "cycle_pinwheel": true,
+                "cycle_spiral": true,
+                "dual_beacon": true,
+                "rainbow_beacon": true,
+                "rainbow_pinwheels": true,
+                "raindrops": true,
+                "jellybean_raindrops": true,
+                "hue_breathing": true,
+                "hue_pendulum": true,
+                "hue_wave": true,
+                "pixel_fractal": true,
+                "pixel_flow": true,
+                "pixel_rain": true,
+                "digital_rain": true
+        },
+        "max_brightness": 255,
+        "hue_steps": 10,
+        "sat_steps": 10,
+        "val_steps": 10,
+        "speed_steps": 15
+    },
     "encoder": {
         "rotary": [
-            {"pin_a": "C14", "pin_b": "C13"}
+                    {
+                "pin_a": "C14", 
+                "pin_b": "C13",
+                "resolution": 2
+            }
         ]
     },
     "indicators": {
