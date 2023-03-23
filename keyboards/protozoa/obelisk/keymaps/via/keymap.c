@@ -15,6 +15,20 @@
  */
 #include QMK_KEYBOARD_H
 
+enum my_keycodes {
+  BL_TOG = QK_KB_0,
+  BL_EFFECT,
+  BL_ISPD,
+  BL_DSPD,
+  BL_IHUE,
+  BL_DHUE,
+  BL_ISAT,
+  BL_DSAT,
+  BL_IVAL,
+  BL_DVAL
+};
+
+
 #define LT1_CAP     LT(1, KC_CAPS)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -54,9 +68,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [0] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [1] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [1] =   {ENCODER_CCW_CW(BL_TOG, BL_EFFECT)},
     [2] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [3] =   {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)}
 };
 
 
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+#ifdef RGB_MATRIX_ENABLE
+            case BL_TOG: // toggle rgb matrix
+                rgb_matrix_toggle();
+                return false;
+            case BL_EFFECT:
+                rgb_matrix_step();
+                return false;
+            case BL_ISPD:
+                rgb_matrix_increase_speed();
+                return false;
+            case BL_DSPD:
+                rgb_matrix_decrease_speed();
+                return false;
+            case BL_IHUE:
+                rgb_matrix_increase_hue();
+                return false;
+            case BL_DHUE:
+                rgb_matrix_decrease_hue();
+                return false;
+            case BL_ISAT:
+                rgb_matrix_increase_sat();
+                return false;
+            case BL_DSAT:
+                rgb_matrix_decrease_sat();
+                return false;
+            case BL_IVAL:
+                rgb_matrix_increase_val();
+                return false;
+            case BL_DVAL:
+                rgb_matrix_decrease_val();
+                return false;
+#endif
+            default:
+                break;
+        }
+    }
+    return true;
+}
