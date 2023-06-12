@@ -1,19 +1,19 @@
-# zed60
+# zed108
 
-![zed60](https://i.imgur.com/KyTpfmMl.png)
+![zed108](https://i.imgur.com/QhwOLAUl.png)
 
-Zed60 PCB, 60% keyboard PCB.
+Zed108 PCB, Fullsize keyboard PCB.
 * Keyboard Maintainer: [Mechlovin'](https://mechlovin.studio)
-* Hardware Supported: Zed60, APM32F103
+* Hardware Supported: Zed108, APM32F103
 * Hardware Availability: [Mechlovin'](https://mechlovin.studio)
 
 Make example for this keyboard (after setting up your build environment):
 
-    make mechlovin/zed60:default
+    make mechlovin/zed108:default
 
 Flashing example for this keyboard:
 
-    make mechlovin/zed60:default:flash
+    make mechlovin/zed108:default:flash
 
 ## Bootloader
 
