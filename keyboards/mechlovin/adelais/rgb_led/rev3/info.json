@@ -1,7 +1,7 @@
 {
     "keyboard_name": "Adelais En Ciel Rev3",
     "usb": {
-        "pid": "0xAEC4"
+        "pid": "0xAEC3"
     },
     "rgb_matrix": {
         "driver": "IS31FL3741"

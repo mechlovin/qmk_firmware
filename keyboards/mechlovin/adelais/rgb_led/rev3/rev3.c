@@ -148,6 +148,9 @@ typedef struct _keyboard_indicators_t {
     indicator_config ind2 ;
     indicator_config ind3 ;
     indicator_config ind4 ;
+    indicator_config ind5 ;
+    indicator_config ind6 ;
+    indicator_config ind7 ;
 } keyboard_indicators ;
 
 int indicator_number = (int)sizeof(keyboard_indicators)/(int)sizeof(indicator_config) ;
@@ -168,37 +171,60 @@ indicator_config* get_indicator_p (int index) {
 void eeconfig_init_kb(void) {
     // Default values: all indicators start at white, 150 (roughly 60%) brightness value. Indicators 1 and 2 are active by default. Indicators 3 and 4 are disabled.
     // INDICATOR 1: CAPS LOCK
-    indicators.ind1.h = 0;
-    indicators.ind1.s = 0;
-    indicators.ind1.v = 255;
+    indicators.ind1.h = 240;
+    indicators.ind1.s = 100;
+    indicators.ind1.v = 50;
     indicators.ind1.func = 0;
     indicators.ind1.index = 32;
     indicators.ind1.enabled = true;
 
     // INDICATOR 2: SCROLL LOCK
-    indicators.ind2.h = 0;
-    indicators.ind2.s = 0;
-    indicators.ind2.v = 0;
+    indicators.ind2.h = 240;
+    indicators.ind2.s = 100;
+    indicators.ind2.v = 50;
     indicators.ind2.func = 2;
-
     indicators.ind2.index = 1;
     indicators.ind2.enabled = true;
 
-    // INDICATOR 3: LAYER 1
-    indicators.ind3.h = 0;
-    indicators.ind3.s = 0;
-    indicators.ind3.v = 255;
+    // INDICATOR 3: NUM LOCK
+    indicators.ind3.h = 240;
+    indicators.ind3.s = 100;
+    indicators.ind3.v = 50;
     indicators.ind3.func = 17;
-    indicators.ind3.index = 3;
+    indicators.ind3.index = 2;
     indicators.ind3.enabled = false;
 
-    // INDICATOR 4: LAYER 2
-    indicators.ind4.h = 0;
-    indicators.ind4.s = 0;
-    indicators.ind4.v = 255;
+    // INDICATOR 4: LAYER 0
+    indicators.ind4.h = 240;
+    indicators.ind4.s = 100;
+    indicators.ind4.v = 50;
     indicators.ind4.func = 5;
-    indicators.ind4.index = 32;
+    indicators.ind4.index = 3;
     indicators.ind4.enabled = false;
+
+    // INDICATOR 5: LAYER 1
+    indicators.ind5.h = 240;
+    indicators.ind5.s = 100;
+    indicators.ind5.v = 50;
+    indicators.ind5.func = 5;
+    indicators.ind5.index = 3;
+    indicators.ind5.enabled = false;
+
+    // INDICATOR 6: LAYER 2
+    indicators.ind6.h = 240;
+    indicators.ind6.s = 100;
+    indicators.ind6.v = 50;
+    indicators.ind6.func = 5;
+    indicators.ind6.index = 3;
+    indicators.ind6.enabled = false;
+
+    // INDICATOR 7: LAYER 3
+    indicators.ind7.h = 240;
+    indicators.ind7.s = 100;
+    indicators.ind7.v = 50;
+    indicators.ind7.func = 5;
+    indicators.ind7.index = 3;
+    indicators.ind7.enabled = false;
 
     // Write default value to EEPROM now
     eeconfig_update_kb_datablock(&indicators);
@@ -298,7 +324,25 @@ enum via_indicator_color {
     id_ind4_brightness = 17,
     id_ind4_color = 18,
     id_ind4_func = 19,
-    id_ind4_index = 20
+    id_ind4_index = 20,
+//
+    id_ind5_enabled = 21,
+    id_ind5_brightness = 22,
+    id_ind5_color = 23,
+    id_ind5_func = 24,
+    id_ind5_index = 25,
+//
+    id_ind6_enabled = 26,
+    id_ind6_brightness = 27,
+    id_ind6_color = 28,
+    id_ind6_func = 29,
+    id_ind6_index = 30,
+//
+    id_ind7_enabled = 31,
+    id_ind7_brightness = 32,
+    id_ind7_color = 33,
+    id_ind7_func = 34,
+    id_ind7_index = 35
 };
 
 #define INDICATOR_PROPERTY_NUMBER 5

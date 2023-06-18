@@ -112,7 +112,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAP_CODE_DELAY 10
 
 // EECONFIG data size: each indicator takes 5 bytes; there are four possible indicators.
-#define EECONFIG_KB_DATA_SIZE (4*6)
+#define EECONFIG_KB_DATA_SIZE (7*6)
 
 #define WEAR_LEVELING_LOGICAL_SIZE 2048
 #define WEAR_LEVELING_BACKING_SIZE 4096	
