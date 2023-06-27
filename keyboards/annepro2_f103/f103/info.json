@@ -1,0 +1,12 @@
+{
+    "keyboard_name": "Anne Pro 2 C18 (QMK)",
+    "usb": {
+        "pid": "0xAC18"
+    },
+    "rgb_matrix": {
+        "driver": "custom"
+    },
+    "processor": "STM32F103",
+    "bootloader": "stm32duino",
+    "community_layouts": ["60_ansi", "60_iso"]
+}
