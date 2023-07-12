@@ -162,7 +162,7 @@ bool ecsm_matrix_scan(matrix_row_t current_matrix[]) {
     writePinHigh(APLEX_EN_PIN_0);
     for (int col = 16; col < (sizeof(col_channels) - 1); col++) {
         for (int row = 0; row < MATRIX_ROWS; row++) {
-            ecsm_sw_value[row][col] = ecsm_readkey_raw(1, row, col);
+            ecsm_sw_value[row][col] = ecsm_readkey_raw(1, row, col - 16);
             updated |= ecsm_update_key(&current_matrix[row], row, col, ecsm_sw_value[row][col]);
         }
     }

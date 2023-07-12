@@ -24,7 +24,7 @@
 #define MATRIX_ROW_PINS \
     { B12, B13, B14, B2, C13, C14 }
 #define MATRIX_COL_CHANNELS \
-    { 7, 6, 5, 4, 3, 2, 1, 14, 13, 12, 11, 10, 9, 8}
+    { 7, 6, 5, 4, 3, 2, 1, 14, 13, 12, 11, 10, 9, 8, 15, 0}
 #define MUX_SEL_PINS \
     { B0, B1, A6, A7 }
 
