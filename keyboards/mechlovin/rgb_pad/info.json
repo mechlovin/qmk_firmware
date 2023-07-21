@@ -1,0 +1,43 @@
+{
+    "keyboard_name": "RGB_Test",
+    "manufacturer": "Mechlovin Studio",
+    "maintainer": "Mechlovin' Studio",
+    "usb": {
+        "vid": "0x4D4C",
+        "pid": "0x0203",
+        "device_version": "0.0.1"
+    },
+    "matrix_pins": {
+        "cols": ["A13", "B4"],
+        "rows": ["B3", "A15", "A14"]
+    },
+    "diode_direction": "COL2ROW",
+    "processor": "STM32F103",
+    "bootloader": "stm32duino",
+    "features": {
+        "bootmagic": true,
+        "command": true,
+        "console": true,
+        "extrakey": true,
+        "mousekey": true,
+        "rgb_matrix": true
+    },
+    "rgb_matrix": {
+        "driver": "IS31FL3741"
+    },
+    "mcu_lcdscrpipt": "STM32F103xB_stm32duino",
+    "layouts": {
+        "LAYOUT_grid_2x3": {
+            "layout": [
+                {"matrix": [0,0], "x": 0, "y": 0},
+                {"matrix": [0,1], "x": 1, "y": 0},
+
+                {"matrix": [1,0], "x": 0, "y": 1},
+                {"matrix": [1,1], "x": 1, "y": 1},
+
+                {"matrix": [2,0], "x": 0, "y": 2},
+                {"matrix": [2,1], "x": 1, "y": 2}
+            ]
+        }
+    }
+}
