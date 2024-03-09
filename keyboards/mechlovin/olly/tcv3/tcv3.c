@@ -19,7 +19,8 @@
 #ifdef RGBLIGHT_ENABLE
 void keyboard_post_init_kb(void) {
   // Call the post init code.
-  rgblight_sethsv_at(255, 255, 255, 0);	
+        rgblight_sethsv_at(255, 255, 255, 0);	
+        led_matrix_set_value(107, 0xFF);
     keyboard_post_init_user();
 }
 #endif
@@ -103,14 +104,14 @@ bool led_matrix_indicators_kb(void) {
     if (!led_matrix_indicators_user()) { return false; }
     if (host_keyboard_led_state().caps_lock) {
         led_matrix_set_value(55, 0xFF);
-        led_matrix_set_value(101, 0xFF);
-    } else {
-        led_matrix_set_value(101, 0x00);
-    }
-    if (host_keyboard_led_state().num_lock) {
         led_matrix_set_value(102, 0xFF);
     } else {
         led_matrix_set_value(102, 0x00);
+    }
+    if (host_keyboard_led_state().num_lock) {
+        led_matrix_set_value(101, 0xFF);
+    } else {
+        led_matrix_set_value(101, 0x00);
     }
     if (host_keyboard_led_state().scroll_lock) {
         led_matrix_set_value(103, 0xFF);
@@ -144,9 +145,9 @@ layer_state_t layer_state_set_kb(layer_state_t state) {
 
   // if on layer 4, turn on L4 LED, otherwise off.
     if (get_highest_layer(state) == 3) {
-        led_matrix_set_value(107, 0xFF);
+        led_matrix_set_value(108, 0xFF);
     } else {
-        led_matrix_set_value(107, 0x00);
+        led_matrix_set_value(108, 0x00);
     }
     return layer_state_set_user(state);
 }
