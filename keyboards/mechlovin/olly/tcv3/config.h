@@ -57,3 +57,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #endif
 
+#define WEAR_LEVELING_BACKING_SIZE 4096
+#define WEAR_LEVELING_LOGICAL_SIZE 2048
