@@ -12,7 +12,6 @@
         "cols": ["A10", "A9", "A8", "B15", "B14", "B13", "B12", "B11", "B10", "B2", "B1", "B0", "A7", "A1", "A0", "C15", "C14", "C13"],
         "rows": ["A15", "A6", "A5", "A4", "A3", "A2"]
     },
-    "mcu_lcdscrpipt": "STM32F103xB_stm32duino",
     "features": {
         "bootmagic": true,
         "command": false,
@@ -51,6 +50,7 @@
     },
     "processor": "STM32F103",
     "bootloader": "stm32duino",
+    "mcu_lcdscrpipt": "STM32F103xB_stm32duino",
     "layouts": {
         "LAYOUT_all": {
             "layout": [

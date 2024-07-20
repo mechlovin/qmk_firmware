@@ -24,3 +24,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIA_EEPROM_CUSTOM_CONFIG_SIZE 16
 #define VIA_EEPROM_LAYOUT_OPTIONS_SIZE 16
 #define DYNAMIC_KEYMAP_MACRO_EEPROM_SIZE 2048
+#define DYNAMIC_KEYMAP_MACRO_COUNT 16
