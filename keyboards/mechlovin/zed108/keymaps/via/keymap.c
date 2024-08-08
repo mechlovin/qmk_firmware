@@ -15,6 +15,12 @@
  */
 #include QMK_KEYBOARD_H
 
+enum my_keycodes {
+  RGB_LED_ON = QK_KB_0,
+  LOGO_LED_OFF,
+  UG_LED_OFF
+};
+
 #define LT1_CAP     LT(1, KC_CAPS)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -50,4 +56,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                      KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS,   KC_TRNS, KC_TRNS,                            KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,             KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case RGB_LED_ON:
+        if (record->event.pressed) {
+            rgblight_enable();
+            rgblight_set_effect_range(0, 31);
+        } 
+        break;
+    case LOGO_LED_OFF:
+        if (record->event.pressed) {
+            rgblight_set_effect_range(0, 28);
+            rgblight_sethsv_range(HSV_BLACK, 28, 31);   
+        } 
+        break;
+    case UG_LED_OFF:
+        if (record->event.pressed) {
+            rgblight_set_effect_range(28, 3);
+            rgblight_sethsv_range(HSV_BLACK, 0, 28);
+        } 
+        break;
+  }
+  return true;
 };

@@ -28,7 +28,7 @@
         "scroll_lock": "C15"
     },
     "rgblight": {
-        "led_count": 29,
+        "led_count": 31,
         "sleep": true,
         "animations": {
             "alternating": true,
