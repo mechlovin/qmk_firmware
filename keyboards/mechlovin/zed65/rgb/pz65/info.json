@@ -5,7 +5,9 @@
         "device_version": "0.0.1"
     },
     "rgblight": {
-        "led_count": 35
+        "led_count": 35,
+        "brightness_steps": 20,
+        "max_brightness": 200
     },
     "community_layouts": ["65_ansi_blocker_tsangan"],
     "layouts": {

@@ -65,6 +65,8 @@
             "solid_splash": true,
             "solid_multisplash": true
         },
+        
+        "max_brightness": 255,
         "default": {
             "animation": "cycle_all"
         },
@@ -84,6 +86,9 @@
             "snake": true,
             "static_gradient": true,
             "twinkle": true
+        },
+        "default": {
+            "animation": "rgb_test"
         }
     },
     "ws2812": {
