@@ -1,5 +1,5 @@
 {
-    "keyboard_name": "TKL2",
+    "keyboard_name": "Cloudline2",
     "manufacturer": "Mechlovin.Studio",
     "url": "",
     "maintainer": "Mechlovin' Studio",
@@ -49,16 +49,15 @@
             "hue_breathing": true,
             "hue_pendulum": true,
             "hue_wave": true,
-            "pixel_fractal": true,
-            "pixel_flow": true,
             "starlight": true,
             "starlight_dual_hue": true,
             "starlight_dual_sat": true,
             "riverflow": true
         },
         "default": {
-            "animation": "cycle_pinwheel"
+            "animation": "cycle_out_in"
         },
+        "max_brightness": 200,
         "led_count": 17,
         "driver": "ws2812",
         "sleep": true
