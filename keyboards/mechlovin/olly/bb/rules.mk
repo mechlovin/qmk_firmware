@@ -1,5 +1,1 @@
-# Processor frequency
-F_CPU = 16000000
-CUSTOM_MATRIX = lite
-
-SRC += matrix.c
+DEFAULT_FOLDER = mechlovin/olly/bb/rev1

@@ -1,0 +1,24 @@
+{
+    "manufacturer": "Mechlovin.Studio",
+    "url": "",
+    "maintainer": "Mechlovin' Studio",
+    "usb": {
+        "vid": "0x4D4C"
+    },
+    "diode_direction": "ROW2COL",
+    "rgblight": {
+        "sleep": true,
+        "animations": {
+            "breathing": true,
+            "rainbow_mood": true,
+            "rainbow_swirl": true,
+            "snake": true,
+            "knight": true,
+            "christmas": true,
+            "static_gradient": true,
+            "rgb_test": true,
+            "alternating": true,
+            "twinkle": true
+        }
+    }
+}

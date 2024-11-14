@@ -1,50 +1,38 @@
 {
-    "keyboard_name": "Olly BB",
-    "manufacturer": "Mechlovin.Studio",
-    "url": "",
-    "maintainer": "Mechlovin' Studio",
-    "usb": {
-        "vid": "0x4D4C",
-        "pid": "0xD181",
-        "device_version": "0.0.1"
-    },
+    "keyboard_name": "Olly BB Rev2",
+    "bootloader": "stm32duino",
     "features": {
         "bootmagic": true,
-        "mousekey": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
-        "backlight": true,
-        "rgblight": true
-    },
-    "backlight": {
-        "pin": "D4",
-        "breathing": true
+        "mousekey": true,
+        "nkro": true,
+        "rgblight": true,
+        "via": true
     },
     "rgblight": {
-        "led_count": 24,
-        "sleep": true,
-        "animations": {
-            "breathing": true,
-            "rainbow_mood": true,
-            "rainbow_swirl": true,
-            "snake": true,
-            "knight": true,
-            "christmas": true,
-            "static_gradient": true,
-            "rgb_test": true,
-            "alternating": true,
-            "twinkle": true
-        }
+        "led_count": 27
     },
     "ws2812": {
-        "pin": "B3"
+        "driver": "spi",
+        "pin": "B5"
     },
     "indicators": {
-        "caps_lock": "B0",
-        "num_lock": "B1",
-        "scroll_lock": "B2"
+        "caps_lock": "B11",
+        "num_lock": "B10",
+        "scroll_lock": "B0"
     },
-    "processor": "atmega32a",
-    "bootloader": "usbasploader",
+    "matrix_pins": {
+        "cols": ["A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "A8", "A15", "B3", "B4", "C15", "C14", "C13", "B9", "B8", "B7", "B6"],
+        "rows": ["B1", "B2", "B15", "B14", "B13"]
+    },
+    "processor": "STM32F103",
+    "url": "https://mechlovin.studio/",
+    "usb": {
+        "device_version": "2.0.0",
+        "pid": "0xD183"
+    },
     "layouts": {
         "LAYOUT_all": {
             "layout": [
@@ -84,7 +72,7 @@
                 {"matrix": [1, 10], "x": 10.5, "y": 1},
                 {"matrix": [1, 11], "x": 11.5, "y": 1},
                 {"matrix": [1, 12], "x": 12.5, "y": 1},
-                {"matrix": [2, 14], "x": 13.5, "y": 1, "w": 1.5},
+                {"matrix": [2, 12], "x": 13.5, "y": 1, "w": 1.5},
 
                 {"matrix": [1, 14], "x": 15.25, "y": 1},
 
@@ -105,8 +93,7 @@
                 {"matrix": [2, 9], "x": 9.75, "y": 2},
                 {"matrix": [2, 10], "x": 10.75, "y": 2},
                 {"matrix": [2, 11], "x": 11.75, "y": 2},
-                {"matrix": [2, 12], "x": 12.75, "y": 2},
-                {"matrix": [2, 13], "x": 13.75, "y": 2, "w": 1.25},
+                {"matrix": [2, 13], "x": 12.75, "y": 2, "w": 2.25},
 
                 {"matrix": [2, 15], "x": 16.5, "y": 2},
                 {"matrix": [2, 16], "x": 17.5, "y": 2},
@@ -190,7 +177,7 @@
                 {"matrix": [1, 10], "x": 10.5, "y": 1},
                 {"matrix": [1, 11], "x": 11.5, "y": 1},
                 {"matrix": [1, 12], "x": 12.5, "y": 1},
-                {"matrix": [2, 14], "x": 13.5, "y": 1, "w": 1.5},
+                {"matrix": [2, 12], "x": 13.5, "y": 1, "w": 1.5},
 
                 {"matrix": [1, 14], "x": 15.25, "y": 1},
 
@@ -360,6 +347,7 @@
                 {"matrix": [4, 17], "x": 18.5, "y": 4},
                 {"matrix": [4, 18], "x": 19.5, "y": 4}
             ]
-        }
+        },
+        
     }
 }
