@@ -17,6 +17,8 @@
 
 void board_init(void) {
     AFIO->MAPR |= AFIO_MAPR_SPI1_REMAP;
+   //JTAG-DP Disabled and SW-DP Enabled    
+   AFIO->MAPR = (AFIO->MAPR & ~AFIO_MAPR_SWJ_CFG_Msk) | AFIO_MAPR_SWJ_CFG_DISABLE;
 }
 
 void led_init_ports(void) {
@@ -52,17 +54,17 @@ layer_state_t layer_state_set_user(layer_state_t state)
     }
 
   // if on layer 3, turn on A10 LED, otherwise off.
-    if (get_highest_layer(state) == 2   ) {
-        gpio_write_pin_high(A10);
-    } else {
-        gpio_write_pin_low(A10);
-    }
-
-  // if on layer 3, turn on A9 LED, otherwise off.
-    if (get_highest_layer(state) == 2   ) {
+    if (get_highest_layer(state) == 3   ) {
         gpio_write_pin_high(A9);
     } else {
         gpio_write_pin_low(A9);
+    }
+
+  // if on layer 3, turn on A9 LED, otherwise off.
+    if (get_highest_layer(state) == 4   ) {
+        gpio_write_pin_high(A10);
+    } else {
+        gpio_write_pin_low(A10);
     }
 
     return state;
