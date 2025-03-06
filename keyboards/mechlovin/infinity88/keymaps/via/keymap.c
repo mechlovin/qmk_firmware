@@ -14,6 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "rev3.h"
+
+enum custom_keycodes {
+    RGBLOGO_TG = QK_KB_0,  // Keycode để bật/tắt đèn logo
+    RGBUG_TG,                 // Keycode để bật/tắt đèn UG
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_all(
@@ -50,3 +56,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+            case RGBLOGO_TG:
+                g_custom_rgblight_config.logo_enabled = !g_custom_rgblight_config.logo_enabled;
+                update_rgblight();
+                return false;  // Ngăn chặn xử lý mặc định
+
+            case RGBUG_TG:
+                g_custom_rgblight_config.ug_enabled = !g_custom_rgblight_config.ug_enabled;
+                update_rgblight();
+                return false;
+        }
+    }
+    return true;
+}

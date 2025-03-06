@@ -4,31 +4,32 @@
 
 // Định nghĩa các giá trị
 enum via_rgblight_value {
-    id_rgblight_logo_toggle = 1, // Value ID cho bật/tắt rgblight_logo
-    id_rgblight_ug_toggle   = 2, // Value ID cho bật/tắt rgblight_ug
+    id_rgblight_logo_toggle = 1,
+    id_rgblight_ug_toggle   = 2,
 };
 
 // Cấu trúc lưu trữ trạng thái
 typedef struct {
-    bool logo_enabled; // Trạng thái bật/tắt rgblight_logo
-    bool ug_enabled;   // Trạng thái bật/tắt rgblight_ug
+    bool logo_enabled;
+    bool ug_enabled;
 } custom_rgblight_config_t;
 
 custom_rgblight_config_t g_custom_rgblight_config = {
-    .logo_enabled = false,
-    .ug_enabled = false,
+    .logo_enabled = true,
+    .ug_enabled = true,
 };
 
 // Prototype các hàm
 void rgblight_config_set_value(uint8_t *data);
 void rgblight_config_get_value(uint8_t *data);
 void rgblight_config_save(void);
+void rgblight_config_load(void);
 void update_rgblight(void);
 
 // Hàm xử lý command từ VIA
 void via_custom_value_command_kb(uint8_t *data, uint8_t length) {
-    uint8_t *command_id        = &(data[0]);
-    uint8_t *channel_id        = &(data[1]);
+    uint8_t *command_id = &(data[0]);
+    uint8_t *channel_id = &(data[1]);
     uint8_t *value_id_and_data = &(data[2]);
 
     if (*channel_id == id_custom_channel) {
@@ -83,31 +84,34 @@ void rgblight_config_get_value(uint8_t *data) {
 }
 
 // Hàm lưu giá trị vào EEPROM
-#define CUSTOM_RGBLIGHT_CONFIG_EEPROM_ADDR 0x2000
 void rgblight_config_save(void) {
-    eeprom_update_block(&g_custom_rgblight_config, (void*)CUSTOM_RGBLIGHT_CONFIG_EEPROM_ADDR, sizeof(custom_rgblight_config_t));
+    uint32_t data = (g_custom_rgblight_config.logo_enabled ? 1 : 0) |
+                    ((g_custom_rgblight_config.ug_enabled ? 1 : 0) << 1);
+    eeconfig_update_user(data);
+}
+
+// Hàm tải giá trị từ EEPROM
+void rgblight_config_load(void) {
+    uint32_t data = eeconfig_read_user();
+    g_custom_rgblight_config.logo_enabled = data & 0x01;
+    g_custom_rgblight_config.ug_enabled = (data >> 1) & 0x01;
 }
 
 // Hàm cập nhật trạng thái LED
 void update_rgblight(void) {
     if (g_custom_rgblight_config.logo_enabled && g_custom_rgblight_config.ug_enabled) {
-        // Nếu cả hai đang bật, logo sáng cùng hiệu ứng với UG
         rgblight_enable();
         rgblight_set_effect_range(0, 30);
     } else if (!g_custom_rgblight_config.logo_enabled && !g_custom_rgblight_config.ug_enabled) {
-        // Nếu cả hai đều tắt, tắt toàn bộ LED
         rgblight_disable();
     } else {
-        // Nếu chỉ bật logo
         if (g_custom_rgblight_config.logo_enabled) {
             rgblight_enable();
-            rgblight_set_effect_range(24, 5);
+            rgblight_set_effect_range(24, 6);
         } else {
             rgblight_enable();
             rgblight_sethsv_range(0, 0, 0, 24, 30);
         }
-
-        // Nếu chỉ bật UG
         if (g_custom_rgblight_config.ug_enabled) {
             rgblight_enable();
             rgblight_set_effect_range(0, 24);
@@ -116,5 +120,13 @@ void update_rgblight(void) {
             rgblight_sethsv_range(0, 0, 0, 0, 24);
         }
     }
-    
+}
+
+// Hàm khởi tạo bàn phím
+void keyboard_post_init_kb(void) {
+    if (!eeconfig_is_enabled()) {
+        eeconfig_init();
+    }
+    rgblight_config_load();
+    update_rgblight();
 }
