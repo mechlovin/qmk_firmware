@@ -1,4 +1,4 @@
-/* Copyright 2020 Team Mechlovin'
+/* Copyright 2022 QMK
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,13 +14,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "latrice.h"
+ #include "hd44780.h"
+#include <util/delay.h>  // Thư viện delay
 
-void matrix_init_kb(void) {
-    // put your keyboard start-up code here
-    // runs once when the firmware starts up
+void keyboard_post_init_kb(void) {
+    #ifdef keyboard_post_init_user
+        keyboard_post_init_user();
+    #endif
 
-    matrix_init_user();
-    lcd_clrscr();
-//    lcd_init(LCD_DISP_ON_CURSOR_BLINK);
+    // Khởi tạo màn hình LCD (tắt con trỏ, không nhấp nháy)
+    hd44780_init(false, false);
+    hd44780_clear();
+    hd44780_set_cursor(0, 0);  // Đặt con trỏ về đầu
+
+    // Chờ 2 giây trước khi hiển thị chữ
+    _delay_ms(2000);
+
+    // Hiển thị chữ "Hello"
+    char text[] = "Hello";
+    for (int i = 0; i < 5; i++) {
+        hd44780_write(text[i], true);  // Thêm `true` để gửi dữ liệu ký tự
+    }
 }

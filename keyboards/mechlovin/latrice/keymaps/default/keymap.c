@@ -1,4 +1,4 @@
-/* Copyright 2020 Team Mechlovin'
+/* Copyright 2022 Mechlovin'
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,15 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "hd44780.h"
+
+enum custom_keycodes {
+    CUST_PLUS = SAFE_RANGE,
+    CUST_MINUS,
+    CUST_MULTIPLY,
+    CUST_DIVIDE
+};
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [0] = LAYOUT_ortho_6x4(
-        KC_ESC,  BL_STEP, RGB_TOG, RGB_MOD,
-        KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS,
-        KC_P7,   KC_P8,   KC_P9,   KC_PPLS,
-        KC_P4,   KC_P5,   KC_P6,   KC_PEQL,
-        KC_P1,   KC_P2,   KC_P3,   KC_PENT,
-        KC_P0,   KC_P0,   KC_PDOT, KC_BSPC
-    ),
-
+    [0] = LAYOUT(
+        KC_NUM, KC_PSLS, KC_PAST, KC_PSLS,
+        KC_P7, KC_P8, KC_P9, KC_PSLS,  
+        KC_P4, KC_P5, KC_P6, KC_PAST,  
+        KC_P1, KC_P2, KC_P3, KC_PMNS,  
+        KC_P0, KC_PDOT, KC_PENT, KC_PPLS  
+    )
 };
+
