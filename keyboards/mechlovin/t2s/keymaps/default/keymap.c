@@ -15,35 +15,10 @@
  */
 #include QMK_KEYBOARD_H
 
-enum custom_keycodes {
-    PWM_UP = SAFE_RANGE,
-    PWM_DOWN,
-};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_all(
-        KC_3,  PWM_UP,    PWM_DOWN,    KC_3
+        TG(1),  BL_UP,    BL_DOWN,    TG(2)
     ),
 
 };
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    static uint8_t pwm_duty = 128;  // Giá trị ban đầu (0 - 255)
-
-    if (record->event.pressed) {
-        switch (keycode) {
-            case PWM_UP:
-                if (pwm_duty < 255) pwm_duty += 25;
-                OCR3A = pwm_duty;
-                uprintf("PWM tăng: %d\n", pwm_duty);
-                return false;
-
-            case PWM_DOWN:
-                if (pwm_duty > 0) pwm_duty -= 25;
-                OCR3A = pwm_duty;
-                uprintf("PWM giảm: %d\n", pwm_duty);
-                return false;
-        }
-    }
-    return true;
-}

@@ -20,8 +20,8 @@
         "via": true
     },
     "matrix_pins": {
-        "cols": ["B5", "B4", "E6", "D7"],
-        "rows": ["D4"]
+        "cols": ["F5", "F7", "B3", "B5"],
+        "rows": ["B6"]
     },
     "diode_direction": "COL2ROW",
     "backlight": {
