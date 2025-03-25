@@ -1,0 +1,14 @@
+{
+    "matrix_pins": {
+        "cols": ["B13", "B15", "A9", "A11"],
+        "rows": ["B12"]
+    },
+    "backlight": {
+        "pin": "B9"
+    },
+    "ws2812": {
+        "pin": "A7"
+    },
+    "processor": "stm32f103",
+    "bootloader": "stm32duino"
+}

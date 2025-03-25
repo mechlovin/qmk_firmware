@@ -1,0 +1,14 @@
+{
+    "matrix_pins": {
+        "cols": ["F5", "F7", "B3", "B5"],
+        "rows": ["B6"]
+    },
+    "backlight": {
+        "pin": "C6"
+    },
+    "ws2812": {
+        "pin": "E2"
+    },
+    "processor": "atmega32u4",
+    "bootloader": "atmel-dfu"
+}

@@ -19,13 +19,8 @@
         "backlight":true,
         "via": true
     },
-    "matrix_pins": {
-        "cols": ["F5", "F7", "B3", "B5"],
-        "rows": ["B6"]
-    },
     "diode_direction": "COL2ROW",
     "backlight": {
-        "pin": "C6",
         "breathing": true
     },
     "rgblight": {
@@ -46,11 +41,6 @@
             "twinkle": true
         }
     },
-    "ws2812": {
-        "pin": "E2"
-    },
-    "processor": "atmega32u4",
-    "bootloader": "atmel-dfu",
     "layouts": {
         "LAYOUT_all": {
             "layout": [
