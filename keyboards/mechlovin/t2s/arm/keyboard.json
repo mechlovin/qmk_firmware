@@ -4,11 +4,13 @@
         "rows": ["B12"]
     },
     "backlight": {
-        "pin": "B9"
+      "pin": "B9",
+      "levels": 5,
+      "breathing": true
     },
     "ws2812": {
         "pin": "A7"
     },
-    "processor": "stm32f103",
+    "processor": "STM32F103",
     "bootloader": "stm32duino"
 }

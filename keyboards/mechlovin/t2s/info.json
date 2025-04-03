@@ -5,7 +5,7 @@
     "maintainer": "Mechlovin' Studio",
     "usb": {
         "vid": "0x4D4C",
-        "pid": "0x0601",
+        "pid": "0x0002",
         "device_version": "0.0.1"
     },
     "features": {
