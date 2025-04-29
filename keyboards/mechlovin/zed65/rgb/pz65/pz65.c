@@ -126,4 +126,23 @@ led_config_t g_led_config = { {
     }
 };
 
+bool rgb_matrix_indicators_kb(void) {
+    if (!rgb_matrix_indicators_user()) {
+        return false;
+    }
+    if (host_keyboard_led_state().caps_lock) {
+        rgb_matrix_set_color(30, 255, 255, 255);
+    }
+    return true;
+}
+
+
+#endif
+
+#ifdef RGBLIGHT_ENABLE
+void keyboard_post_init_kb(void) {
+  // Call the post init code.
+  rgblight_sethsv_at(255, 255, 255, 35);	
+    keyboard_post_init_user();
+}
 #endif

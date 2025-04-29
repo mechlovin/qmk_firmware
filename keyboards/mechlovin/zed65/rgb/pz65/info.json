@@ -5,7 +5,7 @@
         "device_version": "0.0.1"
     },
     "rgblight": {
-        "led_count": 35,
+        "led_count": 36,
         "brightness_steps": 20,
         "max_brightness": 200
     },
