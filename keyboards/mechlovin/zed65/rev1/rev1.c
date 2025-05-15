@@ -99,5 +99,6 @@ void update_rgblight(void) {
 
 void keyboard_post_init_user(void) {
     rgblight_config_load();
+    wait_ms(10); 
     update_rgblight();
 }
