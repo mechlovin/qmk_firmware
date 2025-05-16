@@ -98,6 +98,13 @@ void update_rgblight(void) {
 }
 
 void keyboard_post_init_user(void) {
+    if (!rgblight_is_enabled()) {
+        g_custom_rgblight_config.logo_enabled = 0;
+        g_custom_rgblight_config.ug_enabled   = 0;
+        rgblight_config_save();
+        rgblight_disable_noeeprom();
+        return;
+    }
     rgblight_config_load();
     wait_ms(10); 
     update_rgblight();
