@@ -18,11 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #ifdef RGBLIGHT_ENABLE
-#define WS2812_SPI_DRIVER SPID1 // default: SPID1
-#define WS2812_SPI_MOSI_PAL_MODE 6 // MOSI pin "alternate function", see the respective datasheet for the appropriate values for your MCU. default: 5
-#define WS2812_SPI_USE_CIRCULAR_BUFFER
+#define BLOCKER_LED_COUNT 5
+#define UG_LED_COUNT 28
 #endif
-
-#define RGFL_ENABLE
-#define RGFL_FADE_IN_STEP    1    // default 1
-#define RGFL_FADE_INTERVAL   4    // default 8 (ms)

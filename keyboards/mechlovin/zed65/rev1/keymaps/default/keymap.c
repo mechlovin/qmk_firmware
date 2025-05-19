@@ -16,6 +16,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include QMK_KEYBOARD_H
+#include "rev1.h"
+#include "quantum.h"
+#include "rgblight_fade.h"
+
+enum custom_keycodes {
+    RGB_TOGGLE_LOGO = QK_KB_0,
+    RGB_TOGGLE_UG,
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_65_ansi_split_bs(
@@ -26,3 +34,52 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL, KC_LGUI, KC_LALT,                            KC_SPC,                             KC_RALT, KC_RGUI, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
     )
 };
+
+void keyboard_post_init_user(void) {
+    rgb_fade_init();
+}
+
+void matrix_scan_user(void) {
+    rgb_fade_loop();
+}
+
+void toggle_logo_led(void) {
+    g_custom_rgblight_config.logo_enabled = !g_custom_rgblight_config.logo_enabled;
+    rgblight_config_save();
+    update_rgblight();
+}
+
+void toggle_ug_led(void) {
+    g_custom_rgblight_config.ug_enabled = !g_custom_rgblight_config.ug_enabled;
+    rgblight_config_save();
+    update_rgblight();
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!record->event.pressed) return true;
+    switch (keycode) {
+        case RGB_TOGGLE_LOGO:
+            toggle_logo_led();
+            return false;
+        case RGB_TOGGLE_UG:
+            toggle_ug_led();
+            return false;
+        case RGB_TOG:
+            if (!rgblight_is_enabled()) {
+                rgb_fade_start(rgblight_get_val());
+            } else {
+                rgblight_disable();
+            }
+            return false;
+        case RGB_MOD:
+            rgblight_step();
+            rgb_fade_start(rgblight_get_val());
+            return false;
+        case RGB_RMOD:
+            rgblight_step_reverse();
+            rgb_fade_start(rgblight_get_val());
+            return false;
+        default:
+            return true;
+    }
+}

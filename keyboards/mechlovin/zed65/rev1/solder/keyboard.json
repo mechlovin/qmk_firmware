@@ -1,0 +1,6 @@
+{
+    "rgblight": {        
+        "led_count": 29,
+        "max_brightness": 150
+    }
+}
