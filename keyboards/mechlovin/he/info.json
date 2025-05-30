@@ -2,8 +2,8 @@
   "manufacturer": "Mechlovin",
   "keyboard_name": "Zed60-HE",
   "maintainer": "Mechlovin",
-  "processor": "STM32F103",
-  "bootloader": "stm32duino",
+  "processor": "STM32G431",
+    "bootloader": "stm32-dfu",
   "features": {
     "bootmagic": false,
     "mousekey": false,
