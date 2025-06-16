@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Mechlovin'
+Copyright 2022 Mechlovin'
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,18 +16,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-
-#ifdef RGB_MATRIX_ENABLE
-#    define IS31FL3741_I2C_ADDRESS_1 IS31FL3741_I2C_ADDRESS_SDA
-#    define RGB_MATRIX_DISABLE_KEYCODES
-#    define I2C1_SCL_PIN      A15
-#    define I2C1_SDA_PIN      B7
-#    define I2C1_CLOCK_SPEED  400000
-#    define I2C1_DUTY_CYCLE FAST_DUTY_CYCLE_2
-#endif
-
-#define HALL_SENSOR_COM_PIN A4
-#define MUX_SEL0_PIN B11
-#define MUX_SEL1_PIN B12
-#define MUX_SEL2_PIN B13
-#define MUX_SEL3_PIN B14

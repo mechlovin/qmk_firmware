@@ -1,4 +1,4 @@
 {
-    "processor": "STM32F103",
-    "bootloader": "stm32duino"
+    "processor": "STM32F401",
+    "bootloader": "stm32-dfu"
 }
