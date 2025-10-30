@@ -31,5 +31,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Giảm/loại bỏ vùng macro của VIA (mặc định 16 macro).
 #define DYNAMIC_KEYMAP_MACRO_COUNT 0
 
-// Nếu có layout options của VIA, giảm về 0 byte.
-#define VIA_EEPROM_LAYOUT_OPTIONS_SIZE 0
+
+#define NO_USB_STARTUP_CHECK
