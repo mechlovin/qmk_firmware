@@ -18,6 +18,9 @@
     "layout_aliases": {
         "LAYOUT_all": "LAYOUT_alice_split_bs"
     },
+    "rgblight": {
+        "led_count": 23
+    },
     "layouts": {
         "LAYOUT_alice": {
             "layout": [

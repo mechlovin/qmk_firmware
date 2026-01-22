@@ -1,7 +1,16 @@
 {
     "usb": {
-        "pid": "0xAD02"
+        "pid": "0xAD05"
     },
+    "encoder": {
+        "rotary": [
+            {"pin_a": "A6", "pin_b": "A5"},
+            {"pin_a": "A4", "pin_b": "A3"},
+            {"pin_a": "B7", "pin_b": "B6"}
+        ]
+    },
+    "processor": "STM32F103",
+    "bootloader": "stm32duino",
     "features": {
         "bootmagic": true,
         "mousekey": true,
@@ -11,24 +20,12 @@
         "nkro": true,
         "backlight": true,
         "rgblight": true,
-        "encoder": true
-    },
-    "encoder": {
-        "rotary": [
-            {"pin_a": "A6", "pin_b": "A5"},
-            {"pin_a": "A4", "pin_b": "A3"},
-            {"pin_a": "B7", "pin_b": "B6"}
-        ]
-    },
-    "qmk": {
-        "tap_keycode_delay": 10
+        "encoder": true,
+        "via": true
     },
     "rgblight": {
-        "led_count": 23
+        "led_count": 25
     },
-    "processor": "STM32F303",
-    "board": "QMK_PROTON_C",
-    "bootloader": "stm32-dfu",
     "layout_aliases": {
         "LAYOUT_all": "LAYOUT_alice_split_bs"
     },

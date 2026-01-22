@@ -9,6 +9,9 @@
             {"pin_a": "B7", "pin_b": "B6"}
         ]
     },
+    "rgblight": {
+        "led_count": 23
+    },
     "qmk": {
         "tap_keycode_delay": 10
     },

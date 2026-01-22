@@ -10,6 +10,7 @@
         "nkro": true,
         "backlight": true,
         "rgblight": true,
-        "encoder": true
+        "encoder": true,
+        "via": true
     }
 }
