@@ -1,4 +1,4 @@
-/* Copyright 2024 Mechlovin'
+/* Copyright 2026 Mechlovin' Studio
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
  */
 
 #include "quantum.h"
+#include "rev1.h"
+#include "rgblight.h"
 
 void board_init(void) {
     AFIO->MAPR |= AFIO_MAPR_I2C1_REMAP;
@@ -135,4 +137,99 @@ bool rgb_matrix_indicators_kb(void) {
     return true;
 }
 
+#endif
+
+#ifdef RGBLIGHT_ENABLE
+
+// Process commands from VIA
+void via_custom_value_command_kb(uint8_t *data, uint8_t length) {
+    if (data[1] == id_custom_channel) {
+        switch (data[0]) {
+            case id_custom_set_value:
+                rgblight_config_set_value(&data[2]);
+                break;
+            case id_custom_get_value:
+                rgblight_config_get_value(&data[2]);
+                break;
+            case id_custom_save:
+                rgblight_config_save();
+                break;
+            default:
+                data[0] = id_unhandled;
+        }
+        return;
+    }
+    data[0] = id_unhandled;
+}
+
+// Set values
+void rgblight_config_set_value(uint8_t *data) {
+    switch (data[0]) {
+        case id_rgblight_logo_toggle:
+            g_custom_rgblight_config.logo_enabled = data[1];
+            break;
+        case id_rgblight_ug_toggle:
+            g_custom_rgblight_config.ug_enabled = data[1];
+            break;
+    }
+    rgblight_config_save();
+    update_rgblight();
+}
+
+// Get values
+void rgblight_config_get_value(uint8_t *data) {
+    data[1] = (data[0] == id_rgblight_logo_toggle) ? g_custom_rgblight_config.logo_enabled : g_custom_rgblight_config.ug_enabled;
+}
+
+// Save values to EEPROM
+void rgblight_config_save(void) {
+    eeconfig_update_user((uint32_t)g_custom_rgblight_config.logo_enabled | ((uint32_t)g_custom_rgblight_config.ug_enabled << 1));
+}
+
+// Load state from EEPROM
+void rgblight_config_load(void) {
+    uint32_t eeprom_data = eeconfig_read_user();
+    g_custom_rgblight_config.logo_enabled = eeprom_data & 0x1;
+    g_custom_rgblight_config.ug_enabled = (eeprom_data >> 1) & 0x1;
+}
+
+// Update UG LED and Logo LED
+void update_rgblight(void) {
+    if (g_custom_rgblight_config.logo_enabled || g_custom_rgblight_config.ug_enabled) {
+        rgblight_enable_noeeprom(); // Không lưu vào EEPROM khi chỉ cập nhật trạng thái
+        
+        if (g_custom_rgblight_config.logo_enabled && g_custom_rgblight_config.ug_enabled) {
+            rgblight_set_effect_range(0, RGBLIGHT_LED_COUNT);
+        } else {
+            if (g_custom_rgblight_config.logo_enabled) {
+                rgblight_set_effect_range(UG_LED_COUNT, BLOCKER_LED_COUNT);
+            } else {
+                rgblight_sethsv_range(0, 0, 0, UG_LED_COUNT, RGBLIGHT_LED_COUNT);
+            }
+            if (g_custom_rgblight_config.ug_enabled) {
+                rgblight_set_effect_range(0, UG_LED_COUNT);
+            } else {
+                rgblight_sethsv_range(0, 0, 0, 0, UG_LED_COUNT);
+            }
+        }
+        
+        // Force effect update to ensure static mode respond
+        rgblight_mode_noeeprom(rgblight_get_mode());
+    } else {
+        rgblight_disable_noeeprom();
+    }
+}
+
+void keyboard_post_init_user(void) {
+    if (!rgblight_is_enabled()) {
+        g_custom_rgblight_config.logo_enabled = 0;
+        g_custom_rgblight_config.ug_enabled   = 0;
+        rgblight_config_save();
+        rgblight_disable_noeeprom();
+        return;
+    }
+    rgblight_config_load();
+    wait_ms(10); 
+    update_rgblight();
+}
 #endif
