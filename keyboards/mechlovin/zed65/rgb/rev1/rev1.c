@@ -22,7 +22,6 @@ void board_init(void) {
     AFIO->MAPR |= AFIO_MAPR_I2C1_REMAP;
 }
 
-#ifdef RGB_MATRIX_ENABLE
 const is31_led PROGMEM g_is31_leds[RGB_MATRIX_LED_COUNT] = {
 /* Refer to IS31 manual for these locations
  *   driver
@@ -137,10 +136,6 @@ bool rgb_matrix_indicators_kb(void) {
     return true;
 }
 
-#endif
-
-#ifdef RGBLIGHT_ENABLE
-
 // Process commands from VIA
 void via_custom_value_command_kb(uint8_t *data, uint8_t length) {
     if (data[1] == id_custom_channel) {
@@ -231,5 +226,5 @@ void keyboard_post_init_user(void) {
     rgblight_config_load();
     wait_ms(10); 
     update_rgblight();
+    
 }
-#endif
