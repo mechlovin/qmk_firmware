@@ -15,7 +15,7 @@
  */
 
  
-#include "rev4_1.h"
+#include "rev5.h"
 #include "rgblight.h"
 
 /* =========================================================
@@ -60,6 +60,8 @@ static inline void indicator_set(uint8_t idx, uint8_t h, uint8_t s, uint8_t v) {
 static inline void indicator_clear(uint8_t idx) {
     rgblight_sethsv_at(0, 0, 0, idx);
 }
+
+static bool g_config_loaded = false;
 
 /* =========================================================
  * INDICATOR OVERLAY (KHÔNG ĐỤNG EFFECT)
@@ -179,22 +181,27 @@ void rgblight_config_set_value(uint8_t *data) {
     switch (data[2]) {
         case id_rgblight_logo_toggle: g_custom_rgblight_config.logo_enabled = data[3]; break;
         case id_rgblight_ug_toggle:   g_custom_rgblight_config.ug_enabled   = data[3]; break;
-
         case id_indicator_enable:     g_indicator.enabled = data[3]; break;
 
-        case id_indicator_caps_h:     g_indicator.caps_h = data[3]; break;
-        case id_indicator_caps_s:     g_indicator.caps_s = data[3]; break;
-        case id_indicator_caps_v:     g_indicator.caps_v = data[3]; break;
+        // color type: data[3] = H, data[4] = S (2 byte cùng lúc)
+        case id_indicator_caps_h:
+            g_indicator.caps_h = data[3];
+            g_indicator.caps_s = data[4];
+            break;
+        case id_indicator_num_h:
+            g_indicator.num_h = data[3];
+            g_indicator.num_s = data[4];
+            break;
+        case id_indicator_scroll_h:
+            g_indicator.scroll_h = data[3];
+            g_indicator.scroll_s = data[4];
+            break;
 
-        case id_indicator_num_h:      g_indicator.num_h = data[3]; break;
-        case id_indicator_num_s:      g_indicator.num_s = data[3]; break;
-        case id_indicator_num_v:      g_indicator.num_v = data[3]; break;
-
-        case id_indicator_scroll_h:   g_indicator.scroll_h = data[3]; break;
-        case id_indicator_scroll_s:   g_indicator.scroll_s = data[3]; break;
+        // brightness vẫn là range, 1 byte bình thường
+        case id_indicator_caps_v:     g_indicator.caps_v   = data[3]; break;
+        case id_indicator_num_v:      g_indicator.num_v    = data[3]; break;
         case id_indicator_scroll_v:   g_indicator.scroll_v = data[3]; break;
     }
-
     rgblight_config_save();
     update_rgblight();
 }
@@ -202,20 +209,25 @@ void rgblight_config_set_value(uint8_t *data) {
 void rgblight_config_get_value(uint8_t *data) {
     switch (data[2]) {
         case id_rgblight_logo_toggle: data[3] = g_custom_rgblight_config.logo_enabled; break;
-        case id_rgblight_ug_toggle:   data[3] = g_custom_rgblight_config.ug_enabled; break;
-
+        case id_rgblight_ug_toggle:   data[3] = g_custom_rgblight_config.ug_enabled;   break;
         case id_indicator_enable:     data[3] = g_indicator.enabled; break;
 
-        case id_indicator_caps_h:     data[3] = g_indicator.caps_h; break;
-        case id_indicator_caps_s:     data[3] = g_indicator.caps_s; break;
-        case id_indicator_caps_v:     data[3] = g_indicator.caps_v; break;
+        // trả về cả H và S
+        case id_indicator_caps_h:
+            data[3] = g_indicator.caps_h;
+            data[4] = g_indicator.caps_s;
+            break;
+        case id_indicator_num_h:
+            data[3] = g_indicator.num_h;
+            data[4] = g_indicator.num_s;
+            break;
+        case id_indicator_scroll_h:
+            data[3] = g_indicator.scroll_h;
+            data[4] = g_indicator.scroll_s;
+            break;
 
-        case id_indicator_num_h:      data[3] = g_indicator.num_h; break;
-        case id_indicator_num_s:      data[3] = g_indicator.num_s; break;
-        case id_indicator_num_v:      data[3] = g_indicator.num_v; break;
-
-        case id_indicator_scroll_h:   data[3] = g_indicator.scroll_h; break;
-        case id_indicator_scroll_s:   data[3] = g_indicator.scroll_s; break;
+        case id_indicator_caps_v:     data[3] = g_indicator.caps_v;   break;
+        case id_indicator_num_v:      data[3] = g_indicator.num_v;    break;
         case id_indicator_scroll_v:   data[3] = g_indicator.scroll_v; break;
     }
 }
@@ -224,18 +236,35 @@ void rgblight_config_get_value(uint8_t *data) {
  * EEPROM
  * ================================ */
 void rgblight_config_save(void) {
-    uint32_t d = 0;
-    d |= (g_custom_rgblight_config.logo_enabled ? 1 : 0) << 0;
-    d |= (g_custom_rgblight_config.ug_enabled   ? 1 : 0) << 1;
-    eeconfig_update_user(d);
+    user_config_t cfg = {
+        .rgb       = g_custom_rgblight_config,
+        .indicator = g_indicator,
+    };
+    eeconfig_update_user_datablock(&cfg, 0, sizeof(user_config_t));
 }
 
 void rgblight_config_load(void) {
-    uint32_t d = eeconfig_read_user();
-    g_custom_rgblight_config.logo_enabled = (d >> 0) & 1;
-    g_custom_rgblight_config.ug_enabled   = (d >> 1) & 1;
+    user_config_t cfg;
+    eeconfig_read_user_datablock(&cfg, 0, sizeof(user_config_t));
+    g_custom_rgblight_config = cfg.rgb;
+    g_indicator              = cfg.indicator;
+    g_config_loaded          = true;
 }
 
+/* ================================
+ * EEPROM DEFAULT (gọi khi reset EEPROM)
+ * ================================ */
+void eeconfig_init_user(void) {
+    g_custom_rgblight_config.logo_enabled = true;
+    g_custom_rgblight_config.ug_enabled   = true;
+
+    g_indicator.enabled  = false;
+    g_indicator.caps_h   = 255; g_indicator.caps_s   = 255; g_indicator.caps_v   = 255;
+    g_indicator.num_h    = 255; g_indicator.num_s    = 255; g_indicator.num_v    = 255;
+    g_indicator.scroll_h = 255; g_indicator.scroll_s = 255; g_indicator.scroll_v = 255;
+
+    rgblight_config_save();
+}
 
 /* =========================================================
  * LOCK UPDATE HOOK
@@ -249,6 +278,7 @@ bool led_update_user(led_t led_state) {
  * INIT
  * ========================================================= */
 void keyboard_post_init_user(void) {
+    rgblight_config_load();
     if (!rgblight_is_enabled()) {
         g_custom_rgblight_config.logo_enabled = 0;
         g_custom_rgblight_config.ug_enabled   = 0;
@@ -256,7 +286,6 @@ void keyboard_post_init_user(void) {
         rgblight_disable_noeeprom();
         return;
     }
-    rgblight_config_load();
     wait_ms(10); 
     update_rgblight();
 }

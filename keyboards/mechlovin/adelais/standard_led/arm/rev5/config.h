@@ -27,5 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define INDICATOR_CAPS_LED_INDEX    (INDICATOR_START_INDEX + 0)
 #define INDICATOR_NUM_LED_INDEX     (INDICATOR_START_INDEX + 1)
 #define INDICATOR_SCROLL_LED_INDEX  (INDICATOR_START_INDEX + 2)
+
+// custom_rgblight_config_t (2 bytes) + indicator_config_t (10 bytes) = 12 bytes
+#define EECONFIG_USER_DATA_SIZE 12
 #endif
 

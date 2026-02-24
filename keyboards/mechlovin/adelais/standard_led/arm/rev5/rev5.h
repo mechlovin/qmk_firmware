@@ -30,31 +30,34 @@ enum custom_via_ids {
     id_indicator_enable     = 10,
 
     id_indicator_caps_h     = 20,
-    id_indicator_caps_s     = 21,
     id_indicator_caps_v     = 22,
 
     id_indicator_num_h      = 23,
-    id_indicator_num_s      = 24,
     id_indicator_num_v      = 25,
 
     id_indicator_scroll_h  = 26,
-    id_indicator_scroll_s  = 27,
     id_indicator_scroll_v  = 28,
 };
 
 /* ================= CONFIG STRUCT ================= */
-typedef struct {
+
+typedef struct __attribute__((packed)) {
     bool logo_enabled;
     bool ug_enabled;
 } custom_rgblight_config_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
     bool enabled;
 
     uint8_t caps_h, caps_s, caps_v;
     uint8_t num_h,  num_s,  num_v;
     uint8_t scroll_h, scroll_s, scroll_v;
 } indicator_config_t;
+
+typedef struct __attribute__((packed)) {
+    custom_rgblight_config_t rgb;
+    indicator_config_t       indicator;
+} user_config_t;
 
 /* ================= EXTERN ================= */
 extern custom_rgblight_config_t g_custom_rgblight_config;
