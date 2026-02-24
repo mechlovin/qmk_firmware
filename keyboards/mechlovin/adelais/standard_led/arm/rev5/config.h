@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#define VIA_INSECURE
+
 #ifdef RGBLIGHT_ENABLE
 #define BLOCKER_LED_COUNT 3
 #define INDICATOR_COUNT   BLOCKER_LED_COUNT
