@@ -1,119 +1,75 @@
-/*
-Copyright 2026 Mechlovin' Studio
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+/* Copyright 2026 Mechlovin' Studio
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
 #pragma once
 
 #include "quantum.h"
-#include "rgblight.h"
 #include "via.h"
 #include "eeconfig.h"
 
-#define INDICATOR_PROPERTY_NUMBER 5
+/* ── Zone layout (rgb_matrix indices) ──────────────────────────────────────
+ *
+ *  IS31FL3731   0–15  : ring  (16 LEDs, clockwise from 12:00)
+ *  IS31FL3731  16–19  : center (4 LEDs — TL / TR / BR / BL)
+ *  WS2812      20–35  : ring  (same angular positions as IS31 ring)
+ *  WS2812      36–39  : center (same corner positions as IS31 center)
+ *
+ *  WS physical index = rgb_matrix_index - IS31FL3731_LED_COUNT (20)
+ * ─────────────────────────────────────────────────────────────────────────── */
+#define IS31_RING_START     0
+#define IS31_RING_COUNT     16
+#define IS31_CENTER_START   16
+#define IS31_CENTER_COUNT   4
 
-/* ================= VIA IDs ================= */
+#define WS_RING_START       20
+#define WS_RING_COUNT       16
+#define WS_CENTER_START     36
+#define WS_CENTER_COUNT     4
 
-enum via_rgblight_value {
-    id_rgblight_logo_toggle = 1,
-    id_rgblight_ug_toggle   = 2,
-};
+/* ── Center zone modes ──────────────────────────────────────────────────── */
+#define CENTER_MODE_SYNC    0   /* follow rgb_matrix effect (position-based) */
+#define CENTER_MODE_STATIC  1   /* fixed HSV color                           */
+#define CENTER_MODE_CAPS    2   /* Caps Lock indicator                       */
+#define CENTER_MODE_NUM     3   /* Num Lock indicator                        */
+#define CENTER_MODE_SCROLL  4   /* Scroll Lock indicator                     */
 
-enum via_indicator_color {
-    id_ind1_brightness  = 4,
-    id_ind1_color       = 5,
-    id_ind1_func        = 6,
-    id_ind1_index       = 7,
-
-    id_ind2_enabled     = 8,
-    id_ind2_brightness  = 9,
-    id_ind2_color       = 10,
-    id_ind2_func        = 11,
-    id_ind2_index       = 12,
-
-    id_ind3_enabled     = 13,
-    id_ind3_brightness  = 14,
-    id_ind3_color       = 15,
-    id_ind3_func        = 16,
-    id_ind3_index       = 17,
-
-    id_ind4_enabled     = 18,
-    id_ind4_brightness  = 19,
-    id_ind4_color       = 20,
-    id_ind4_func        = 21,
-    id_ind4_index       = 22,
-
-    id_ind5_enabled     = 23,
-    id_ind5_brightness  = 24,
-    id_ind5_color       = 25,
-
-};
-
-/* ================= STRUCT ================= */
-
+/* ── Center zone config (5 bytes) ──────────────────────────────────────── */
 typedef struct {
+    bool    enabled;
+    uint8_t mode;
     uint8_t h;
     uint8_t s;
     uint8_t v;
-    uint8_t func;
-    uint8_t index;
-    bool    enabled;
-} indicator_config;
+} center_cfg_t;
 
+/* ── EEPROM KB block  12 bytes = EECONFIG_KB_DATA_SIZE ─────────────────── */
 typedef struct {
-    indicator_config ind1;
-    indicator_config ind2;
-    indicator_config ind3;
-    indicator_config ind4;
-    indicator_config ind5;
-} keyboard_indicators;
+    bool         is31_ring_enabled;   /*  1 */
+    center_cfg_t is31_center;         /*  5 */
+    bool         ws_ring_enabled;     /*  1 */
+    center_cfg_t ws_center;           /*  5 */
+} kb_eeprom_t;                        /* 12 */
 
-typedef struct {
-    bool    enabled;
-    uint8_t h;
-    uint8_t s;
-    uint8_t v;
-} fixed_indicator_t;
+/* ── VIA custom channel / IDs ───────────────────────────────────────────── */
+#define VIA_KB_CHANNEL  0
 
-fixed_indicator_t fixed_ind14;
+enum via_kb_id {
+    id_is31_ring_enabled      = 1,
+    id_is31_center_enabled    = 2,
+    id_is31_center_mode       = 3,
+    id_is31_center_brightness = 4,
+    id_is31_center_color      = 5,   /* H + S, 2 bytes */
+    id_ws_ring_enabled        = 6,
+    id_ws_center_enabled      = 7,
+    id_ws_center_mode         = 8,
+    id_ws_center_brightness   = 9,
+    id_ws_center_color        = 10,  /* H + S, 2 bytes */
+};
 
-typedef struct {
-    bool logo_enabled;
-    bool ug_enabled;
-} custom_rgblight_config_t;
+/* ── Globals ────────────────────────────────────────────────────────────── */
+extern kb_eeprom_t g_kb_config;
 
-/* ================= EXTERN ================= */
-
-extern int indi_index;
-extern int data_index;
-extern int indicator_number;
-
-extern keyboard_indicators indicators;
-extern uint8_t* pIndicators;
-
-extern custom_rgblight_config_t g_custom_rgblight_config;
-
-/* ================= FUNCTION PROTOTYPES ================= */
-
-indicator_config* get_indicator_p(int index);
-
-void rgblight_config_set_value(uint8_t *data);
-void rgblight_config_get_value(uint8_t *data);
-void rgblight_config_save(void);
-void rgblight_config_load(void);
-void indicator_config_set_value(uint8_t *data);
-void indicator_config_get_value(uint8_t *data);
-void indicator_config_save(void);
-void update_rgblight(void);
+/* ── Prototypes ─────────────────────────────────────────────────────────── */
+void kb_config_set_value(uint8_t *data);
+void kb_config_get_value(uint8_t *data);
+void kb_config_save(void);

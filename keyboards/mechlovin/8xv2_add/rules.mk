@@ -1,0 +1,9 @@
+RGB_MATRIX_DRIVER = custom
+
+# IS31FL3731 (I2C)
+COMMON_VPATH += $(DRIVER_PATH)/led/issi
+SRC += is31fl3731.c
+I2C_DRIVER_REQUIRED = yes
+
+# WS2812 (SPI) — compiled without rgblight
+WS2812_DRIVER_REQUIRED = yes
