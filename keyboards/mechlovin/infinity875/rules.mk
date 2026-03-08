@@ -1,3 +1,1 @@
-CUSTOM_MATRIX = lite
-
-SRC += matrix.c
+DEFAULT_FOLDER = mechlovin/infinity875/rev1
