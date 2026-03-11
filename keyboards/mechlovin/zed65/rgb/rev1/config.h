@@ -17,7 +17,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#ifdef RGBLIGHT_ENABLE
 #define BLOCKER_LED_COUNT 4
-#define UG_LED_COUNT RGBLIGHT_LED_COUNT - BLOCKER_LED_COUNT
-#endif
+#define UG_LED_COUNT      RGBLIGHT_LED_COUNT - BLOCKER_LED_COUNT
+
+// Fixed LED indices
+#define CAPS_LED_INDEX    30
+#define BLOCKER_LED_INDEX 14
+
+// EECONFIG: 5 indicator_config × 6 bytes = 30 bytes
+#define EECONFIG_KB_DATA_SIZE (5 * 6)
+
+#define WEAR_LEVELING_LOGICAL_SIZE 2048
+#define WEAR_LEVELING_BACKING_SIZE 4096
+
+#define RGB_FADE_ENABLE
+#define RGB_FADE_OUT_MS   20
+#define RGB_FADE_IN_MS    200
+#define RGB_FADE_POWER_STEP  12

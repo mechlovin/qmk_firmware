@@ -19,10 +19,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "rev1.h"
 
 enum custom_keycodes {
-    RGB_TOGGLE_LOGO = QK_KB_0,
-    RGB_TOGGLE_UG,
+    RGB_TOGGLE_LOGO = QK_KB_0,  // CUSTOM(0)
+    RGB_TOGGLE_UG,               // CUSTOM(1)
+    BLOCKER_TOGGLE,              // CUSTOM(2)
 };
-
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_65_ansi_blocker_tsangan(
@@ -34,28 +34,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-void toggle_logo_led(void) {
-    g_custom_rgblight_config.logo_enabled = !g_custom_rgblight_config.logo_enabled;
-    rgblight_config_save();
-    update_rgblight();
-}
-
-void toggle_ug_led(void) {
-    g_custom_rgblight_config.ug_enabled = !g_custom_rgblight_config.ug_enabled;
-    rgblight_config_save();
-    update_rgblight();
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        switch (keycode) {
-            case RGB_TOGGLE_LOGO:
-                toggle_logo_led();
-                return false;
-            case RGB_TOGGLE_UG:
-                toggle_ug_led();
-                return false;
-        }
+    if (!record->event.pressed) return true;
+
+    bool logo_was, ug_was;
+
+    switch (keycode) {
+        case RGB_TOGGLE_LOGO:
+            logo_was = g_custom_rgblight_config.logo_enabled;
+            ug_was   = g_custom_rgblight_config.ug_enabled;
+            g_custom_rgblight_config.logo_enabled ^= 1;
+            rgblight_config_save();
+            update_rgblight(logo_was, ug_was);
+            return false;
+
+        case RGB_TOGGLE_UG:
+            logo_was = g_custom_rgblight_config.logo_enabled;
+            ug_was   = g_custom_rgblight_config.ug_enabled;
+            g_custom_rgblight_config.ug_enabled ^= 1;
+            rgblight_config_save();
+            update_rgblight(logo_was, ug_was);
+            return false;
+
+        case BLOCKER_TOGGLE:
+            indicators.ind5.enabled ^= 1;
+            indicator_config_save();
+            rgb_matrix_indicators_kb();
+            return false;
     }
+
     return true;
 }

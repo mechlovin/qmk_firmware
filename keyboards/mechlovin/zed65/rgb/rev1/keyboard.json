@@ -7,6 +7,11 @@
     "rgblight": {
         "led_count": 32
     },
+    "rgb_matrix": {
+        "driver": "is31fl3741",
+        "react_on_keyup": true,
+        "sleep": true
+    },
     "community_layouts": ["65_ansi_blocker_tsangan"],
     "layouts": {
         "LAYOUT_65_ansi_blocker_tsangan": {
