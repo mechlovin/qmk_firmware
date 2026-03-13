@@ -1,7 +1,12 @@
-RGB_MATRIX_DRIVER = custom
-
 COMMON_VPATH += $(DRIVER_PATH)/led/issi
 SRC += is31fl3731.c
 I2C_DRIVER_REQUIRED = yes
 
-WS2812_DRIVER_REQUIRED = yes
+WS2812_DRIVER_REQUIRED = yes 
+
+# Shared LED animation library
+# Assumes layout: keyboards/mechlovin/lib/module_effects.c
+#                 keyboards/mechlovin/8xv2/add/rules.mk  (this file)
+MECHLOVIN_LIB_PATH := keyboards/mechlovin/lib
+COMMON_VPATH += keyboards/mechlovin/lib/module_effects
+SRC += keyboards/mechlovin/lib/module_effects/module_effects.c
