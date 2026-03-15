@@ -23,7 +23,7 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 /* ── Misc ───────────────────────────────────────────────────────────────── */
 #define RGB_MATRIX_DISABLE_SHARED_KEYCODES
-#define EECONFIG_KB_DATA_SIZE       7
+#define EECONFIG_KB_DATA_SIZE       13
 
 #define WEAR_LEVELING_LOGICAL_SIZE  2048
 #define WEAR_LEVELING_BACKING_SIZE  4096

@@ -24,6 +24,11 @@
 #    error "Disable RGBLIGHT_ENABLE when RGB_MATRIX_ENABLE is set"
 #endif
 
+/* Catch size mismatch between kb_eeprom_t and EECONFIG_KB_DATA_SIZE at
+ * compile time.  If this fires, update EECONFIG_KB_DATA_SIZE in config.h. */
+_Static_assert(sizeof(kb_eeprom_t) == EECONFIG_KB_DATA_SIZE,
+               "EECONFIG_KB_DATA_SIZE does not match sizeof(kb_eeprom_t) — update config.h");
+
 void board_init(void) {
     RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
 }
@@ -177,13 +182,21 @@ static void stop_ws2812(void) {
  * CUSTOM RGB MATRIX DRIVER
  * ════════════════════════════════════════════════════════════════ */
 static void rgb_matrix_driver_init(void) {
-    eeconfig_read_kb_datablock(&g_kb_config, 0, sizeof(g_kb_config));
-    if (g_kb_config.module_sel > MODULE_SEL_WS) g_kb_config.module_sel = MODULE_SEL_AUTO;
+    /* Read only module_sel here.  g_kb_config is fully populated later in
+     * keyboard_post_init_kb, AFTER eeconfig_init_kb has had a chance to run.
+     * Reading the whole struct here risks overwriting defaults with zeros when
+     * EEPROM has not been initialised yet.                                   */
+    kb_eeprom_t tmp;
+    memset(&tmp, 0, sizeof(tmp));
+    eeconfig_read_kb_datablock(&tmp, 0, sizeof(tmp));
 
     bool use_is31;
-    if      ((module_sel_t)g_kb_config.module_sel == MODULE_SEL_IS31) use_is31 = true;
-    else if ((module_sel_t)g_kb_config.module_sel == MODULE_SEL_WS)   use_is31 = false;
-    else                                                               use_is31 = read_pin_boot();
+    if      (tmp.module_sel == MODULE_SEL_IS31) use_is31 = true;
+    else if (tmp.module_sel == MODULE_SEL_WS)   use_is31 = false;
+    else                                         use_is31 = read_pin_boot();
+
+    /* Store module_sel so hotswap_check can use it before post_init runs */
+    g_kb_config.module_sel = tmp.module_sel;
 
     if (use_is31) start_is31(); else start_ws2812();
 }
@@ -304,11 +317,13 @@ void housekeeping_task_kb(void) {
  * EEPROM
  * ════════════════════════════════════════════════════════════════ */
 void eeconfig_init_kb(void) {
+    /* Use QMK rgb_matrix default values: h=0 (red hue), s=255 (saturated),
+     * v=255 (full brightness) so the LED color matches QMK's own defaults. */
     g_kb_config = (kb_eeprom_t){
         .ring_enabled   = true,
-        .ring           = { .mode=RING_FX_CHASE,     .h=0, .s=255, .v=200, .speed=128 },
+        .ring           = { .mode=RING_FX_CHASE,     .h=0, .s=255, .v=255, .speed=128 },
         .center_enabled = true,
-        .center         = { .mode=CENTER_FX_BREATHE, .h=0, .s=255, .v=200, .speed=128 },
+        .center         = { .mode=CENTER_FX_BREATHE, .h=0, .s=255, .v=255, .speed=128 },
         .module_sel     = MODULE_SEL_AUTO,
     };
     eeconfig_update_kb_datablock(&g_kb_config, 0, sizeof(g_kb_config));
@@ -317,10 +332,38 @@ void eeconfig_init_kb(void) {
 void keyboard_post_init_kb(void) {
     eeconfig_read_kb_datablock(&g_kb_config, 0, sizeof(g_kb_config));
 
-    if (g_kb_config.ring.mode    > RING_FX_MAX)      g_kb_config.ring.mode    = RING_FX_CHASE;
-    if (g_kb_config.ring.speed   == 0)               g_kb_config.ring.speed   = 128;
-    if (g_kb_config.center.mode  > CENTER_MODE_MAX)  g_kb_config.center.mode  = CENTER_FX_BREATHE;
-    if (g_kb_config.center.speed == 0)               g_kb_config.center.speed = 128;
+    /* ── Freshness / corruption detection ───────────────────────────────────
+     * We use a magic sentinel: ring.speed == 0 is unachievable in normal use
+     * (VIA clamps writes to min 1, eeconfig_init_kb writes 128).
+     * If EITHER zone has speed == 0 the block is uninitialised or corrupt.
+     *
+     * Two cases handled:
+     *   A. First boot after full EEPROM clear (ESC+plug): QMK has already
+     *      called eeconfig_init_kb() before us → speed is 128, skip.
+     *   B. Partial / stale EEPROM (old firmware, wrong struct size):
+     *      QMK magic is valid so eeconfig_init_kb() was NOT called →
+     *      speed == 0 detected here → we call it to write factory defaults.
+     * ─────────────────────────────────────────────────────────────────────── */
+    if (g_kb_config.ring.speed == 0 || g_kb_config.center.speed == 0) {
+        eeconfig_init_kb();   /* writes defaults into g_kb_config + EEPROM */
+        eeconfig_read_kb_datablock(&g_kb_config, 0, sizeof(g_kb_config));
+    }
+
+    /* ── Field-level validation (clamp out-of-range values) ─────────────── */
+    /* Ring: mode > MAX is invalid; mode 0 (SYNC) and all other modes are OK */
+    if (g_kb_config.ring.mode > RING_FX_MAX)
+        g_kb_config.ring.mode  = RING_FX_CHASE;
+    if (g_kb_config.ring.v     == 0) g_kb_config.ring.v     = 255;
+    if (g_kb_config.ring.speed == 0) g_kb_config.ring.speed = 128;
+
+    /* Center: modes 0..CENTER_MODE_MAX are all valid (incl. SYNC=0) */
+    if (g_kb_config.center.mode > CENTER_MODE_MAX)
+        g_kb_config.center.mode  = CENTER_FX_BREATHE;
+    if (g_kb_config.center.v     == 0) g_kb_config.center.v     = 255;
+    if (g_kb_config.center.speed == 0) g_kb_config.center.speed = 128;
+
+    /* module_sel was already captured by rgb_matrix_driver_init; preserve it */
+    if (g_kb_config.module_sel > MODULE_SEL_WS) g_kb_config.module_sel = MODULE_SEL_AUTO;
 
     hotswap_timer = timer_read32();
 
@@ -339,7 +382,7 @@ void kb_config_set_value(uint8_t *data) {
     uint8_t *v  = &data[1];
     switch ((enum via_kb_id)id) {
         case id_ring_enabled:
-            g_kb_config.ring_enabled = v[0]; break;
+            g_kb_config.ring_enabled = (v[0] != 0); break;
         case id_ring_mode:
             g_kb_config.ring.mode = (v[0] > RING_FX_MAX) ? RING_FX_CHASE : v[0];
             ring_fx_reset(); break;
@@ -351,7 +394,7 @@ void kb_config_set_value(uint8_t *data) {
             g_kb_config.ring.speed = v[0] ? v[0] : 1; break;
 
         case id_center_enabled:
-            g_kb_config.center_enabled = v[0]; break;
+            g_kb_config.center_enabled = (v[0] != 0); break;
         case id_center_mode:
             g_kb_config.center.mode = (v[0] > CENTER_MODE_MAX) ? CENTER_FX_BREATHE : v[0];
             center_fx_reset(); break;
@@ -366,9 +409,19 @@ void kb_config_set_value(uint8_t *data) {
             g_kb_config.module_sel = v[0];
             kb_config_save();
             soft_reset_keyboard();
-            break;
+            return;   /* skip the auto-save below — save+reset already done */
         default: break;
     }
+
+    /* Auto-save after every VIA set_value.
+     *
+     * VIA sends id_custom_save as a separate command in newer versions, but
+     * older VIA / third-party tools may not. Saving here guarantees settings
+     * survive an unplug even if the explicit save command is never received.
+     *
+     * EEPROM endurance: IS31 / WS2812 settings change rarely (user-driven),
+     * so the extra write is negligible vs. the 100k-cycle EEPROM lifetime.  */
+    kb_config_save();
 }
 
 void kb_config_get_value(uint8_t *data) {

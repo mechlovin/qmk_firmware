@@ -443,10 +443,8 @@ static void ctr_do_rotate(const led_zone_cfg_t *c, uint8_t s) {
             int16_t f0 = k_ctr_tail[di], f1 = k_ctr_tail[di + 1];
             fade = (uint8_t)(f0 + ((f1 - f0) * df >> 8));
         }
-        s_ctr_set(s + i,
-                  (uint8_t)((uint16_t)hsv_to_rgb((HSV){c->h, c->s, scale8(fade, c->v)}).r),
-                  (uint8_t)((uint16_t)hsv_to_rgb((HSV){c->h, c->s, scale8(fade, c->v)}).g),
-                  (uint8_t)((uint16_t)hsv_to_rgb((HSV){c->h, c->s, scale8(fade, c->v)}).b));
+        RGB rgb = hsv_to_rgb((HSV){c->h, c->s, scale8(fade, c->v)});
+        s_ctr_set(s + i, rgb.r, rgb.g, rgb.b);
     }
 }
 
