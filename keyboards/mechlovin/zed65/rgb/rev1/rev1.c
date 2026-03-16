@@ -129,216 +129,6 @@ _Static_assert(sizeof(keyboard_indicators) == EECONFIG_KB_DATA_SIZE,
 custom_rgblight_config_t g_custom_rgblight_config;
 
 /* ============================================================
- * SMOOTH FADE ENGINE
- *
- * Two independent state machines — RGBLight and RGB Matrix.
- * Both run inside matrix_scan_kb, throttled to FADE_TICK_MS.
- *
- * RGBLight (WS2812 underglow/logo):
- *   ANY zone or mode change → crossfade:
- *     FADE_OUT: val → 0 each tick
- *     (at 0): apply new zone layout  ← fixes "only last zone fades"
- *     FADE_IN: val → target each tick
- *   Mode-change detection: poll rgblight_get_mode() each idle tick.
- *
- * RGB Matrix (IS31FL3731 per-key):
- *   Startup and mode changes → crossfade:
- *     FADE_OUT: rgb_matrix_config.hsv.v → 0
- *     FADE_IN:  rgb_matrix_config.hsv.v → target
- *   Mode-change detection: poll rgb_matrix_config.mode each idle tick.
- *
- * Per-indicator scale (ind_scale[5]):
- *   Target set by enable/disable toggle.
- *   rgb_matrix_indicators_kb multiplies colour by scale/255.
- *   Enables smooth indicator fade-in/out.
- * ============================================================ */
-
-#define FADE_TICK_MS  8   /* ms between steps                     */
-#define FADE_STEP     5   /* brightness units per step (0-255)    */
-                          /* full sweep ≈ 255/5*8 = 408 ms        */
-
-static inline uint8_t step_toward(uint8_t cur, uint8_t tgt, uint8_t step) {
-    if (cur < tgt) return (tgt - cur > step) ? (uint8_t)(cur + step) : tgt;
-    if (cur > tgt) return (cur - tgt > step) ? (uint8_t)(cur - step) : tgt;
-    return cur;
-}
-
-/* ── RGBLight state machine ────────────────────────────────── */
-typedef enum { RL_IDLE, RL_FADE_OUT, RL_FADE_IN } rl_state_t;
-static rl_state_t rl_state    = RL_IDLE;
-static uint8_t    rl_cur      = 0;   /* brightness being applied now        */
-static uint8_t    rl_on_val   = 128; /* brightness to restore after xfade   */
-static uint8_t    rl_last_mode = 0xFF; /* detect VIA effect changes         */
-
-/* Write rl_cur to rgblight AND re-assert zone blackout.
- * Must be called every tick to keep the off-zone dark
- * (animation would overwrite it otherwise). */
-static void rl_apply(void) {
-    bool logo = g_custom_rgblight_config.logo_enabled;
-    bool ug   = g_custom_rgblight_config.ug_enabled;
-    if (!logo && !ug) return;
-
-    rgblight_sethsv_noeeprom(rgblight_get_hue(), rgblight_get_sat(), rl_cur);
-
-    if (logo && ug) {
-        rgblight_set_effect_range(0, RGBLIGHT_LED_COUNT);
-    } else if (logo) {
-        rgblight_set_effect_range(UG_LED_COUNT, BLOCKER_LED_COUNT);
-        rgblight_sethsv_range(0, 0, 0, 0, UG_LED_COUNT);
-    } else { /* ug only */
-        rgblight_set_effect_range(0, UG_LED_COUNT);
-        rgblight_sethsv_range(0, 0, 0, UG_LED_COUNT, RGBLIGHT_LED_COUNT);
-    }
-}
-
-/* Start a crossfade: fade → 0 → apply zones → fade → on_val.
- * Safe to call from any state (re-arms if already fading). */
-static void rl_crossfade(void) {
-    /* Preserve the last known "on" brightness so we can restore it. */
-    uint8_t v = rgblight_get_val();
-    if (v > 0) rl_on_val = v;
-    rl_cur   = v;          /* start stepping from where we are now */
-    rl_state = RL_FADE_OUT;
-}
-
-/* ── RGB Matrix state machine ─────────────────────────────── */
-typedef enum { MX_IDLE, MX_FADE_OUT, MX_FADE_IN } mx_state_t;
-static mx_state_t mx_state    = MX_IDLE;
-static uint8_t    mx_cur      = 0;
-static uint8_t    mx_on_val   = 128;
-static uint8_t    mx_last_mode = 0xFF;
-
-/* ── Per-indicator brightness scale ───────────────────────── */
-/* 255 = full brightness, 0 = off (blacked out).
- * Stepped toward ind_scale_tgt each tick so enable/disable fades. */
-static uint8_t ind_scale[5]     = {255,   0,   0,   0, 255};
-static uint8_t ind_scale_tgt[5] = {255,   0,   0,   0, 255};
-
-static uint32_t last_tick = 0;
-
-/* ============================================================
- * matrix_scan_kb
- * ============================================================ */
-void matrix_scan_kb(void) {
-    if (timer_elapsed32(last_tick) >= FADE_TICK_MS) {
-        last_tick = timer_read32();
-
-        /* ── RGBLight ── */
-        switch (rl_state) {
-
-            case RL_FADE_OUT:
-                rl_cur = step_toward(rl_cur, 0, FADE_STEP);
-                rl_apply();
-                if (rl_cur == 0) {
-                    bool any = g_custom_rgblight_config.logo_enabled ||
-                               g_custom_rgblight_config.ug_enabled;
-                    if (!any) {
-                        rgblight_disable_noeeprom();
-                        rl_state = RL_IDLE;
-                    } else {
-                        /* Apply new zone layout at the dark midpoint.
-                         * This is the key fix: zones are reconfigured HERE,
-                         * so BOTH zones that change get a proper fade. */
-                        rl_apply();   /* zones reconfigured with new logo/ug state */
-                        rl_last_mode = rgblight_get_mode();
-                        rl_state = RL_FADE_IN;
-                    }
-                }
-                break;
-
-            case RL_FADE_IN:
-                rl_cur = step_toward(rl_cur, rl_on_val, FADE_STEP);
-                rl_apply();
-                if (rl_cur == rl_on_val) rl_state = RL_IDLE;
-                break;
-
-            case RL_IDLE: {
-                /* Poll for effect/mode change from VIA (e.g. effect dropdown) */
-                uint8_t m = rgblight_get_mode();
-                bool any  = g_custom_rgblight_config.logo_enabled ||
-                            g_custom_rgblight_config.ug_enabled;
-                if (rl_last_mode != 0xFF && m != rl_last_mode && any) {
-                    rl_last_mode = m;
-                    rl_crossfade();
-                } else {
-                    rl_last_mode = m;
-                }
-                break;
-            }
-        }
-
-        /* ── RGB Matrix ── */
-        switch (mx_state) {
-
-            case MX_FADE_OUT:
-                mx_cur = step_toward(mx_cur, 0, FADE_STEP);
-                rgb_matrix_config.hsv.v = mx_cur;
-                if (mx_cur == 0) {
-                    mx_last_mode = rgb_matrix_config.mode;
-                    mx_state = MX_FADE_IN;
-                }
-                break;
-
-            case MX_FADE_IN:
-                mx_cur = step_toward(mx_cur, mx_on_val, FADE_STEP);
-                rgb_matrix_config.hsv.v = mx_cur;
-                if (mx_cur == mx_on_val) mx_state = MX_IDLE;
-                break;
-
-            case MX_IDLE:
-            default:
-                /* Effect changes via VIA are instant — no crossfade needed.
-                 * Just track mode so we don't re-trigger on startup. */
-                mx_last_mode = rgb_matrix_config.mode;
-                break;
-        }
-
-        /* ── Per-indicator scale (ind2-ind5 only; Caps/ind1 has no scale) ── */
-        for (int i = 1; i < 5; i++) {
-            ind_scale[i] = step_toward(ind_scale[i], ind_scale_tgt[i], FADE_STEP);
-        }
-    }
-
-    matrix_scan_user();
-}
-
-/* ── Public fade API (used by rgb_matrix_startup / post_init) */
-
-void matrix_fade_in(void) {
-    /* Caller must have already called rgb_matrix_reload_from_eeprom(). */
-    mx_on_val = rgb_matrix_config.hsv.v;
-    if (mx_on_val == 0) mx_on_val = 128;
-    rgb_matrix_config.hsv.v = 0;
-    mx_cur   = 0;
-    mx_state = MX_FADE_IN;
-    rgb_matrix_enable_noeeprom();
-    mx_last_mode = rgb_matrix_config.mode; /* baseline: don't retrigger immediately */
-}
-
-void matrix_fade_out(void) {
-    mx_on_val = rgb_matrix_config.hsv.v;
-    if (mx_on_val == 0) { rgb_matrix_disable_noeeprom(); return; }
-    mx_cur   = mx_on_val;
-    mx_state = MX_FADE_OUT;
-}
-
-void rgblight_fade_in(void) {
-    /* Called from post_init when zones are already configured. */
-    rl_on_val = rgblight_get_val();
-    if (rl_on_val == 0) rl_on_val = 128;
-    rgblight_enable_noeeprom();
-    rl_cur   = 0;
-    rl_state = RL_FADE_IN;
-    /* Apply zones at val=0 so the correct zones are lit from the start. */
-    rl_apply();
-    rl_last_mode = rgblight_get_mode();
-}
-
-void rgblight_fade_out(void) {
-    rl_crossfade();
-}
-
-/* ============================================================
  * INDICATOR HELPERS
  * ============================================================ */
 
@@ -356,63 +146,43 @@ static bool indicator_active(indicator_config ind) {
     }
 }
 
-/* Scale RGB by 0-255 multiplier without float. */
-static inline RGB scale_rgb(RGB c, uint8_t s) {
-    if (s == 255) return c;
-    if (s == 0)   return (RGB){0, 0, 0};
-    return (RGB){
-        (uint8_t)((uint16_t)c.r * s / 255),
-        (uint8_t)((uint16_t)c.g * s / 255),
-        (uint8_t)((uint16_t)c.b * s / 255),
-    };
-}
-
 /* ============================================================
  * RGB MATRIX INDICATORS
- * Colours are multiplied by ind_scale[i] so enable/disable fades.
+ *
+ * ind1 (Caps): follows matrix effect. Caps ON → override colour/brightness.
+ * ind5 (Blocker): follows matrix effect. VIA enabled=true → override.
+ * ind2–ind4: follows matrix effect. enabled + trigger active → override.
  * ============================================================ */
 
 bool rgb_matrix_indicators_kb(void) {
     if (!rgb_matrix_indicators_user()) return false;
 
-    /* ind1: Caps Lock (fixed at CAPS_LED_INDEX, always structurally on)
-     * - Caps OFF → do nothing, LED follows matrix effect naturally.
-     * - Caps ON  → override with configured colour/brightness. */
+    /* ind1: Caps Lock – fixed at CAPS_LED_INDEX */
     {
         indicator_config* ind = get_indicator_p(0);
         if (host_keyboard_led_state().caps_lock) {
             RGB rgb = hsv_to_rgb((HSV){ind->h, ind->s, ind->v});
             rgb_matrix_set_color(CAPS_LED_INDEX, rgb.r, rgb.g, rgb.b);
         }
-        /* else: no set_color → matrix renders this LED normally */
     }
 
-    /* ind5: Blocker (fixed at BLOCKER_LED_INDEX, always structurally on)
-     * - enabled=false (VIA) → follows matrix effect.
-     * - enabled=true  (VIA) → override with configured colour, faded by ind_scale[4]. */
+    /* ind5: Blocker – fixed at BLOCKER_LED_INDEX */
     {
         indicator_config* ind = get_indicator_p(4);
-        uint8_t sc = ind_scale[4];
-        if (ind->enabled && sc > 0) {
-            RGB rgb = scale_rgb(hsv_to_rgb((HSV){ind->h, ind->s, ind->v}), sc);
+        if (ind->enabled) {
+            RGB rgb = hsv_to_rgb((HSV){ind->h, ind->s, ind->v});
             rgb_matrix_set_color(BLOCKER_LED_INDEX, rgb.r, rgb.g, rgb.b);
         }
-        /* else: follows matrix effect */
     }
 
-    /* ind2–ind4: user-configurable position and trigger.
-     * - disabled (ind->enabled=false, scale→0) → follows matrix effect.
-     * - enabled + trigger active → override colour, faded by ind_scale[i].
-     * - enabled + trigger inactive → do nothing (matrix renders normally). */
+    /* ind2–ind4: user-configurable position and trigger */
     for (int i = 1; i <= 3; i++) {
         indicator_config* ind = get_indicator_p(i);
-        uint8_t sc = ind_scale[i];
-        if (sc == 0) continue; /* fully faded out, no override */
+        if (!ind->enabled) continue;
         if (indicator_active(*ind)) {
-            RGB rgb = scale_rgb(hsv_to_rgb((HSV){ind->h, ind->s, ind->v}), sc);
+            RGB rgb = hsv_to_rgb((HSV){ind->h, ind->s, ind->v});
             rgb_matrix_set_color(ind->index, rgb.r, rgb.g, rgb.b);
         }
-        /* trigger inactive → no override */
     }
 
     return true;
@@ -434,21 +204,32 @@ void eeconfig_init_kb(void) {
 }
 
 /* ============================================================
- * RGB MATRIX STARTUP
+ * RGBLIGHT ZONE MANAGEMENT
  * ============================================================ */
 
-static void rgb_matrix_startup(void) {
-    rgb_matrix_disable_noeeprom();
-    wait_ms(20);
-    /* Reload effect / speed / HSV from EEPROM – this sets the target val */
-    rgb_matrix_reload_from_eeprom();
-    /* matrix_fade_in reads the reloaded hsv.v, sets it to 0, then ramps up */
-    matrix_fade_in();
+/* Apply effect_range and blackout for the inactive zone.
+ * Must be called whenever zone state changes. */
+static void apply_rgblight_zones(void) {
+    bool logo = g_custom_rgblight_config.logo_enabled;
+    bool ug   = g_custom_rgblight_config.ug_enabled;
+
+    if (!logo && !ug) {
+        rgblight_disable_noeeprom();
+        return;
+    }
+
+    rgblight_enable_noeeprom();
+
+    if (logo && ug) {
+        rgblight_set_effect_range(0, RGBLIGHT_LED_COUNT);
+    } else if (logo) {
+        rgblight_set_effect_range(UG_LED_COUNT, BLOCKER_LED_COUNT);
+        rgblight_sethsv_range(0, 0, 0, 0, UG_LED_COUNT);
+    } else {
+        rgblight_set_effect_range(0, UG_LED_COUNT);
+        rgblight_sethsv_range(0, 0, 0, UG_LED_COUNT, RGBLIGHT_LED_COUNT);
+    }
 }
-
-/* ============================================================
- * RGBLIGHT
- * ============================================================ */
 
 void rgblight_config_set_value(uint8_t *data) {
     bool logo_was = g_custom_rgblight_config.logo_enabled;
@@ -479,47 +260,22 @@ void rgblight_config_save(void) {
 
 void rgblight_config_load(void) {
     uint32_t raw = eeconfig_read_user();
-    g_custom_rgblight_config.logo_enabled = raw & 0x1;
-    g_custom_rgblight_config.ug_enabled   = (raw >> 1) & 0x1;
+    /* Bits 0–1 default to 0 on a fresh/cleared EEPROM.
+     * Treat 0b00 as "never written" and default both zones ON. */
+    if ((raw & 0x3) == 0) {
+        g_custom_rgblight_config.logo_enabled = true;
+        g_custom_rgblight_config.ug_enabled   = true;
+        rgblight_config_save();
+    } else {
+        g_custom_rgblight_config.logo_enabled = raw & 0x1;
+        g_custom_rgblight_config.ug_enabled   = (raw >> 1) & 0x1;
+    }
 }
 
-/*
- * update_rgblight – called after ANY zone state change.
- *
- * Key design: ALL transitions go through the crossfade path.
- * The state machine applies the new zone layout at the dark midpoint
- * (val=0), so both the zone being turned off AND the zone staying on
- * get a proper fade — not just the last one changed.
- *
- * off→on:  enable rgblight first, then fade in from 0.
- * on→off:  crossfade → at dark midpoint → disable.
- * zone swap (one on, one changes): crossfade → re-layout → fade back.
- */
 void update_rgblight(bool logo_was, bool ug_was) {
-    bool logo    = g_custom_rgblight_config.logo_enabled;
-    bool ug      = g_custom_rgblight_config.ug_enabled;
-    bool was_any = logo_was || ug_was;
-    bool is_any  = logo     || ug;
-
-    if (!was_any && !is_any) return; /* no change */
-
-    if (!was_any && is_any) {
-        /* Fully off → on: enable and fade in */
-        rgblight_enable_noeeprom();
-        /* rl_on_val keeps the last known brightness; use it unless zero */
-        if (rl_on_val == 0) rl_on_val = 128;
-        rl_cur   = 0;
-        rl_state = RL_FADE_IN;
-        rl_apply();   /* configure effect_range and black out inactive zone */
-        rl_last_mode = rgblight_get_mode();
-    } else {
-        /* on→off, or zone swap: crossfade.
-         * rl_apply() in FADE_OUT tick uses the CURRENT logo/ug flags,
-         * so after the flags are updated (here), the midpoint apply
-         * sees the NEW zone config — correct behaviour. */
-        rl_crossfade();
-        if (is_any) rgblight_enable_noeeprom();
-    }
+    (void)logo_was;
+    (void)ug_was;
+    apply_rgblight_zones();
 }
 
 /* ============================================================
@@ -535,13 +291,13 @@ void indicator_config_set_value(uint8_t *data) {
     indicator_config* ind = get_indicator_p(indi_index);
 
     if (indi_index == 0) {
-        /* ind1: Caps Lock – always structurally enabled */
+        /* ind1: Caps – always enabled, no func/index change needed */
         switch (data_index) {
-            case 0: ind->enabled = true; break; /* force-on */
-            case 1: ind->v       = v[0]; break;
-            case 2: ind->h = v[0]; ind->s = v[1]; break;
-            case 3: ind->func    = v[0]; break;
-            case 4: ind->index   = v[0]; break;
+            case 0: ind->enabled = true;                       break;
+            case 1: ind->v       = v[0];                       break;
+            case 2: ind->h = v[0]; ind->s = v[1];             break;
+            case 3: ind->func    = v[0];                       break;
+            case 4: ind->index   = v[0];                       break;
         }
         return;
     }
@@ -549,12 +305,9 @@ void indicator_config_set_value(uint8_t *data) {
     if (indi_index == 4) {
         /* ind5: Blocker – no func/index in VIA UI */
         switch (data_index) {
-            case 0:
-                ind->enabled = v[0];
-                ind_scale_tgt[4] = v[0] ? 255 : 0;
-                break;
-            case 1: ind->v = v[0]; break;
-            case 2: ind->h = v[0]; ind->s = v[1]; break;
+            case 0: ind->enabled = v[0];                       break;
+            case 1: ind->v       = v[0];                       break;
+            case 2: ind->h = v[0]; ind->s = v[1];             break;
             default: return;
         }
         return;
@@ -562,15 +315,11 @@ void indicator_config_set_value(uint8_t *data) {
 
     /* ind2–ind4 */
     switch (data_index) {
-        case 0:
-            ind->enabled = v[0];
-            /* Fade the indicator in or out by setting scale target */
-            ind_scale_tgt[indi_index] = v[0] ? 255 : 0;
-            break;
-        case 1: ind->v       = v[0]; break;
-        case 2: ind->h = v[0]; ind->s = v[1]; break;
-        case 3: ind->func    = v[0]; break;
-        case 4: ind->index   = v[0]; break;
+        case 0: ind->enabled = v[0];                           break;
+        case 1: ind->v       = v[0];                           break;
+        case 2: ind->h = v[0]; ind->s = v[1];                 break;
+        case 3: ind->func    = v[0];                           break;
+        case 4: ind->index   = v[0];                           break;
     }
 }
 
@@ -584,20 +333,20 @@ void indicator_config_get_value(uint8_t *data) {
 
     if (indi_index == 4) {
         switch (data_index) {
-            case 0: v[0] = ind->enabled; break;
-            case 1: v[0] = ind->v; break;
-            case 2: v[0] = ind->h; v[1] = ind->s; break;
+            case 0: v[0] = ind->enabled;                       break;
+            case 1: v[0] = ind->v;                             break;
+            case 2: v[0] = ind->h; v[1] = ind->s;             break;
             default: v[0] = 0;
         }
         return;
     }
 
     switch (data_index) {
-        case 0: v[0] = ind->enabled; break;
-        case 1: v[0] = ind->v; break;
-        case 2: v[0] = ind->h; v[1] = ind->s; break;
-        case 3: v[0] = ind->func; break;
-        case 4: v[0] = ind->index; break;
+        case 0: v[0] = ind->enabled;                           break;
+        case 1: v[0] = ind->v;                                 break;
+        case 2: v[0] = ind->h; v[1] = ind->s;                 break;
+        case 3: v[0] = ind->func;                              break;
+        case 4: v[0] = ind->index;                             break;
     }
 }
 
@@ -651,27 +400,10 @@ void keyboard_post_init_user(void) {
 
     /* Enforce fixed state for structurally-fixed indicators */
     indicators.ind1.enabled = true;
-    indicators.ind1.v       = 255; /* always full brightness on Caps override */
-    /* Sync ind_scale with loaded config (no fade at startup) */
-    for (int i = 1; i <= 3; i++) {
-        uint8_t s = get_indicator_p(i)->enabled ? 255 : 0;
-        ind_scale[i] = s; ind_scale_tgt[i] = s;
-    }
-    ind_scale[4] = indicators.ind5.enabled ? 255 : 0;
-    ind_scale_tgt[4] = ind_scale[4];
+    indicators.ind1.v       = 255;
 
-    wait_ms(10);
+    apply_rgblight_zones();
 
-    /* RGBLight: fade in if any zone enabled */
-    if (g_custom_rgblight_config.logo_enabled || g_custom_rgblight_config.ug_enabled) {
-        rgblight_fade_in();
-    } else {
-        rgblight_disable_noeeprom();
-        rl_cur = 0; rl_state = RL_IDLE;
-    }
-
-    /* RGB Matrix: reload EEPROM → fade in from 0 */
-    rgb_matrix_startup();
-
+    rgb_matrix_reload_from_eeprom();
     rgb_matrix_indicators_kb();
 }
