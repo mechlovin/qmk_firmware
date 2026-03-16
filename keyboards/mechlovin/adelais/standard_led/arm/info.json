@@ -24,6 +24,7 @@
         }
     },
     "ws2812": {
+        "driver": "spi",
         "pin": "A7"
     },
     "indicators": {
