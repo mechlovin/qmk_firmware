@@ -24,3 +24,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // EECONFIG data size: each indicator takes 5 bytes; there are four possible indicators.
 #define EECONFIG_KB_DATA_SIZE (2*6)
+#define VIA_EEPROM_ALLOW_RESET

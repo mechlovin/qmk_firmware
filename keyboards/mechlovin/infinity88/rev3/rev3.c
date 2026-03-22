@@ -1,6 +1,7 @@
 #include "quantum.h"
 #include "rgblight.h"
 #include "via.h"
+#include "bootloader.h" 
 
 // Định nghĩa các giá trị
 enum via_rgblight_value {
@@ -42,6 +43,28 @@ void via_custom_value_command_kb(uint8_t *data, uint8_t length) {
                 break;
             case id_custom_save:
                 rgblight_config_save();
+                break;
+            default:
+                *command_id = id_unhandled;
+                break;
+        }
+        return;
+    }
+
+    if (*channel_id == 0x0F) {
+        switch (*command_id) {
+            case id_custom_set_value:
+                switch (value_id_and_data[0]) {
+                    case 0x01:  // Jump to bootloader
+                        bootloader_jump();
+                        break;
+                    case 0x02:  // Reset EEPROM
+                        eeconfig_init();
+                        break;
+                    default:
+                        *command_id = id_unhandled;
+                        break;
+                }
                 break;
             default:
                 *command_id = id_unhandled;
