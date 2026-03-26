@@ -103,16 +103,16 @@ led_config_t g_led_config = { {
         {58,         59,          60,      NO_LED,      NO_LED,      NO_LED,          61,      NO_LED,      NO_LED,      NO_LED,      NO_LED,          62,          63,          64,          65},
     }, {
         {0,   0}, {16,  0}, {32,  0}, {48,  0}, {64,  0}, {80,  0}, {96,  0}, {112, 0}, {128, 0}, {144, 0}, {160, 0}, {176, 0}, {192, 0}, {208, 0}, {224, 0},
-        {0,   0}, {16,  0}, {32,  0}, {48,  0}, {64,  0}, {80,  0}, {96,  0}, {112, 0}, {128, 0}, {144, 0}, {160, 0}, {176, 0}, {192, 0}, {208, 0}, {224, 0},
-        {0,   0}, {16,  0}, {32,  0}, {48,  0}, {64,  0}, {80,  0}, {96,  0}, {112, 0}, {128, 0}, {144, 0}, {160, 0}, {176, 0},           {208, 0}, {224, 0},
-        {0,   0},           {32,  0}, {48,  0}, {64,  0}, {80,  0}, {96,  0}, {112, 0}, {128, 0}, {144, 0}, {160, 0}, {176, 0}, {192, 0}, {208, 0}, {224, 0},
-        {0,   0}, {16,  0}, {32,  0},                               {96,  0},                                           {176, 0}, {192, 0}, {208, 0}, {224, 0},
+        {0,  16}, {16, 16}, {32, 16}, {48, 16}, {64, 16}, {80, 16}, {96, 16}, {112,16}, {128,16}, {144,16}, {160,16}, {176,16}, {192,16}, {208,16}, {224,16},
+        {0,  32}, {16, 32}, {32, 32}, {48, 32}, {64, 32}, {80, 32}, {96, 32}, {112,32}, {128,32}, {144,32}, {160,32}, {176,32},           {208,32}, {224,32},
+        {0,  48},           {32, 48}, {48, 48}, {64, 48}, {80, 48}, {96, 48}, {112,48}, {128,48}, {144,48}, {160,48}, {176,48}, {192,48}, {208,48}, {224,48},
+        {0,  64}, {16, 64}, {32, 64},                               {96, 64},                                           {176,64}, {192,64}, {208,64}, {224,64},
     }, {
        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,    1, 1,
-       1,    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1,          1,          1, 1, 1, 1,
+       4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1,
+       4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,    4, 1,
+       4,    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1,
+       4, 4, 4,          4,          4, 4, 4, 1,
     }
 };
 
@@ -122,9 +122,15 @@ led_config_t g_led_config = { {
 
 keyboard_indicators indicators;
 
+/* Per-LED colour overrides — RAM only (reset on power cycle) */
+static perled_config perled_overrides[PERLED_COUNT];
+static uint8_t       selected_led = 0;
+
 #define INDICATOR_COUNT  (sizeof(keyboard_indicators) / sizeof(indicator_config))
-_Static_assert(sizeof(keyboard_indicators) == EECONFIG_KB_DATA_SIZE,
-               "keyboard_indicators size mismatch with EECONFIG_KB_DATA_SIZE");
+_Static_assert(sizeof(keyboard_indicators)    == 30,  "keyboard_indicators size changed");
+_Static_assert(sizeof(perled_config)          == 4,   "perled_config size changed");
+_Static_assert(sizeof(keyboard_eeprom_data_t) == EECONFIG_KB_DATA_SIZE,
+               "keyboard_eeprom_data_t size mismatch with EECONFIG_KB_DATA_SIZE");
 
 custom_rgblight_config_t g_custom_rgblight_config;
 
@@ -185,7 +191,61 @@ bool rgb_matrix_indicators_kb(void) {
         }
     }
 
+    /* Per-LED colour overrides */
+    for (int i = 0; i < PERLED_COUNT; i++) {
+        if (perled_overrides[i].enabled) {
+            RGB rgb = hsv_to_rgb((HSV){ perled_overrides[i].h,
+                                        perled_overrides[i].s,
+                                        perled_overrides[i].v });
+            rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+        }
+    }
+
     return true;
+}
+
+/* ============================================================
+ * PER-LED VIA HANDLERS
+ * ============================================================ */
+
+void perled_config_set_value(uint8_t *data) {
+    uint8_t id  = data[0];
+    uint8_t *v  = &data[1];
+    switch (id) {
+        case id_perled_index:
+            selected_led = (v[0] < PERLED_COUNT) ? v[0] : 0;
+            break;
+        case id_perled_enable:
+            perled_overrides[selected_led].enabled = v[0];
+            /* Per-LED overrides need the matrix task running to be rendered.
+             * If the matrix is currently off, turn it on (no-EEPROM so the
+             * user's persistent "off" preference is not changed). */
+            if (v[0] && !rgb_matrix_is_enabled()) {
+                rgb_matrix_enable_noeeprom();
+            }
+            break;
+        case id_perled_brightness:
+            perled_overrides[selected_led].v = v[0];
+            break;
+        case id_perled_color:
+            perled_overrides[selected_led].h = v[0];
+            perled_overrides[selected_led].s = v[1];
+            break;
+    }
+}
+
+void perled_config_get_value(uint8_t *data) {
+    uint8_t id  = data[0];
+    uint8_t *v  = &data[1];
+    switch (id) {
+        case id_perled_index:      v[0] = selected_led;                                break;
+        case id_perled_enable:     v[0] = perled_overrides[selected_led].enabled;      break;
+        case id_perled_brightness: v[0] = perled_overrides[selected_led].v;            break;
+        case id_perled_color:
+            v[0] = perled_overrides[selected_led].h;
+            v[1] = perled_overrides[selected_led].s;
+            break;
+    }
 }
 
 /* ============================================================
@@ -199,8 +259,12 @@ void eeconfig_init_kb(void) {
     indicators.ind4 = (indicator_config){ .h=0, .s=255, .v=255, .func=2,    .index=3,                 .enabled=false };
     indicators.ind5 = (indicator_config){ .h=0, .s=0,   .v=255, .func=0xFF, .index=BLOCKER_LED_INDEX, .enabled=true  };
 
-    eeconfig_update_kb_datablock(&indicators);
-    eeconfig_init_kb_datablock();
+    memset(perled_overrides, 0, sizeof(perled_overrides));
+
+    keyboard_eeprom_data_t block;
+    block.ind = indicators;
+    memcpy(block.perled, perled_overrides, sizeof(perled_overrides));
+    eeconfig_update_kb_datablock(&block);
 }
 
 /* ============================================================
@@ -351,7 +415,24 @@ void indicator_config_get_value(uint8_t *data) {
 }
 
 void indicator_config_save(void) {
-    eeconfig_update_kb_datablock(&indicators);
+    keyboard_eeprom_data_t block;
+    eeconfig_read_kb_datablock(&block);
+    block.ind = indicators;
+    eeconfig_update_kb_datablock(&block);
+}
+
+void perled_config_save(void) {
+    keyboard_eeprom_data_t block;
+    eeconfig_read_kb_datablock(&block);
+    memcpy(block.perled, perled_overrides, sizeof(perled_overrides));
+    eeconfig_update_kb_datablock(&block);
+}
+
+void perled_config_load(void) {
+    keyboard_eeprom_data_t block;
+    eeconfig_read_kb_datablock(&block);
+    indicators = block.ind;
+    memcpy(perled_overrides, block.perled, sizeof(perled_overrides));
 }
 
 /* ============================================================
@@ -363,24 +444,32 @@ void via_custom_value_command_kb(uint8_t *data, uint8_t length) {
     uint8_t *ch  = &data[1];
     uint8_t *vd  = &data[2];
 
+    /* Channel 0x0F: bootloader jump and EEPROM reset (formerly in keymap.c) */
+    if (*ch == 0x0F) {
+        if (*cmd == id_custom_set_value) {
+            if      (vd[0] == 0x01) reset_keyboard();
+            else if (vd[0] == 0x02) eeconfig_init();
+        }
+        return;
+    }
+
     if (*ch != id_custom_channel) { *cmd = id_unhandled; return; }
 
     switch (*cmd) {
         case id_custom_set_value:
-            if (vd[0] <= id_rgblight_ug_toggle)
-                rgblight_config_set_value(vd);
-            else
-                indicator_config_set_value(vd);
+            if      (vd[0] <= id_rgblight_ug_toggle) rgblight_config_set_value(vd);
+            else if (vd[0] <= id_ind5_color)          indicator_config_set_value(vd);
+            else                                       perled_config_set_value(vd);
             break;
         case id_custom_get_value:
-            if (vd[0] <= id_rgblight_ug_toggle)
-                rgblight_config_get_value(vd);
-            else
-                indicator_config_get_value(vd);
+            if      (vd[0] <= id_rgblight_ug_toggle) rgblight_config_get_value(vd);
+            else if (vd[0] <= id_ind5_color)          indicator_config_get_value(vd);
+            else                                       perled_config_get_value(vd);
             break;
         case id_custom_save:
             rgblight_config_save();
             indicator_config_save();
+            perled_config_save();
             break;
         default:
             *cmd = id_unhandled;
@@ -396,7 +485,7 @@ void keyboard_post_init_user(void) {
     debug_matrix = true;
 
     rgblight_config_load();
-    eeconfig_read_kb_datablock(&indicators);
+    perled_config_load();
 
     /* Enforce fixed state for structurally-fixed indicators */
     indicators.ind1.enabled = true;
@@ -405,5 +494,15 @@ void keyboard_post_init_user(void) {
     apply_rgblight_zones();
 
     rgb_matrix_reload_from_eeprom();
+
+    /* If any per-LED override was loaded, ensure the matrix is enabled so
+     * rgb_matrix_indicators_kb() actually runs and renders them. */
+    for (int i = 0; i < PERLED_COUNT; i++) {
+        if (perled_overrides[i].enabled) {
+            if (!rgb_matrix_is_enabled()) rgb_matrix_enable_noeeprom();
+            break;
+        }
+    }
+
     rgb_matrix_indicators_kb();
 }

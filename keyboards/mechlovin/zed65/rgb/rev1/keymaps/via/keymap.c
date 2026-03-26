@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 #include "rev1.h"
+#include "via.h"
+
 
 enum custom_keycodes {
     RGB_TOGGLE_LOGO = QK_KB_0,  // CUSTOM(0)
@@ -65,3 +67,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 }
+

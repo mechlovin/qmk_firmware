@@ -60,6 +60,23 @@ enum via_indicator_color {
     id_ind5_color      = 25,
 };
 
+/* Per-LED colour override — IDs 26-29, channel 0 */
+enum via_perled_value {
+    id_perled_enable     = 26,   /* toggle: enable override for selected LED  */
+    id_perled_index      = 27,   /* range 0-65: select which LED to edit      */
+    id_perled_brightness = 28,   /* range 0-255: brightness for selected LED  */
+    id_perled_color      = 29,   /* color (H<<8|S): hue+sat for selected LED  */
+};
+
+#define PERLED_COUNT RGB_MATRIX_LED_COUNT
+
+typedef struct {
+    uint8_t h;
+    uint8_t s;
+    uint8_t v;
+    bool    enabled;
+} perled_config;
+
 /* ================= STRUCTS ================= */
 
 typedef struct {
@@ -77,7 +94,13 @@ typedef struct {
     indicator_config ind3;
     indicator_config ind4;
     indicator_config ind5;
-} keyboard_indicators;  // 30 bytes == EECONFIG_KB_DATA_SIZE
+} keyboard_indicators;  // 30 bytes
+
+/* Combined EEPROM layout: indicators (30) + per-LED overrides (66 × 4 = 264) = 294 bytes */
+typedef struct {
+    keyboard_indicators ind;
+    perled_config       perled[66];
+} keyboard_eeprom_data_t;
 
 typedef struct {
     bool logo_enabled;
@@ -107,6 +130,11 @@ void indicator_config_set_value(uint8_t *data);
 void indicator_config_get_value(uint8_t *data);
 void indicator_config_save(void);
 void update_rgblight(bool logo_was, bool ug_was);
+
+void perled_config_set_value(uint8_t *data);
+void perled_config_get_value(uint8_t *data);
+void perled_config_save(void);
+void perled_config_load(void);
 
 /* Fade engine – called from keymap.c for keycode handlers */
 void matrix_fade_in(void);

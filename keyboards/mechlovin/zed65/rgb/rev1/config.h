@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define CAPS_LED_INDEX    30
 #define BLOCKER_LED_INDEX 14
 
-// EECONFIG: 5 indicator_config × 6 bytes = 30 bytes
-#define EECONFIG_KB_DATA_SIZE (5 * 6)
+// EECONFIG: 5 indicator_config × 6 bytes + 66 perled_config × 4 bytes = 294 bytes
+#define EECONFIG_KB_DATA_SIZE (5 * 6 + 66 * 4)
 
 #define WEAR_LEVELING_LOGICAL_SIZE 2048
 #define WEAR_LEVELING_BACKING_SIZE 4096
