@@ -8,7 +8,7 @@
         "pid": "0xC180"
     },
     "diode_direction": "ROW2COL",
-    "keyboard_name": "Milleottocento",
+    "keyboard_name": "Longhi",
     "bootloader": "stm32duino",
     "eeprom": {
         "wear_leveling": {
