@@ -1,8 +1,7 @@
 /* Copyright 2023 RephlexZero (@RephlexZero)
 SPDX-License-Identifier: GPL-2.0-or-later */
+#pragma once
 #include <stdint.h>
-
-uint8_t current_channel;
 
 void multiplexer_init(void);
 
@@ -16,4 +15,3 @@ typedef struct {
 extern const pin_t mux_pins[MUXES];
 extern const pin_t mux_selector_pins[MUX_SELECTOR_BITS];
 extern const mux_t mux_index[MUXES][MUX_CHANNELS];
-extern const mux_t NC;

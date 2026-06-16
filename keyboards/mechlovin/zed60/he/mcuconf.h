@@ -1,23 +1,15 @@
-/* Copyright 2024 QMK
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+/* Copyright 2023 RephlexZero (@RephlexZero)
+SPDX-License-Identifier: GPL-2.0-or-later */
 #pragma once
 
 #include_next <mcuconf.h>
 
+/* COM pins A4/A5/A6/A7/B2 are all ADC2 inputs on the STM32G431 */
+#undef STM32_ADC_USE_ADC2
+#define STM32_ADC_USE_ADC2 TRUE
 
-#undef STM32_I2C_USE_I2C1
-#define STM32_I2C_USE_I2C1 TRUE
+/* IS31FL3741 RGB driver sits on I2C1 (SCL A15 / SDA B7) */
+#ifdef RGB_MATRIX_ENABLE
+#    undef STM32_I2C_USE_I2C1
+#    define STM32_I2C_USE_I2C1 TRUE
+#endif
