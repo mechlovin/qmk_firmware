@@ -17,7 +17,7 @@
 
 void board_init(void) {
     AFIO->MAPR |= AFIO_MAPR_SPI1_REMAP;
-   //JTAG-DP Disabled and SW-DP Enabled    
+   //JTAG-DP Disabled and SW-DP Enabled
    AFIO->MAPR = (AFIO->MAPR & ~AFIO_MAPR_SWJ_CFG_Msk) | AFIO_MAPR_SWJ_CFG_DISABLE;
 }
 
