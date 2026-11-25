@@ -19,9 +19,9 @@
         "pin": "B5"
     },
     "indicators": {
-        "caps_lock": "B11",
-        "num_lock": "B10",
-        "scroll_lock": "B0"
+        "num_lock": "B0",
+        "caps_lock": "B10",
+        "scroll_lock": "B11"
     },
     "matrix_pins": {
         "cols": ["A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "A8", "A15", "B3", "B4", "C15", "C14", "C13", "B9", "B8", "B7", "B6"],

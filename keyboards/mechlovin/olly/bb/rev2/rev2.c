@@ -17,11 +17,17 @@
 
 void board_init(void) {
     AFIO->MAPR |= AFIO_MAPR_SPI1_REMAP;
-   //JTAG-DP Disabled and SW-DP Enabled    
+   //JTAG-DP Disabled and SW-DP Enabled
    AFIO->MAPR = (AFIO->MAPR & ~AFIO_MAPR_SWJ_CFG_Msk) | AFIO_MAPR_SWJ_CFG_DISABLE;
 }
 
 void led_init_ports(void) {
+  // Lock indicator pins. Overriding led_init_ports() skips QMK's default
+  // init, so these must be set as outputs here or they stay inputs and the
+  // LEDs only glow faintly through the internal pull-up.
+  gpio_set_pin_output(B11); // scroll lock (right)
+  gpio_set_pin_output(B10); // caps lock (middle)
+  gpio_set_pin_output(B0);  // num lock (left)
   gpio_set_pin_output(B12);
   gpio_set_pin_output(A14);
   gpio_set_pin_output(A13);
