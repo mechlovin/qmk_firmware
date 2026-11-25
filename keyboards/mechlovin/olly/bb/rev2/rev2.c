@@ -22,6 +22,12 @@ void board_init(void) {
 }
 
 void led_init_ports(void) {
+  // Lock indicator pins. Overriding led_init_ports() skips QMK's default
+  // init, so these must be set as outputs here or they stay inputs and the
+  // LEDs only glow faintly through the internal pull-up.
+  gpio_set_pin_output(B11); // caps lock
+  gpio_set_pin_output(B10); // num lock
+  gpio_set_pin_output(B0);  // scroll lock
   gpio_set_pin_output(B12);
   gpio_set_pin_output(A14);
   gpio_set_pin_output(A13);
